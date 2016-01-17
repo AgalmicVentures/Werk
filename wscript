@@ -3,8 +3,13 @@
 NAME = 'TemplateCpp'
 VERSION = '1.0'
 
+top = '.'
+out = 'build'
+
 def options(opt):
 	opt.load('compiler_cxx')
+	opt.load('c_preproc') #Used for header dependencies
+
 	opt.add_option('-d', '--debug', dest='debug', default=False, action='store_true', help='Debug mode')
 	opt.add_option('-s', '--symbols', dest='symbols', default=False, action='store_true', help='Debug symbols (on by default in debug mode)')
 
@@ -21,7 +26,6 @@ def configure(ctx):
 		'-Wall',
 		'-Wextra',
 		'-pedantic',
-		#'-isystem%s/github/SandboxCpp/src' % ctx.env.HOME,
 	]
 
 	#Include symbols for debugging, or when explicitly requested

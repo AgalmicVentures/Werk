@@ -37,7 +37,7 @@ def configure(ctx):
 		ctx.env.DEFINES.append('DEBUG')
 	else:
 		ctx.env.CXXFLAGS.append('-O3')
-		ctx.env.CXXFLAGS.append('-Os')
+		#XXX: ctx.env.CXXFLAGS.append('-Os')
 		ctx.env.DEFINES.append('NDEBUG') #Causes asserts to compile out: http://www.cplusplus.com/reference/cassert/assert/
 
 	#Setup libraries
@@ -50,6 +50,7 @@ def configure(ctx):
 		ctx.env.LIBPATH.append('/usr/local/Cellar/boost/1.57.0/lib')
 
 	ctx.load('compiler_cxx')
+	ctx.load('c_preproc')
 
 def build(ctx):
 	ctx.add_post_fun(runTests)

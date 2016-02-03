@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 
 NAME = 'TemplateCpp'
 VERSION = '1.0'
@@ -6,12 +5,12 @@ VERSION = '1.0'
 top = '.'
 out = 'build'
 
-def options(opt):
-	opt.load('compiler_cxx')
-	opt.load('c_preproc') #Used for header dependencies
+def options(ctx):
+	ctx.load('compiler_cxx')
+	ctx.load('c_preproc') #Used for header dependencies
 
-	opt.add_option('-d', '--debug', dest='debug', default=False, action='store_true', help='Debug mode')
-	opt.add_option('-s', '--symbols', dest='symbols', default=False, action='store_true', help='Debug symbols (on by default in debug mode)')
+	ctx.add_option('-d', '--debug', dest='debug', default=False, action='store_true', help='Debug mode')
+	ctx.add_option('-s', '--symbols', dest='symbols', default=False, action='store_true', help='Debug symbols (on by default in debug mode)')
 
 def configure(ctx):
 	#Platform checks
@@ -19,8 +18,7 @@ def configure(ctx):
 	isMac = os.uname()[0] == 'Darwin'
 
 	#Setup the environment
-	ctx.env.DEFINES = []
-	ctx.env.HOME = os.environ['HOME']
+	ctx.env.INCLUDES += ['.', 'src']
 	ctx.env.CXXFLAGS = [
 		'-std=c++0x',
 		'-Wall',
@@ -43,8 +41,6 @@ def configure(ctx):
 	#Setup libraries
 	ctx.env.LIB = [
 		#'pthread',
-		#'boost_system',
-		#'boost_thread-mt',
 	]
 	if isMac:
 		ctx.env.LIBPATH.append('/usr/local/Cellar/boost/1.57.0/lib')
@@ -59,7 +55,7 @@ def build(ctx):
 	#TODO: ctx.recurse('test')
 
 def runTests(ctx):
-	stars = '*' * 40
+	stars = '*' * 30
 	print
 	print '%s Running Unit Tests %s' % (stars, stars)
 	print

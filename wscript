@@ -64,7 +64,7 @@ def configure(ctx):
 	#Setup the environment
 	ctx.env.INCLUDES += ['.', 'src']
 	ctx.env.CXXFLAGS = [
-		'-std=c++0x',
+		'-std=c++11',
 		'-Wall',
 		'-Wextra',
 		'-pedantic',

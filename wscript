@@ -1,20 +1,43 @@
 
+import os
+
+#################### waf Options ####################
+
 NAME = 'TemplateCpp'
 VERSION = '1.0'
 
 top = '.'
 out = 'build'
 
-def options(ctx):
+#################### Helpers ####################
+
+def _loadTools(ctx):
+	#Generic C++ compiler
 	ctx.load('compiler_cxx')
-	ctx.load('c_preproc') #Used for header dependencies
+
+	#Header dependencies
+	ctx.load('c_preproc')
+
+	#TODO: other tools?
+
+def _preBuild(ctx):
+	pass #TODO
+
+def _postBuild(ctx):
+	pass #TODO
+
+#################### Commands ####################
+
+def options(ctx):
+	_loadTools(ctx)
 
 	ctx.add_option('-d', '--debug', dest='debug', default=False, action='store_true', help='Debug mode')
 	ctx.add_option('-s', '--symbols', dest='symbols', default=False, action='store_true', help='Debug symbols (on by default in debug mode)')
 
 def configure(ctx):
+	_loadTools(ctx)
+
 	#Platform checks
-	import os
 	isMac = os.uname()[0] == 'Darwin'
 
 	#Setup the environment
@@ -45,11 +68,9 @@ def configure(ctx):
 	if isMac:
 		ctx.env.LIBPATH.append('/usr/local/Cellar/boost/1.57.0/lib')
 
-	ctx.load('compiler_cxx')
-	ctx.load('c_preproc')
-
 def build(ctx):
-	ctx.add_post_fun(runTests)
+	ctx.add_pre_fun(_preBuild)
+	ctx.add_post_fun(_postBuild)
 
 	ctx.recurse('src')
 	#TODO: ctx.recurse('test')

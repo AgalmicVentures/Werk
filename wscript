@@ -20,7 +20,12 @@ def _loadTools(ctx):
 	#Header dependencies
 	ctx.load('c_preproc')
 
-	#TODO: other tools?
+	#Assembly language
+	ctx.load('asm')
+
+	#Parser building
+	ctx.load('bison')
+	ctx.load('flex')
 
 def _preBuild(ctx):
 	Logs.info('Pre-build...')

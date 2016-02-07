@@ -1,6 +1,8 @@
 
 import os
 
+from waflib import Logs
+
 #################### waf Options ####################
 
 NAME = 'TemplateCpp'
@@ -21,20 +23,34 @@ def _loadTools(ctx):
 	#TODO: other tools?
 
 def _preBuild(ctx):
-	pass #TODO
+	Logs.info('Pre-build...')
+
+	#TODO
+
+	Logs.info('Pre-build complete.')
 
 def _postBuild(ctx):
-	pass #TODO
+	Logs.info('Post-build...')
+
+	#TODO
+
+	Logs.info('Post-build complete.')
 
 #################### Commands ####################
 
 def options(ctx):
+	Logs.info('Loading options...')
+
 	_loadTools(ctx)
 
 	ctx.add_option('-d', '--debug', dest='debug', default=False, action='store_true', help='Debug mode')
 	ctx.add_option('-s', '--symbols', dest='symbols', default=False, action='store_true', help='Debug symbols (on by default in debug mode)')
 
+	Logs.info('Options loaded.')
+
 def configure(ctx):
+	Logs.info('Configuring...')
+
 	_loadTools(ctx)
 
 	#Platform checks
@@ -68,6 +84,8 @@ def configure(ctx):
 	if isMac:
 		ctx.env.LIBPATH.append('/usr/local/Cellar/boost/1.57.0/lib')
 
+	Logs.info('Configured.')
+
 def build(ctx):
 	ctx.add_pre_fun(_preBuild)
 	ctx.add_post_fun(_postBuild)
@@ -75,10 +93,8 @@ def build(ctx):
 	ctx.recurse('src')
 	#TODO: ctx.recurse('test')
 
-def runTests(ctx):
+def test(ctx):
 	stars = '*' * 30
-	print
-	print '%s Running Unit Tests %s' % (stars, stars)
-	print
+	Logs.info('%s Running Unit Tests %s' % (stars, stars))
 	#TODO: os.system("build/unit_tests")
 

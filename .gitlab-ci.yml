@@ -2,27 +2,11 @@
 before_script:
 
 stages:
-  - configure
-  - clean
   - build
-
-configure_job:
-  stage: configure
-  script:
-    - ./waf configure
-  only:
-    - master
-
-clean_job:
-  stage: clean
-  script:
-    - ./waf clean
-  only:
-    - master
 
 build_job:
   stage: build
   script:
-    - ./waf build
+    - ./waf configure clean build
   only:
     - master

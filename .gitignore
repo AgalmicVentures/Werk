@@ -29,4 +29,5 @@
 
 # Waf
 .lock-waf*
+.waf*
 build/

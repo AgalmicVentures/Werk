@@ -9,4 +9,3 @@ int main()
 	std::printf("Hello world! example_function(%d) = %d", n, example_function(n));
 	return 0;
 }
-

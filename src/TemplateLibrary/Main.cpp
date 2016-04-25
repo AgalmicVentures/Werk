@@ -2,5 +2,5 @@
 #include "TemplateLibrary/Main.hpp"
 
 int example_function(int x) {
-	return x + 1;
+	return x + 10;
 }

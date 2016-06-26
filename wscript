@@ -13,6 +13,8 @@ out = 'build'
 
 #################### Helpers ####################
 
+stars = '*' * 20
+
 def _loadTools(ctx):
 	#Generic C++ compiler
 	ctx.load('compiler_cxx')
@@ -76,11 +78,17 @@ def configure(ctx):
 
 	#Debugging
 	if ctx.options.debug:
+		ctx.msg('Build environment', '%s DEBUG %s' % (stars, stars), color='RED')
+
+		ctx.env.CXXFLAGS.append('-O0')
 		ctx.env.DEFINES.append('DEBUG')
+		ctx.env.ENVIRONMENT = 'debug'
 	else:
+		ctx.msg('Build environment', '%s RELEASE %s' % (stars, stars), color='BOLD')
+
 		ctx.env.CXXFLAGS.append('-O3')
-		#XXX: ctx.env.CXXFLAGS.append('-Os')
 		ctx.env.DEFINES.append('NDEBUG') #Causes asserts to compile out: http://www.cplusplus.com/reference/cassert/assert/
+		ctx.env.ENVIRONMENT = 'release'
 
 	#Setup libraries
 	ctx.env.LIB = [

@@ -3,20 +3,20 @@ def build(bld):
 	#Main library
 	bld.stlib(
 		source = bld.path.ant_glob('Werk/**/*.cpp', excl=[]),
-		target = 'Werk',
+		target = '../lib/Werk',
 		name   = 'Werk',
 	)
 
 	#Unit tests
 	bld.program(
 		source = bld.path.ant_glob('WerkTest/**/*.cpp', excl=[]),
-		target = '../WerkTest',
+		target = '../test/WerkTest',
 		use    = ['Werk'],
 	)
 
 	#Hello world
 	bld.program(
 		source = 'HelloWorld/Main.cpp',
-		target = '../HelloWorld',
+		target = '../bin/HelloWorld',
 		use    = ['Werk'],
 	)

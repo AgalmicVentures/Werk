@@ -1,10 +1,20 @@
 
 stages:
   - build
+  - unit_test
 
 build_job:
   stage: build
   script:
     - ./waf configure clean build
+  only:
+    - master
+
+unit_test_job:
+  stage: unit_test
+  script:
+    - ./waf test
+  dependencies:
+    - build_job
   only:
     - master

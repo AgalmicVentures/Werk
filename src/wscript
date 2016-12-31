@@ -1,11 +1,10 @@
-#!/usr/bin/env python
 
 def build(bld):
-	#Sandbox library
+	#Main library
 	bld.stlib(
-		source = bld.path.ant_glob('TemplateLibrary/**/*.cpp', excl=[]),
-		target = 'TemplateLibrary',
-		name   = 'TemplateLibrary',
+		source = bld.path.ant_glob('Werk/**/*.cpp', excl=[]),
+		target = 'Werk',
+		name   = 'Werk',
 	)
 
 	#Hello world

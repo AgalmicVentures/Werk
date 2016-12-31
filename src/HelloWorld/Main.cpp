@@ -1,11 +1,15 @@
 
 #include <cstdio>
 
-#include "TemplateLibrary/Main.hpp"
+#include "Werk/Utility/SummaryStatistics.hpp"
 
 int main()
 {
-	int n = 10;
-	std::printf("Hello world! example_function(%d) = %d", n, example_function(n));
+	werk::SummaryStatistics<double> s;
+	s.sample(0.0);
+	s.sample(1.0);
+	s.sample(2.0);
+
+	std::printf("Hello world! count=%llu average=%f", s.count(), s.average());
 	return 0;
 }

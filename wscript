@@ -5,7 +5,7 @@ from waflib import Logs
 
 #################### waf Options ####################
 
-NAME = 'TemplateCpp'
+NAME = 'Werk'
 VERSION = '1.0'
 
 top = '.'
@@ -95,7 +95,7 @@ def configure(ctx):
 		#'pthread',
 	]
 	if isMac:
-		ctx.env.LIBPATH.append('/usr/local/Cellar/boost/1.57.0/lib')
+		ctx.env.LIBPATH.append('/usr/local/Cellar/boost/1.58.0/lib')
 
 	Logs.info('Configured.')
 
@@ -109,5 +109,5 @@ def build(ctx):
 def test(ctx):
 	stars = '*' * 30
 	Logs.info('%s Running Unit Tests %s' % (stars, stars))
-	#TODO: os.system("build/unit_tests")
+	os.system("build/WerkTest")
 

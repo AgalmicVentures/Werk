@@ -22,7 +22,7 @@ public:
 		return _count >= 2 ? _m2 / static_cast<double>(_count) : 0.0;
 	}
 	double stddev() const {
-		return _count >= 2 ? std::sqrt(variance()) : 0.0;
+		return _count >= 2 ? std::sqrt(_m2 / static_cast<double>(_count)) : 0.0;
 	}
 
 	void sample(T t) {

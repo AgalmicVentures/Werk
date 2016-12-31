@@ -7,9 +7,16 @@ def build(bld):
 		name   = 'Werk',
 	)
 
+	#Unit tests
+	bld.program(
+		source = bld.path.ant_glob('WerkTest/**/*.cpp', excl=[]),
+		target = '../WerkTest',
+		use    = ['Werk'],
+	)
+
 	#Hello world
 	bld.program(
 		source = 'HelloWorld/Main.cpp',
 		target = '../HelloWorld',
-		use    = ['TemplateLibrary'],
+		use    = ['Werk'],
 	)

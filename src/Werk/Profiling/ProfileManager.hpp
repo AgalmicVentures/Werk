@@ -18,7 +18,7 @@ public:
 	ProfileManager() {
 		//Check the time it takes to call the timing functions
 		add(&_baseProfile);
-		for (uint64_t i = 0; i < 100 * 1000; ++i) {
+		for (uint64_t i = 0; i < 101 * 1000; ++i) {
 			_baseProfile.start(werk::epochTime());
 			_baseProfile.stop(werk::epochTime());
 		}
@@ -40,7 +40,7 @@ private:
 	std::map<std::string, Profile *> _profiles;
 
 	//A profile that times the basic timer function, so that can be subtracted out
-	Profile _baseProfile { "Base", 1000 } ;
+	Profile _baseProfile { "Base", 1000, 1000 } ;
 };
 
 }

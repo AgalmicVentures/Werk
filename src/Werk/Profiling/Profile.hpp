@@ -11,7 +11,8 @@ class Profile
 {
 public:
 
-	Profile(const std::string &name, uint64_t sampleSize = 100) : _name(name), _sampleSize(sampleSize) { }
+	Profile(const std::string &name, uint64_t sampleSize = 100, uint64_t warmupSize = 0)
+		: _name(name), _sampleSize(sampleSize), _warmupSize(warmupSize) { }
 
 	const std::string &name() const { return _name; }
 	uint64_t sampleSize() const { return _sampleSize; }
@@ -25,17 +26,22 @@ public:
 	const RangedSummaryStatistics<uint64_t> &f99Statistics() const { return _f99Statistics; }
 	const RangedSummaryStatistics<uint64_t> &maxStatistics() const { return _maxStatistics; }
 
-	void start(uint64_t time) {
-		_startTime = time;
-	}
+	void start(uint64_t time) { _startTime = time; }
 	void stop(uint64_t time) {
 		//Started?
 		if (_startTime == 0) {
 			return;
 		}
 
-		//Sample
+		//Warmup?
 		uint64_t delta = time - _startTime;
+		_count += 1;
+		if (_count <= _warmupSize) {
+			_warmupStatistics.sample(delta);
+			return;
+		}
+
+		//Sample
 		_orderStatistics.sample(delta);
 		_startTime = 0;
 
@@ -65,8 +71,10 @@ public:
 		_orderStatistics.reset();
 	}
 	void reset() {
+		_count = 0;
 		_startTime = 0;
 		_orderStatistics.reset();
+		_warmupStatistics.reset();
 		_minStatistics.reset();
 		_f25Statistics.reset();
 		_f50Statistics.reset();
@@ -78,22 +86,16 @@ public:
 	}
 
 	void writeJson(FILE *file) {
-		fprintf(file, "{\"name\": \"%s\", \"min\": ", _name.c_str());
-		_minStatistics.writeJson(file);
-		fprintf(file, ", \"f25\": ");
-		_f25Statistics.writeJson(file);
-		fprintf(file, ", \"f50\": ");
-		_f50Statistics.writeJson(file);
-		fprintf(file, ", \"f75\": ");
-		_f75Statistics.writeJson(file);
-		fprintf(file, ", \"f90\": ");
-		_f90Statistics.writeJson(file);
-		fprintf(file, ", \"f95\": ");
-		_f95Statistics.writeJson(file);
-		fprintf(file, ", \"f99\": ");
-		_f99Statistics.writeJson(file);
-		fprintf(file, ", \"max\": ");
-		_maxStatistics.writeJson(file);
+		fprintf(file, "{\"name\": \"%s\"", _name.c_str());
+		fprintf(file, ", \"warmup\": "); _warmupStatistics.writeJson(file);
+		fprintf(file, ", \"min\": "); _minStatistics.writeJson(file);
+		fprintf(file, ", \"f25\": "); _f25Statistics.writeJson(file);
+		fprintf(file, ", \"f50\": "); _f50Statistics.writeJson(file);
+		fprintf(file, ", \"f75\": "); _f75Statistics.writeJson(file);
+		fprintf(file, ", \"f90\": "); _f90Statistics.writeJson(file);
+		fprintf(file, ", \"f95\": "); _f95Statistics.writeJson(file);
+		fprintf(file, ", \"f99\": "); _f99Statistics.writeJson(file);
+		fprintf(file, ", \"max\": "); _maxStatistics.writeJson(file);
 		fprintf(file, "}\n");
 	}
 
@@ -101,15 +103,20 @@ private:
 
 	//Configuration
 	std::string _name;
+	uint64_t _sampleSize;
+	uint64_t _warmupSize;
+
+	//State - values bubble downward
 
 	//Current state
+	uint64_t _count = 0;
 	uint64_t _startTime = 0;
 
 	//Samples used for approximating fractiles efficiently
-	uint64_t _sampleSize;
 	OrderStatistics<uint64_t> _orderStatistics;
 
-	//Statistics taken from samples of the order statstics every _sampleSize samples
+	//Statistics taken from samples of the order statstics every _sampleSize samples (or the warmup)
+	RangedSummaryStatistics<uint64_t> _warmupStatistics;
 	RangedSummaryStatistics<uint64_t> _minStatistics;
 	RangedSummaryStatistics<uint64_t> _f25Statistics;
 	RangedSummaryStatistics<uint64_t> _f50Statistics;

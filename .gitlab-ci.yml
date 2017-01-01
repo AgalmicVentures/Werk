@@ -25,6 +25,6 @@ profile_job:
   script:
     - ./waf profile
   dependencies:
-    - unit_test_job
+    - build_job
   only:
     - master

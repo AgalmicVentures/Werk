@@ -109,10 +109,11 @@ def build(ctx):
 def test(ctx):
 	stars = '*' * 30
 	Logs.info('%s Running Unit Tests %s' % (stars, stars))
-	os.system("build/test/WerkTest")
+	if os.system('build/test/WerkTest') != 0:
+		raise RuntimeError('Failed to run WerkTest')
 
 def profile(ctx):
 	stars = '*' * 30
 	Logs.info('%s Running Profiles %s' % (stars, stars))
-	os.system("build/test/WerkProfile")
-
+	if os.system('build/test/WerkProfile') != 0:
+		raise RuntimeError('Failed to run WerkProfile')

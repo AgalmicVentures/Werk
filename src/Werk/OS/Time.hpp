@@ -1,4 +1,6 @@
 
+#pragma once
+
 #ifndef __MACH__
 #include <time.h>
 #else

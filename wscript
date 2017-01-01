@@ -109,11 +109,23 @@ def build(ctx):
 def test(ctx):
 	stars = '*' * 30
 	Logs.info('%s Running Unit Tests %s' % (stars, stars))
-	if os.system('build/test/WerkTest') != 0:
-		raise RuntimeError('Failed to run WerkTest')
+
+	binary = 'build/test/WerkTest'
+	if not os.path.exists(binary):
+		raise RuntimeError('Missing binary: %s' % binary)
+
+	exitCode = os.system(binary)
+	if exitCode != 0:
+		raise RuntimeError('Non-zero return: %s -> %d' % (binary, exitCode))
 
 def profile(ctx):
 	stars = '*' * 30
 	Logs.info('%s Running Profiles %s' % (stars, stars))
-	if os.system('build/test/WerkProfile') != 0:
-		raise RuntimeError('Failed to run WerkProfile')
+
+	binary = 'build/test/WerkProfile'
+	if not os.path.exists(binary):
+		raise RuntimeError('Missing binary: %s' % binary)
+
+	exitCode = os.system(binary)
+	if exitCode != 0:
+		raise RuntimeError('Non-zero return: %s -> %d' % (binary, exitCode))

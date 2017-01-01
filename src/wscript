@@ -14,6 +14,13 @@ def build(bld):
 		use    = ['Werk'],
 	)
 
+	#Profiling
+	bld.program(
+		source = bld.path.ant_glob('WerkProfile/**/*.cpp', excl=[]),
+		target = '../test/WerkProfile',
+		use    = ['Werk'],
+	)
+
 	#Hello world
 	bld.program(
 		source = 'HelloWorld/Main.cpp',

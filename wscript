@@ -111,3 +111,8 @@ def test(ctx):
 	Logs.info('%s Running Unit Tests %s' % (stars, stars))
 	os.system("build/test/WerkTest")
 
+def profile(ctx):
+	stars = '*' * 30
+	Logs.info('%s Running Profiles %s' % (stars, stars))
+	os.system("build/test/WerkProfile")
+

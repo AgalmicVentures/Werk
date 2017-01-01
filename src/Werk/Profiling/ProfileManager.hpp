@@ -5,6 +5,7 @@
 #include <map>
 #include <string>
 
+#include "Werk/OS/Time.hpp"
 #include "Werk/Profiling/Profile.hpp"
 
 namespace werk
@@ -14,9 +15,18 @@ class ProfileManager
 {
 public:
 
+	ProfileManager() {
+		//Check the time it takes to call the timing functions
+		add(&_baseProfile);
+		for (uint64_t i = 0; i < 100 * 1000; ++i) {
+			_baseProfile.start(werk::epochNs());
+			_baseProfile.stop(werk::epochNs());
+		}
+	}
+
 	const std::map<std::string, Profile *> &profiles() const { return _profiles; }
 
-	void register(Profile *profile) {
+	void add(Profile *profile) {
 		_profiles[profile->name()] = profile;
 	}
 
@@ -28,6 +38,9 @@ public:
 
 private:
 	std::map<std::string, Profile *> _profiles;
+
+	//A profile that times the basic timer function, so that can be subtracted out
+	Profile _baseProfile { "Base", 1000 } ;
 };
 
 }

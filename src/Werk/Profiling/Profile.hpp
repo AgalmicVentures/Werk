@@ -37,12 +37,7 @@ public:
 
 		//Bin done?
 		if (_orderStatistics.count() >= _sampleSize) {
-			_f50Statistics.sample(_orderStatistics.fractile(0.50));
-			_f75Statistics.sample(_orderStatistics.fractile(0.75));
-			_f90Statistics.sample(_orderStatistics.fractile(0.90));
-			_f95Statistics.sample(_orderStatistics.fractile(0.95));
-			_f99Statistics.sample(_orderStatistics.fractile(0.99));
-			_orderStatistics.reset();
+			sampleFractiles();
 		}
 	}
 	void restart(uint64_t time) {
@@ -50,6 +45,18 @@ public:
 		start(time);
 	}
 
+	void sampleFractiles() {
+		if (_orderStatistics.count() == 0) {
+			return;
+		}
+
+		_f50Statistics.sample(_orderStatistics.fractile(0.50));
+		_f75Statistics.sample(_orderStatistics.fractile(0.75));
+		_f90Statistics.sample(_orderStatistics.fractile(0.90));
+		_f95Statistics.sample(_orderStatistics.fractile(0.95));
+		_f99Statistics.sample(_orderStatistics.fractile(0.99));
+		_orderStatistics.reset();
+	}
 	void reset() {
 		_startTime = 0;
 		_orderStatistics.reset();

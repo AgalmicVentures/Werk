@@ -6,6 +6,11 @@ stages:
 
 build_job:
   stage: build
+  artifacts:
+    paths:
+      - build/bin/
+      - build/test/
+    expire_in: 3d
   script:
     - ./waf configure clean build
   only:

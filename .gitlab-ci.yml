@@ -22,6 +22,7 @@ unit_test_job:
 
 profile_job:
   stage: functional_test
+  script:
     - ./waf profile
   dependencies:
     - unit_test_job

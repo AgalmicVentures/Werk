@@ -3,7 +3,6 @@
 
 #include <algorithm>
 #include <cstdint>
-#include <limits>
 #include <vector>
 
 namespace werk
@@ -16,33 +15,33 @@ public:
 
 	uint64_t count() const { return _samples.size(); }
 
-	double min() const {
+	T min() const {
 		if (count() == 0) {
-			return std::numeric_limits<double>::quiet_NaN();
+			return 0;
 		} else {
 			update();
 			return _samples[0];
 		}
 	}
-	double max() const {
+	T max() const {
 		if (count() == 0) {
-			return std::numeric_limits<double>::quiet_NaN();
+			return 0;
 		} else {
 			update();
 			return _samples[count() - 1];
 		}
 	}
-	double fractile(double f) const {
+	T fractile(double f) const {
 		if (count() == 0) {
-			return std::numeric_limits<double>::quiet_NaN();
+			return 0;
 		} else {
 			update();
 			return _samples[static_cast<size_t>(f * static_cast<double>(count()))];
 		}
 	}
-	double q1() const { return fractile(0.25); }
-	double median() const { return fractile(0.5); }
-	double q3() const { return fractile(0.75); }
+	T q1() const { return fractile(0.25); }
+	T median() const { return fractile(0.5); }
+	T q3() const { return fractile(0.75); }
 
 	void sample(T t) {
 		_samples.push_back(t);

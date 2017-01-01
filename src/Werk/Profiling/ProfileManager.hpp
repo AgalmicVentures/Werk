@@ -19,8 +19,8 @@ public:
 		//Check the time it takes to call the timing functions
 		add(&_baseProfile);
 		for (uint64_t i = 0; i < 100 * 1000; ++i) {
-			_baseProfile.start(werk::epochNs());
-			_baseProfile.stop(werk::epochNs());
+			_baseProfile.start(werk::epochTime());
+			_baseProfile.stop(werk::epochTime());
 		}
 	}
 

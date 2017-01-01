@@ -22,6 +22,9 @@ BOOST_AUTO_TEST_CASE(TestBasic)
     BOOST_REQUIRE_EQUAL(s.average(), 3.0);
     BOOST_REQUIRE_EQUAL(s.variance(), 4.0);
     BOOST_REQUIRE_EQUAL(s.stddev(), 2.0);
+
+    s.reset();
+    BOOST_REQUIRE_EQUAL(s.count(), 0);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

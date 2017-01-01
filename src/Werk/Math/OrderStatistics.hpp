@@ -47,6 +47,10 @@ public:
 		_samples.push_back(t);
 		_dirty = true;
 	}
+	void reset() {
+		_samples.clear();
+		_dirty = false;
+	}
 
 private:
 

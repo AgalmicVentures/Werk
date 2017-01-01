@@ -26,6 +26,9 @@ BOOST_AUTO_TEST_CASE(TestBasic)
     BOOST_REQUIRE_EQUAL(s.median(), 3.0);
     BOOST_REQUIRE_EQUAL(s.q3(), 4.0);
     BOOST_REQUIRE_EQUAL(s.max(), 5.0);
+
+    s.reset();
+    BOOST_REQUIRE_EQUAL(s.count(), 0);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

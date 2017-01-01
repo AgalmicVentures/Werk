@@ -16,14 +16,14 @@ public:
 	const std::string &name() const { return _name; }
 	uint64_t sampleSize() const { return _sampleSize; }
 	const OrderStatistics<uint64_t> &orderStatistics() const { return _orderStatistics; }
-	const SummaryStatistics<uint64_t> &minStatistics() const { return _minStatistics; }
-	const SummaryStatistics<uint64_t> &f25Statistics() const { return _f25Statistics; }
-	const SummaryStatistics<uint64_t> &f50Statistics() const { return _f50Statistics; }
-	const SummaryStatistics<uint64_t> &f75Statistics() const { return _f75Statistics; }
-	const SummaryStatistics<uint64_t> &f90Statistics() const { return _f90Statistics; }
-	const SummaryStatistics<uint64_t> &f95Statistics() const { return _f95Statistics; }
-	const SummaryStatistics<uint64_t> &f99Statistics() const { return _f99Statistics; }
-	const SummaryStatistics<uint64_t> &maxStatistics() const { return _maxStatistics; }
+	const RangedSummaryStatistics<uint64_t> &minStatistics() const { return _minStatistics; }
+	const RangedSummaryStatistics<uint64_t> &f25Statistics() const { return _f25Statistics; }
+	const RangedSummaryStatistics<uint64_t> &f50Statistics() const { return _f50Statistics; }
+	const RangedSummaryStatistics<uint64_t> &f75Statistics() const { return _f75Statistics; }
+	const RangedSummaryStatistics<uint64_t> &f90Statistics() const { return _f90Statistics; }
+	const RangedSummaryStatistics<uint64_t> &f95Statistics() const { return _f95Statistics; }
+	const RangedSummaryStatistics<uint64_t> &f99Statistics() const { return _f99Statistics; }
+	const RangedSummaryStatistics<uint64_t> &maxStatistics() const { return _maxStatistics; }
 
 	void start(uint64_t time) {
 		_startTime = time;
@@ -110,14 +110,14 @@ private:
 	OrderStatistics<uint64_t> _orderStatistics;
 
 	//Statistics taken from samples of the order statstics every _sampleSize samples
-	SummaryStatistics<uint64_t> _minStatistics;
-	SummaryStatistics<uint64_t> _f25Statistics;
-	SummaryStatistics<uint64_t> _f50Statistics;
-	SummaryStatistics<uint64_t> _f75Statistics;
-	SummaryStatistics<uint64_t> _f90Statistics;
-	SummaryStatistics<uint64_t> _f95Statistics;
-	SummaryStatistics<uint64_t> _f99Statistics;
-	SummaryStatistics<uint64_t> _maxStatistics;
+	RangedSummaryStatistics<uint64_t> _minStatistics;
+	RangedSummaryStatistics<uint64_t> _f25Statistics;
+	RangedSummaryStatistics<uint64_t> _f50Statistics;
+	RangedSummaryStatistics<uint64_t> _f75Statistics;
+	RangedSummaryStatistics<uint64_t> _f90Statistics;
+	RangedSummaryStatistics<uint64_t> _f95Statistics;
+	RangedSummaryStatistics<uint64_t> _f99Statistics;
+	RangedSummaryStatistics<uint64_t> _maxStatistics;
 };
 
 }

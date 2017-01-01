@@ -7,7 +7,7 @@ BOOST_AUTO_TEST_SUITE(ProfileTest)
 
 BOOST_AUTO_TEST_CASE(TestEmpty)
 {
-	werk::Profile p;
+	werk::Profile p("Empty");
     BOOST_REQUIRE_EQUAL(p.orderStatistics().count(), 0);
     BOOST_REQUIRE_EQUAL(p.f50Statistics().count(), 0);
     BOOST_REQUIRE_EQUAL(p.f75Statistics().count(), 0);
@@ -18,7 +18,7 @@ BOOST_AUTO_TEST_CASE(TestEmpty)
 
 BOOST_AUTO_TEST_CASE(TestBasic)
 {
-	werk::Profile p;
+	werk::Profile p("Basic");
 	p.start(1);
 	p.stop(101);
 

@@ -1,8 +1,10 @@
 
 #pragma once
 
+#include <cinttypes>
 #include <cmath>
 #include <cstdint>
+#include <cstdio>
 #include <limits>
 
 namespace werk
@@ -38,6 +40,10 @@ public:
 		_sum = 0;
 		_average = 0;
 		_m2 = 0;
+	}
+
+	void writeJson(FILE *file) {
+		fprintf(file, "{\"count\": %" PRIu64 ", \"average\": %.12f, \"stddev\": %.12f}", _count, _average, stddev());
 	}
 
 private:

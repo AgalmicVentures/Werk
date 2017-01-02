@@ -9,7 +9,7 @@
 
 namespace werk {
 
-uint64_t epochTime()
+inline uint64_t epochTime()
 {
 #ifndef __MACH__
 	timespec t;

@@ -27,8 +27,8 @@ private:
 	FILE *_file;
 
 	uint64_t _nextSendSequenceNumber = 0;
-	uint64_t _nextReceiveSequenceNumber = 0;
 	boost::lockfree::spsc_queue<LogMessage, boost::lockfree::capacity<2048> > _messages;
+	uint64_t _nextReceiveSequenceNumber = 0;
 };
 
 //TODO: eventually this will be subsumed by a general house-keeping task system

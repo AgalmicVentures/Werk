@@ -40,6 +40,7 @@ void AsyncLogger::log(LogLevel level, const char *format, ...)
 void AsyncLogger::logRaw(LogLevel level, const char *rawMessage)
 {
 	LogMessage message;
+	message.sequenceNumber = _nextSendSequenceNumber++;
 	message.time = clock()->time();
 	message.level = level;
 

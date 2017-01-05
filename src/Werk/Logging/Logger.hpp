@@ -28,6 +28,16 @@ private:
 	werk::Clock *_clock;
 };
 
+class NullLogger : public Logger
+{
+public:
+
+	NullLogger() : Logger(nullptr) { }
+
+	virtual void logRaw(LogLevel /*level*/, const char * /*message*/) override { }
+	virtual void log(LogLevel /*level*/, const char * /*format*/, ...) override { }
+};
+
 class SyncLogger : public Logger
 {
 public:

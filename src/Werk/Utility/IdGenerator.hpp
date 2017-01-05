@@ -3,8 +3,7 @@
 
 #include <cstdint>
 
-namespace werk
-{
+namespace werk {
 
 class IdGenerator
 {

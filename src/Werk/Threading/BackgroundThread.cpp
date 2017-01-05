@@ -7,7 +7,8 @@
 
 #include "Werk/OS/Time.hpp"
 
-namespace werk {
+namespace werk
+{
 
 void BackgroundThread::backgroundThread()
 {

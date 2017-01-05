@@ -10,7 +10,6 @@
 namespace werk
 {
 
-//TODO: eventually this will be subsumed by a general house-keeping task system
 class BackgroundThread
 {
 public:
@@ -20,7 +19,11 @@ public:
 	}
 	~BackgroundThread() { stop(); }
 
-	void setFrequencyNs(long frequencyNs) { _frequencyNs = frequencyNs; }
+	uint64_t frequencyNs() const { return _frequencyNs; }
+	void setFrequencyNs(uint64_t frequencyNs) { _frequencyNs = frequencyNs; }
+
+	std::vector<BackgroundTask *> &tasks() { return _tasks; }
+	const std::vector<BackgroundTask *> &tasks() const { return _tasks; }
 	void addTask(BackgroundTask *task) { _tasks.push_back(task); }
 
 	void stop() {

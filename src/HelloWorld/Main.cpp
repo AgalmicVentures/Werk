@@ -5,6 +5,7 @@
 #include "Werk/Logging/AsyncLogger.hpp"
 #include "Werk/Math/SummaryStatistics.hpp"
 #include "Werk/OS/Time.hpp"
+#include "Werk/Threading/BackgroundThread.hpp"
 
 int main()
 {
@@ -12,8 +13,9 @@ int main()
 	clock.setEpochTime();
 
 	werk::AsyncLogger *log = new werk::AsyncLogger(&clock);
-	werk::AsycLogWriter *logWriter = new werk::AsycLogWriter();
-	logWriter->addLogger(log);
+
+	werk::BackgroundThread *backgroundThread = new werk::BackgroundThread();
+	backgroundThread->addTask(new werk::BackgroundLogWriterTask(log));
 
 	log->logRaw(werk::LogLevel::INFO, "Starting...");
 
@@ -22,6 +24,7 @@ int main()
 	s.sample(1.0);
 
 	log->log(werk::LogLevel::SUCCESS, "Hello world! count=%" PRIu64 " average=%f stddev=%f", s.count(), s.average(), s.stddev());
-	logWriter->stop();
+
+	backgroundThread->stop();
 	return 0;
 }

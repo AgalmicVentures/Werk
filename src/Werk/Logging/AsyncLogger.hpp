@@ -2,12 +2,12 @@
 #pragma once
 
 #include <boost/lockfree/spsc_queue.hpp>
+#include <cstdint>
 #include <cstdio>
-#include <thread>
-#include <time.h>
-#include <vector>
 
 #include "Logger.hpp"
+
+#include "Werk/Threading/BackgroundTask.hpp"
 
 namespace werk {
 
@@ -31,35 +31,15 @@ private:
 	uint64_t _nextReceiveSequenceNumber = 0;
 };
 
-//TODO: eventually this will be subsumed by a general house-keeping task system
-class AsycLogWriter
+class BackgroundLogWriterTask : public BackgroundTask
 {
 public:
+	BackgroundLogWriterTask(AsyncLogger *logger) : _logger(logger) { }
 
-	AsycLogWriter(long frequencyNs=100ul * 1000 * 1000) : _frequencyNs(frequencyNs) {
-		_thread = std::thread(&AsycLogWriter::loggingThread, this);
-	}
-	~AsycLogWriter() { stop(); }
-
-	void setFrequencyNs(long frequencyNs) { _frequencyNs = frequencyNs; }
-	void addLogger(AsyncLogger *logger) { _loggers.push_back(logger); }
-
-	void stop() {
-		if (_running) {
-			_running = false;
-			_thread.join();
-		}
-	}
+	virtual void execute() { _logger->writeLogs(); }
 
 private:
-	timespec _delay;
-	std::vector<AsyncLogger *> _loggers;
-
-	volatile uint64_t _frequencyNs;
-	volatile bool _running = true;
-	std::thread _thread;
-
-	void loggingThread();
+	AsyncLogger *_logger;
 };
 
 }

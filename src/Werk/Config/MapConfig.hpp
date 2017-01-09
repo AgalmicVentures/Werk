@@ -1,0 +1,30 @@
+
+#pragma once
+
+#include <map>
+
+#include "Config.hpp"
+
+namespace werk
+{
+
+class MapConfig : public Config
+{
+public:
+
+	std::map<std::string, std::string> &values() { return _values; }
+	const std::map<std::string, std::string> &values() const { return _values; }
+
+	virtual const char *getString(const std::string &key, const char *defaultValue=nullptr) const {
+		auto i = _values.find(key);
+		return i == _values.end() ? defaultValue : i->second.c_str();
+	}
+
+	//Loads an ini-style file
+	bool loadFromFile(const char *filename);
+
+protected:
+	std::map<std::string, std::string> _values;
+};
+
+}

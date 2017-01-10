@@ -16,12 +16,14 @@ class CommandManager
 {
 public:
 
-	CommandManager(Logger *log) : _log(log) {
+	CommandManager(Logger *log, bool defaultCommands=true) : _log(log) {
 		//Default commands
-		_commands["echo"] = new EchoCommand(log);
-		_commands["error"] = new EchoCommand(log, LogLevel::ERROR);
-		_commands["null"] = new NullCommand();
-		_commands["warning"] = new EchoCommand(log, LogLevel::WARNING);
+		if (defaultCommands) {
+			_commands["echo"] = new EchoCommand(log);
+			_commands["error"] = new EchoCommand(log, LogLevel::ERROR);
+			_commands["null"] = new NullCommand();
+			_commands["warning"] = new EchoCommand(log, LogLevel::WARNING);
+		}
 	}
 
 	std::map<std::string, Command *> &commands() { return _commands; }

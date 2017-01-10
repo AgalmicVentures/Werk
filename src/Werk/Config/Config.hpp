@@ -5,13 +5,19 @@
 #include <limits>
 #include <string>
 
+#include "Werk/Logging/Logger.hpp"
+
 namespace werk
 {
 
-//Abstract config class to allow integration with other configuration systems.
+/**
+ * Abstract config class to allow integration with other configuration systems.
+ */
 class Config
 {
 public:
+
+	Config(Logger *log) : _log(log) { }
 
 	//Basic value-as-string accessor - this is the method that every inheriting class must override
 	virtual const char *getString(const std::string &key, const char *defaultValue=nullptr) const = 0;
@@ -31,6 +37,9 @@ public:
 	}
 
 	//TODO: more complex types e.g. time
+
+protected:
+	Logger *_log;
 };
 
 }

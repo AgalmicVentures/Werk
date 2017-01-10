@@ -8,9 +8,14 @@
 namespace werk
 {
 
+/**
+ * Configuration that caches its values in a map. Can load from various files.
+ */
 class MapConfig : public Config
 {
 public:
+
+	MapConfig(Logger *log) : Config(log) { }
 
 	std::map<std::string, std::string> &values() { return _values; }
 	const std::map<std::string, std::string> &values() const { return _values; }

@@ -14,7 +14,7 @@ class EchoCommand : public Command
 {
 public:
 
-	EchoCommand(Logger *log, LogLevel level=LogLevel::WARNING) :
+	EchoCommand(Logger *log, LogLevel level=LogLevel::INFO) :
 		Command("Echoes the arguments to the log."),
 		_log(log), _level(level) { }
 

@@ -6,7 +6,9 @@
 
 namespace werk {
 
-//Level of the log, ordered to allow simple filtering
+/**
+ * Level of the log, ordered to allow simple filtering.
+ */
 enum class LogLevel
 {
 	CRITICAL,
@@ -22,7 +24,9 @@ enum class LogLevel
 };
 extern const char *logLevels[];
 
-//Used for passing log messages between threads
+/**
+ * Log message container for passing between threads.
+ */
 struct LogMessage
 {
 private:

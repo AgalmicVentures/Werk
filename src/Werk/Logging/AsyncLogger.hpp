@@ -15,14 +15,14 @@ class AsyncLogger : public Logger, public BackgroundTask
 {
 public:
 
-	AsyncLogger(werk::Clock *clock, FILE *file=stdout) :
-		Logger(clock), _file(file) { }
+	AsyncLogger(werk::Clock *clock, FILE *file=stdout, const std::string &taskName="Logger") :
+		Logger(clock), BackgroundTask(taskName), _file(file) { }
 
 	virtual void log(LogLevel level, const char *format, ...) override;
 	virtual void logRaw(LogLevel level, const char *rawMessage) override;
 
 	//Background task to write the logs
-	virtual void execute() override;
+	virtual void executeTask() override;
 
 private:
 	FILE *_file;

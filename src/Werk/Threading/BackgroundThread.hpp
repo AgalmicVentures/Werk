@@ -22,6 +22,7 @@ public:
 	uint64_t frequencyNs() const { return _frequencyNs; }
 	void setFrequencyNs(uint64_t frequencyNs) { _frequencyNs = frequencyNs; }
 
+	//Tasks in the order they should be executed
 	std::vector<BackgroundTask *> &tasks() { return _tasks; }
 	const std::vector<BackgroundTask *> &tasks() const { return _tasks; }
 	void addTask(BackgroundTask *task) { _tasks.push_back(task); }
@@ -34,13 +35,18 @@ public:
 	}
 
 private:
-	timespec _delay;
+	//Config before
 	std::vector<BackgroundTask *> _tasks;
 
-	volatile uint64_t _frequencyNs;
-	volatile bool _running = true;
+	//Background thread
 	std::thread _thread;
 
+	//Shared state
+	volatile uint64_t _frequencyNs;
+	volatile bool _running = true;
+
+	//Background thread state & method
+	timespec _delay;
 	void backgroundThread();
 };
 

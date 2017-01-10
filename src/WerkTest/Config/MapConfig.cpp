@@ -2,12 +2,14 @@
 #include <boost/test/unit_test.hpp>
 
 #include "Werk/Config/MapConfig.hpp"
+#include "Werk/Logging/Logger.hpp"
 
 BOOST_AUTO_TEST_SUITE(MapConfigTest)
 
 BOOST_AUTO_TEST_CASE(TestBasicTypes)
 {
-    werk::MapConfig c;
+    werk::NullLogger log;
+    werk::MapConfig c(&log);
 
     c.values()["Pi"] = "3.25";
     c.values()["Two"] = "2";
@@ -23,14 +25,16 @@ BOOST_AUTO_TEST_CASE(TestBasicTypes)
 
 BOOST_AUTO_TEST_CASE(TestDefaultValue)
 {
-    werk::MapConfig c;
+    werk::NullLogger log;
+    werk::MapConfig c(&log);
 
     BOOST_REQUIRE_EQUAL(c.getString("Pi", "3.25"), "3.25");
 }
 
 BOOST_AUTO_TEST_CASE(TestLoadFile)
 {
-    werk::MapConfig c;
+    werk::NullLogger log;
+    werk::MapConfig c(&log);
     c.loadFromFile("src/WerkTest/Config/TestConfig.ini");
 
     BOOST_REQUIRE_EQUAL(c.getString("zxcv", "asdf"), "qwer");

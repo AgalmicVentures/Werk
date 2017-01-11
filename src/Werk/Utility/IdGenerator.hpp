@@ -5,28 +5,32 @@
 
 namespace werk {
 
+/**
+ * Generator for monotone ID's.
+ */
+template <typename T=uint64_t>
 class IdGenerator
 {
 public:
 
-	IdGenerator(uint64_t start=0, uint64_t step=1) : _step(step), _nextId(start) { }
+	IdGenerator(T start=0, T step=1) : _step(step), _nextId(start) { }
 
-	uint64_t step() const { return _step; }
+	T step() const { return _step; }
 
-	uint64_t nextId() const { return _nextId; }
+	T nextId() const { return _nextId; }
 
-	uint64_t getNext() {
-		uint64_t id = _nextId;
+	T getNext() {
+		T id = _nextId;
 		++_nextId;
 		return id;
 	}
 
 private:
 	//Config
-	uint64_t _step;
+	T _step;
 
 	//State
-	uint64_t _nextId;
+	T _nextId;
 };
 
 }

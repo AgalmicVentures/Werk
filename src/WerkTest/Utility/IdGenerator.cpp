@@ -7,7 +7,7 @@ BOOST_AUTO_TEST_SUITE(IdGeneratorTest)
 
 BOOST_AUTO_TEST_CASE(TestBasic)
 {
-	werk::IdGenerator g;
+	werk::IdGenerator<> g;
     BOOST_REQUIRE_EQUAL(g.nextId(), 0);
     BOOST_REQUIRE_EQUAL(g.nextId(), 0);
     BOOST_REQUIRE_EQUAL(g.getNext(), 0);

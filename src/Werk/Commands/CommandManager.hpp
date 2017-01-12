@@ -7,7 +7,7 @@
 
 #include "Werk/Commands/Command.hpp"
 #include "Werk/Commands/EchoCommand.hpp"
-#include "Werk/Logging/Logger.hpp"
+#include "Werk/Logging/Log.hpp"
 
 namespace werk
 {
@@ -16,7 +16,7 @@ class CommandManager
 {
 public:
 
-	CommandManager(Logger *log, bool defaultCommands=true) : _log(log) {
+	CommandManager(Log *log, bool defaultCommands=true) : _log(log) {
 		//Default commands
 		if (defaultCommands) {
 			_commands["echo"] = new EchoCommand(log);
@@ -33,7 +33,7 @@ public:
 	bool execute(const std::vector<std::string> &arguments);
 
 private:
-	Logger *_log;
+	Log *_log;
 
 	std::map<std::string, Command *> _commands;
 };

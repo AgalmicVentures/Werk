@@ -6,7 +6,7 @@
 #include <limits>
 #include <string>
 
-#include "Werk/Logging/Logger.hpp"
+#include "Werk/Logging/Log.hpp"
 
 namespace werk
 {
@@ -18,7 +18,7 @@ class Config
 {
 public:
 
-	Config(Logger *log) : _log(log) { }
+	Config(Log *log) : _log(log) { }
 
 	//Basic value-as-string accessor - this is the method that every inheriting class must override (return NULL if the key is missing)
 	virtual const char *getStringRaw(const std::string &key) const = 0;
@@ -100,7 +100,7 @@ public:
 	//TODO: more complex types e.g. durations, time
 
 protected:
-	Logger *_log;
+	Log *_log;
 };
 
 }

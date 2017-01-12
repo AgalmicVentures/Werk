@@ -3,7 +3,7 @@
 
 #include <boost/algorithm/string/join.hpp>
 
-#include "Werk/Logging/Logger.hpp"
+#include "Werk/Logging/Log.hpp"
 
 #include "Command.hpp"
 
@@ -14,7 +14,7 @@ class EchoCommand : public Command
 {
 public:
 
-	EchoCommand(Logger *log, LogLevel level=LogLevel::INFO) :
+	EchoCommand(Log *log, LogLevel level=LogLevel::INFO) :
 		Command("Echoes the arguments to the log."),
 		_log(log), _level(level) { }
 
@@ -24,7 +24,7 @@ public:
 	}
 
 private:
-	Logger *_log;
+	Log *_log;
 	LogLevel _level;
 };
 

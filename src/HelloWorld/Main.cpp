@@ -2,7 +2,7 @@
 #include <cinttypes>
 #include <cstdio>
 
-#include "Werk/Logging/AsyncLogger.hpp"
+#include "Werk/Logging/AsyncLog.hpp"
 #include "Werk/Math/SummaryStatistics.hpp"
 #include "Werk/OS/Time.hpp"
 #include "Werk/Threading/BackgroundThread.hpp"
@@ -12,7 +12,7 @@ int main()
 	werk::Clock clock;
 	clock.setEpochTime();
 
-	werk::AsyncLogger *log = new werk::AsyncLogger(&clock);
+	werk::AsyncLog *log = new werk::AsyncLog(&clock);
 
 	werk::BackgroundThread *backgroundThread = new werk::BackgroundThread();
 	backgroundThread->addTask(log);

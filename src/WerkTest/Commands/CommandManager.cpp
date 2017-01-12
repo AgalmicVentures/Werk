@@ -2,14 +2,14 @@
 #include <boost/test/unit_test.hpp>
 
 #include "Werk/Commands/CommandManager.hpp"
-#include "Werk/Logging/Logger.hpp"
+#include "Werk/Logging/Log.hpp"
 
 BOOST_AUTO_TEST_SUITE(CommandManagerTest)
 
 BOOST_AUTO_TEST_CASE(TestDefaultCommands)
 {
     werk::Clock c;
-    werk::SyncLogger log(&c);
+    werk::SyncLog log(&c);
     werk::CommandManager commandManager(&log);
 
     BOOST_REQUIRE(commandManager.execute("null"));

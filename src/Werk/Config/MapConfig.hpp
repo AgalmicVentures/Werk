@@ -15,7 +15,7 @@ class MapConfig : public Config
 {
 public:
 
-	MapConfig(Logger *log) : Config(log) { }
+	MapConfig(Log *log) : Config(log) { }
 
 	std::map<std::string, std::string> &values() { return _values; }
 	const std::map<std::string, std::string> &values() const { return _values; }

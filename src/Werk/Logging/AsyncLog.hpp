@@ -5,18 +5,18 @@
 #include <cstdint>
 #include <cstdio>
 
-#include "Logger.hpp"
+#include "Log.hpp"
 
 #include "Werk/Threading/BackgroundTask.hpp"
 
 namespace werk {
 
-class AsyncLogger : public Logger, public BackgroundTask
+class AsyncLog : public Log, public BackgroundTask
 {
 public:
 
-	AsyncLogger(werk::Clock *clock, FILE *file=stdout, const std::string &taskName="Logger") :
-		Logger(clock), BackgroundTask(taskName), _file(file) { }
+	AsyncLog(werk::Clock *clock, FILE *file=stdout, const std::string &taskName="AsyncLog") :
+		Log(clock), BackgroundTask(taskName), _file(file) { }
 
 	virtual void log(LogLevel level, const char *format, ...) override;
 	virtual void logRaw(LogLevel level, const char *rawMessage) override;

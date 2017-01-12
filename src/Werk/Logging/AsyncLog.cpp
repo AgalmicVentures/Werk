@@ -1,5 +1,5 @@
 
-#include "AsyncLogger.hpp"
+#include "AsyncLog.hpp"
 
 #include <boost/date_time/posix_time/posix_time.hpp>
 #include <cstdarg>
@@ -10,7 +10,7 @@
 namespace werk {
 
 //TODO: move formatting to housekeeping thread
-void AsyncLogger::log(LogLevel level, const char *format, ...)
+void AsyncLog::log(LogLevel level, const char *format, ...)
 {
 	//Create the buffer
 	LogMessage message;
@@ -37,7 +37,7 @@ void AsyncLogger::log(LogLevel level, const char *format, ...)
 	_messages.push(message);
 }
 
-void AsyncLogger::logRaw(LogLevel level, const char *rawMessage)
+void AsyncLog::logRaw(LogLevel level, const char *rawMessage)
 {
 	LogMessage message;
 	message.sequenceNumber = _nextSendSequenceNumber++;
@@ -52,7 +52,7 @@ void AsyncLogger::logRaw(LogLevel level, const char *rawMessage)
 	_messages.push(message);
 }
 
-void AsyncLogger::executeTask()
+void AsyncLog::executeTask()
 {
 	bool wrote = false;
 

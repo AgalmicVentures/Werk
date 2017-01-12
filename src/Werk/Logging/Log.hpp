@@ -11,13 +11,13 @@
 
 namespace werk {
 
-class Logger
+class Log
 {
 public:
 
 	//Clock used for timestamping messages (may not be real time, e.g. in a simulation)
-	Logger(werk::Clock *clock) : _clock(clock) { }
-	virtual ~Logger() { }
+	Log(werk::Clock *clock) : _clock(clock) { }
+	virtual ~Log() { }
 
 	const werk::Clock *clock() const { return _clock; }
 
@@ -28,23 +28,23 @@ private:
 	werk::Clock *_clock;
 };
 
-class NullLogger : public Logger
+class NullLog : public Log
 {
 public:
 
-	NullLogger() : Logger(nullptr) { }
+	NullLog() : Log(nullptr) { }
 
 	virtual void logRaw(LogLevel /*level*/, const char * /*message*/) override { }
 	virtual void log(LogLevel /*level*/, const char * /*format*/, ...) override { }
 };
 
-class SyncLogger : public Logger
+class SyncLog : public Log
 {
 public:
 
-	SyncLogger(werk::Clock *clock, FILE *file=stdout) :
-		Logger(clock), _file(file) { }
-	virtual ~SyncLogger() { }
+	SyncLog(werk::Clock *clock, FILE *file=stdout) :
+		Log(clock), _file(file) { }
+	virtual ~SyncLog() { }
 
 	virtual void log(LogLevel level, const char *format, ...) override {
 		va_list args;

@@ -15,8 +15,8 @@ class AsyncLog : public Log, public BackgroundTask
 {
 public:
 
-	AsyncLog(werk::Clock *clock, FILE *file=stdout, const std::string &taskName="AsyncLog") :
-		Log(clock), BackgroundTask(taskName), _file(file) { }
+	AsyncLog(const std::string &name, werk::Clock *clock, FILE *file=stdout, const std::string &taskName="AsyncLog") :
+		Log(name, clock), BackgroundTask(taskName), _file(file) { }
 
 	virtual void log(LogLevel level, const char *format, ...) override;
 	virtual void logRaw(LogLevel level, const char *rawMessage) override;

@@ -12,7 +12,7 @@ int main()
 	werk::Clock clock;
 	clock.setEpochTime();
 
-	werk::AsyncLog *log = new werk::AsyncLog(&clock);
+	werk::AsyncLog *log = new werk::AsyncLog("stdout", &clock);
 
 	werk::BackgroundThread *backgroundThread = new werk::BackgroundThread();
 	backgroundThread->addTask(log);

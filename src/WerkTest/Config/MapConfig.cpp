@@ -9,7 +9,7 @@ BOOST_AUTO_TEST_SUITE(MapConfigTest)
 BOOST_AUTO_TEST_CASE(TestBasicTypes)
 {
     werk::Clock clock;
-    werk::SyncLog log(&clock);
+    werk::SyncLog log("stdout", &clock);
     werk::MapConfig c(&log);
 
     c.values()["Pi"] = "3.25";
@@ -26,7 +26,7 @@ BOOST_AUTO_TEST_CASE(TestBasicTypes)
 
 BOOST_AUTO_TEST_CASE(TestDefaultValue)
 {
-    werk::NullLog log;
+    werk::NullLog log("null");
     werk::MapConfig c(&log);
 
     BOOST_REQUIRE_EQUAL(c.getString("Pi", "3.25"), "3.25");
@@ -34,7 +34,7 @@ BOOST_AUTO_TEST_CASE(TestDefaultValue)
 
 BOOST_AUTO_TEST_CASE(TestLoadFile)
 {
-    werk::NullLog log;
+    werk::NullLog log("null");
     werk::MapConfig c(&log);
     c.loadFromFile("src/WerkTest/Config/TestConfig.ini");
 

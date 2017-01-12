@@ -4,6 +4,7 @@
 #include <cinttypes>
 #include <cstdarg>
 #include <cstdio>
+#include <string>
 
 #include "LogMessage.hpp"
 
@@ -16,15 +17,17 @@ class Log
 public:
 
 	//Clock used for timestamping messages (may not be real time, e.g. in a simulation)
-	Log(werk::Clock *clock) : _clock(clock) { }
+	Log(const std::string &name, werk::Clock *clock) : _name(name), _clock(clock) { }
 	virtual ~Log() { }
 
+	const std::string &name() const { return _name; }
 	const werk::Clock *clock() const { return _clock; }
 
 	virtual void logRaw(LogLevel level, const char *message) = 0;
 	virtual void log(LogLevel level, const char *format, ...) = 0;
 
 private:
+	std::string _name;
 	werk::Clock *_clock;
 };
 
@@ -32,7 +35,7 @@ class NullLog : public Log
 {
 public:
 
-	NullLog() : Log(nullptr) { }
+	NullLog(const std::string &name) : Log(name, nullptr) { }
 
 	virtual void logRaw(LogLevel /*level*/, const char * /*message*/) override { }
 	virtual void log(LogLevel /*level*/, const char * /*format*/, ...) override { }
@@ -42,8 +45,8 @@ class SyncLog : public Log
 {
 public:
 
-	SyncLog(werk::Clock *clock, FILE *file=stdout) :
-		Log(clock), _file(file) { }
+	SyncLog(const std::string &name, werk::Clock *clock, FILE *file=stdout) :
+		Log(name, clock), _file(file) { }
 	virtual ~SyncLog() { }
 
 	virtual void log(LogLevel level, const char *format, ...) override {

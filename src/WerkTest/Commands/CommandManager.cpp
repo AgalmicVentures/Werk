@@ -9,7 +9,7 @@ BOOST_AUTO_TEST_SUITE(CommandManagerTest)
 BOOST_AUTO_TEST_CASE(TestDefaultCommands)
 {
     werk::Clock c;
-    werk::SyncLog log(&c);
+    werk::SyncLog log("stdout", &c);
     werk::CommandManager commandManager(&log);
 
     BOOST_REQUIRE(commandManager.execute("null"));

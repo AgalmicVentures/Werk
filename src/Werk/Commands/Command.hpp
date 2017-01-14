@@ -46,7 +46,7 @@ public:
 class CommandAction : public Action
 {
 public:
-	CommandAction(Command *command) : _command(command) { }
+	CommandAction(const std::string &name, Command *command) : Action(name), _command(command) { }
 
 	std::vector<std::string> &arguments() { return _arguments; }
 	const std::vector<std::string> &arguments() const { return _arguments; }

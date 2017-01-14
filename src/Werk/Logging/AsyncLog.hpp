@@ -7,25 +7,25 @@
 
 #include "Log.hpp"
 
-#include "Werk/Threading/BackgroundTask.hpp"
+#include "Werk/Utility/Action.hpp"
 
 namespace werk {
 
 /**
  * A log that can do its I/O on a `BackgroundThread`.
  */
-class AsyncLog : public Log, public BackgroundTask
+class AsyncLog : public Log, public Action
 {
 public:
 
 	AsyncLog(const std::string &name, werk::Clock *clock, FILE *file=stdout, const std::string &taskName="AsyncLog") :
-		Log(name, clock), BackgroundTask(taskName), _file(file) { }
+		Log(name, clock), Action(taskName), _file(file) { }
 
 	virtual void log(LogLevel level, const char *format, ...) override;
 	virtual void logRaw(LogLevel level, const char *rawMessage) override;
 
 	//Background task to write the logs
-	virtual void executeTask() override;
+	virtual void execute() override;
 
 private:
 	FILE *_file;

@@ -21,7 +21,7 @@ void BackgroundThread::backgroundThread()
 	while (true) {
 		//Execute all the tasks
 		for (size_t i = 0; i < _tasks.size(); ++i) {
-			_tasks[i]->executeTask();
+			_tasks[i]->execute();
 		}
 
 		//Break here to ensure that the last few lines of logs get written

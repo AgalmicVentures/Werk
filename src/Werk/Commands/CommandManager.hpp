@@ -36,7 +36,7 @@ public:
 	bool execute(const std::vector<std::string> &arguments);
 
 	//Helper to create a new CommandAction from a command line
-	CommandAction *newCommandAction(const std::string &commandLine);
+	CommandAction *newCommandAction(const std::string &name, const std::string &commandLine);
 
 private:
 	Log *_log;

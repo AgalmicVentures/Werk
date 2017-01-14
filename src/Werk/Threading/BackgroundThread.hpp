@@ -5,13 +5,16 @@
 #include <time.h>
 #include <vector>
 
-#include "BackgroundTask.hpp"
+#include "Werk/Utility/Action.hpp"
 
 namespace werk
 {
 
 /**
- * A background thread to run a number of `BackgroundTask`s.
+ * A background thread to run a number of `Action`s at regular intervals.
+ *
+ * This is very useful e.g. for defering IO to another thread to keep latency low on
+ * a main thread.
  */
 class BackgroundThread
 {
@@ -26,9 +29,9 @@ public:
 	void setFrequencyNs(uint64_t frequencyNs) { _frequencyNs = frequencyNs; }
 
 	//Tasks in the order they should be executed
-	std::vector<BackgroundTask *> &tasks() { return _tasks; }
-	const std::vector<BackgroundTask *> &tasks() const { return _tasks; }
-	void addTask(BackgroundTask *task) { _tasks.push_back(task); }
+	std::vector<Action *> &tasks() { return _tasks; }
+	const std::vector<Action *> &tasks() const { return _tasks; }
+	void addTask(Action *task) { _tasks.push_back(task); }
 
 	void stop() {
 		if (_running) {
@@ -39,7 +42,7 @@ public:
 
 private:
 	//Config before
-	std::vector<BackgroundTask *> _tasks;
+	std::vector<Action *> _tasks;
 
 	//Background thread
 	std::thread _thread;

@@ -33,7 +33,7 @@ bool CommandManager::execute(const std::vector<std::string> &arguments)
 	return command->execute(arguments);
 }
 
-CommandAction *CommandManager::newCommandAction(const std::string &commandLine)
+CommandAction *CommandManager::newCommandAction(const std::string &name, const std::string &commandLine)
 {
 	std::vector<std::string> arguments;
 	boost::split(arguments, commandLine, boost::is_any_of(" \t"));
@@ -45,7 +45,7 @@ CommandAction *CommandManager::newCommandAction(const std::string &commandLine)
 	}
 
 	Command *command = commandIter->second;
-	CommandAction *commandAction = new CommandAction(command);
+	CommandAction *commandAction = new CommandAction(name, command);
 	commandAction->arguments() = arguments;
 	return commandAction;
 }

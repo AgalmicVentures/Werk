@@ -17,11 +17,11 @@ BOOST_AUTO_TEST_CASE(TestDefaultCommands)
 
     BOOST_REQUIRE(!commandManager.execute("asdf"));
 
-    werk::CommandAction *action = commandManager.newCommandAction("echo Action!");
+    werk::CommandAction *action = commandManager.newCommandAction("echoAction", "echo Action!");
     action->execute();
     action->execute();
 
-    BOOST_REQUIRE(commandManager.newCommandAction("asdf") == nullptr);
+    BOOST_REQUIRE(commandManager.newCommandAction("missingAction", "asdf") == nullptr);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

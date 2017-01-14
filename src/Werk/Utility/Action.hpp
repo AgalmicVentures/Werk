@@ -23,4 +23,23 @@ private:
 	std::string _name;
 };
 
+/**
+ * An action that increments a counter every time it is executed. Very useful
+ * for testing.
+ */
+template <typename T=uint64_t>
+class CounterAction : public Action
+{
+public:
+	CounterAction(const std::string &name) : Action(name) { }
+
+	T count() const { return _count; }
+	void reset() const { _count = 0; }
+
+	void execute() override { _count += 1; }
+
+private:
+	T _count = 0;
+};
+
 }

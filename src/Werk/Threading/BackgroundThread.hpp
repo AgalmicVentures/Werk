@@ -5,6 +5,7 @@
 #include <time.h>
 #include <vector>
 
+#include "Werk/OS/Time.hpp"
 #include "Werk/Utility/Action.hpp"
 
 namespace werk
@@ -20,7 +21,7 @@ class BackgroundThread
 {
 public:
 
-	BackgroundThread(long frequencyNs=100ul * 1000 * 1000) : _frequencyNs(frequencyNs) {
+	BackgroundThread(uint64_t frequencyNs=100ul * 1000 * 1000) : _frequencyNs(frequencyNs) {
 		_thread = std::thread(&BackgroundThread::backgroundThread, this);
 	}
 	~BackgroundThread() { stop(); }
@@ -32,6 +33,8 @@ public:
 	std::vector<Action *> &tasks() { return _tasks; }
 	const std::vector<Action *> &tasks() const { return _tasks; }
 	void addTask(Action *task) { _tasks.push_back(task); }
+
+	const Clock &backgroundClock() const { return _backgroundClock; }
 
 	void stop() {
 		if (_running) {
@@ -52,6 +55,7 @@ private:
 	volatile bool _running = true;
 
 	//Background thread state & method
+	Clock _backgroundClock;
 	timespec _delay;
 	void backgroundThread();
 };

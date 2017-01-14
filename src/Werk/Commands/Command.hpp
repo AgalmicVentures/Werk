@@ -35,7 +35,7 @@ public:
 
 	NullCommand() : Command("Null command -- does nothing.") { }
 
-	virtual bool execute(const std::vector<std::string> &/*arguments*/) {
+	virtual bool execute(const std::vector<std::string> &/*arguments*/) override {
 		return true;
 	}
 };

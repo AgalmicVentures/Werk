@@ -19,6 +19,9 @@ namespace werk
 void BackgroundThread::backgroundThread()
 {
 	while (true) {
+		//Update the epoch time
+		_backgroundClock.setEpochTime();
+
 		//Execute all the tasks
 		for (size_t i = 0; i < _tasks.size(); ++i) {
 			_tasks[i]->execute();
@@ -33,7 +36,7 @@ void BackgroundThread::backgroundThread()
 		const uint64_t nanosPerSecond = 1000000000l;
 		_delay.tv_sec = _frequencyNs / nanosPerSecond;
 		_delay.tv_nsec = _frequencyNs % nanosPerSecond;
-		nanosleep(&_delay, NULL);
+		nanosleep(&_delay, nullptr);
 	}
 }
 

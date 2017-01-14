@@ -92,7 +92,7 @@ def configure(ctx):
 
 	#Setup libraries
 	ctx.env.LIB = [
-		#'pthread',
+		'pthread',
 	]
 	if isMac:
 		ctx.env.LIBPATH.append('/usr/local/Cellar/boost/1.58.0/lib')

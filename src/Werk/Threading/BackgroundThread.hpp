@@ -10,6 +10,9 @@
 namespace werk
 {
 
+/**
+ * A background thread to run a number of `BackgroundTask`s.
+ */
 class BackgroundThread
 {
 public:

@@ -10,6 +10,9 @@
 namespace werk
 {
 
+/**
+ * Command that echoes its arguments.
+ */
 class EchoCommand : public Command
 {
 public:

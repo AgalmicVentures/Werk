@@ -27,7 +27,7 @@ private:
 };
 
 /**
- * A command that does nothing. Useful as a placeholder or for testing.
+ * Command that does nothing. Useful as a placeholder or for testing.
  */
 class NullCommand : public Command
 {

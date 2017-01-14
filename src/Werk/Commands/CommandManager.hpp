@@ -12,6 +12,9 @@
 namespace werk
 {
 
+/**
+ * Holds a collection of named commands and assists in forwarding user input to them.
+ */
 class CommandManager
 {
 public:

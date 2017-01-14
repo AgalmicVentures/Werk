@@ -12,6 +12,10 @@
 
 namespace werk {
 
+/**
+ * Top level abstract log class which allows the logging backend to accomodate different
+ * situations (e.g. real time processing of input versus high speed playback for simulation).
+ */
 class Log
 {
 public:
@@ -31,6 +35,9 @@ private:
 	werk::Clock *_clock;
 };
 
+/**
+ * The /dev/null of logs -- drops all input.
+ */
 class NullLog : public Log
 {
 public:
@@ -41,6 +48,10 @@ public:
 	virtual void log(LogLevel /*level*/, const char * /*format*/, ...) override { }
 };
 
+/**
+ * A log that synchronously writes to a `FILE`. If you want to defer IO to another thread,
+ * look at `AsyncLog`.
+ */
 class SyncLog : public Log
 {
 public:

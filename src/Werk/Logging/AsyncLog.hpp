@@ -11,6 +11,9 @@
 
 namespace werk {
 
+/**
+ * A log that can do its I/O on a `BackgroundThread`.
+ */
 class AsyncLog : public Log, public BackgroundTask
 {
 public:

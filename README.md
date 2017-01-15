@@ -13,8 +13,8 @@ performance requirements:
 thread into a background thread, and done asynchronously. Components that
 require I/O should be designed with this in mind.
 * In the same vein, `new` generally should not be called after initialization.
-This has advantages besides avoid a possible `sbrk()` call; for example, it
-guarantees that the application won't fail after startup by running out of
+This has advantages besides avoiding a possible `sbrk()` call; for example, it
+guarantees that the application will not fail after startup by running out of
 memory.
 
 ## Components

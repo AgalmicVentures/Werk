@@ -11,6 +11,9 @@
 namespace werk
 {
 
+/**
+ * Manages a set of named `Profile`s, including a default baseline profile.
+ */
 class ProfileManager
 {
 public:

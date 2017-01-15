@@ -7,6 +7,9 @@
 namespace werk
 {
 
+/**
+ * Holds information about the timing profile of a single section of code/other event.
+ */
 class Profile
 {
 public:

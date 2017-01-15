@@ -10,6 +10,9 @@
 namespace werk
 {
 
+/**
+ * Takes basic summary statistics on a set of samples.
+ */
 template <typename T>
 class SummaryStatistics
 {
@@ -53,6 +56,9 @@ private:
 	double _m2 = 0;
 };
 
+/**
+ * Calculates summary statistics, and min/max.
+ */
 template <typename T>
 class RangedSummaryStatistics : public SummaryStatistics<T>
 {

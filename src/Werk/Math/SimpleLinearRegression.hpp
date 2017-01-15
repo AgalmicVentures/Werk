@@ -10,6 +10,9 @@
 namespace werk
 {
 
+/**
+ * Calculates a simple linear regression between two sets of samples.
+ */
 class SimpleLinearRegression
 {
 public:

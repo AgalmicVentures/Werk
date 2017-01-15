@@ -7,7 +7,9 @@
 namespace werk
 {
 
-//Implements an EMA that is continuous e.g. in time
+/**
+ * Implements an EMA that is continuous e.g. in time.
+ */
 class ContinuousEma
 {
 public:

@@ -8,6 +8,9 @@
 namespace werk
 {
 
+/**
+ * Holds a set of samples and allows taking order statistics on them.
+ */
 template <typename T>
 class OrderStatistics
 {

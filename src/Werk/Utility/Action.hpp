@@ -9,6 +9,8 @@ namespace werk
 /**
  * An abstract class that represents an action to be executed one or more
  * times, but not in an ongoing fashion (should not execute indefinitely).
+ *
+ * Named to enable easier debugging.
  */
 class Action
 {

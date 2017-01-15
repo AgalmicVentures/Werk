@@ -7,7 +7,9 @@
 namespace werk
 {
 
-//Implements an EMA that goes in discrete steps
+/**
+ * Implements an EMA that goes in discrete steps.
+ */
 class DiscreteEma
 {
 public:

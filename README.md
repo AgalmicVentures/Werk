@@ -50,6 +50,7 @@ start with a set of default, standard commands.
 Pre-built commands include:
 * `EchoCommand`: Logs the arguments at a certain log level.
 * `NullCommand`: Does nothing (useful as a placeholder for testing).
+* `ReloadConfigCommand`: Flags a configuration to be reloaded.
 
 A `CommandAction` helper class allows a `Command` to be run whenever an `Action`
 is needed, opening up many opportunities for connecting components.

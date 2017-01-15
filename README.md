@@ -1,12 +1,23 @@
-
 # Werk
-Werk is a C++ library/framework for developing performance sensitive real-time
-applications.
+Werk is a C++ library of components for developing performance-sensitive,
+real-time applications. Rather than forcing an overarching framework which may
+not fit the users' needs, each Werk component is available a-la-carte (albeit
+possibly with some dependencies, such as logging or configuration). Most output
+is in JSON to be easily machine-readable.
+
+## Design
+Although Werk is not a framework and does not enforce a particular threading
+model, it does have several high level design rules in order to meet its
+performance requirements:
+* I/O and most other system calls should be deferred from any critical path
+thread into a background thread, and done asynchronously. Components that
+require I/O should be designed with this in mind.
+* In the same vein, `new` generally should not be called after initialization.
+This has advantages besides avoid a possible `sbrk()` call; for example, it
+guarantees that the application won't fail after startup by running out of
+memory.
 
 ## Components
-Rather than forcing an overarching framework which may not fit the users' needs,
-each Werk component is available a-la-carte (albeit with some dependencies,
-such as logging or configuration).
 
 ### Background Thread
 To keep latency low on the main application thread(s), a `BackgroundThread`
@@ -56,7 +67,6 @@ for an O(1) implementation while still collection some fractile information.
 the summary statistics to JSON for upstream analysis.
 
 ## Utilities
-A variety of utilities are used to build the above components.
 
 ### Math
 A wide variety of math components are included:

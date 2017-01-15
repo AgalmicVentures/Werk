@@ -1,14 +1,16 @@
 
-#include "MapConfig.hpp"
+#include "IniConfigSource.hpp"
 
 #include <fstream>
 
 namespace werk
 {
 
-bool MapConfig::loadFromFile(const char *filename) {
-	std::ifstream infile(filename);
+bool IniConfigSource::reloadConfig(std::map<std::string, std::string> &values) {
+	//TODO: exception handling to return false if the file is missing
+	std::ifstream infile(_path);
 
+	//Walk the lines
 	std::string line;
 	while (std::getline(infile, line)) {
 		//Trim beginning of line whitespace
@@ -16,7 +18,7 @@ bool MapConfig::loadFromFile(const char *filename) {
 		std::size_t firstNonWhitespace = firstNonWhitespacePos == std::string::npos ? line.length() : firstNonWhitespacePos;
 		line = line.substr(firstNonWhitespace);
 
-		//Skip blank lines and comments
+		//Skip blank lines and comments which start with #
 		if (line.length() == 0 || line[0] == '#') {
 			continue;
 		}
@@ -29,7 +31,7 @@ bool MapConfig::loadFromFile(const char *filename) {
 		}
 
 		//Copy the key and value into the map
-		_values[line.substr(0, equalPos)] = line.substr(equalPos + 1);
+		values[line.substr(0, equalPos)] = line.substr(equalPos + 1);
 	}
 
 	return true;

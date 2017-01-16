@@ -9,6 +9,7 @@
 #include "LogMessage.hpp"
 
 #include "Werk/OS/Time.hpp"
+#include "Werk/Utility/NamedObject.hpp"
 
 namespace werk {
 
@@ -16,7 +17,7 @@ namespace werk {
  * Top level abstract log class which allows the logging backend to accomodate different
  * situations (e.g. real time processing of input versus high speed playback for simulation).
  */
-class Log
+class Log : public NamedObject
 {
 public:
 
@@ -24,14 +25,12 @@ public:
 	Log(const std::string &name, const werk::Clock *clock) : _name(name), _clock(clock) { }
 	virtual ~Log() { }
 
-	const std::string &name() const { return _name; }
 	const werk::Clock *clock() const { return _clock; }
 
 	virtual void logRaw(LogLevel level, const char *message) = 0;
 	virtual void log(LogLevel level, const char *format, ...) = 0;
 
 private:
-	std::string _name;
 	const werk::Clock *_clock;
 };
 

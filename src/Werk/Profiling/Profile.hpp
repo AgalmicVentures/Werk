@@ -3,6 +3,7 @@
 
 #include "Werk/Math/OrderStatistics.hpp"
 #include "Werk/Math/SummaryStatistics.hpp"
+#include "Werk/Utility/NamedObject.hpp"
 
 namespace werk
 {
@@ -10,14 +11,13 @@ namespace werk
 /**
  * Holds information about the timing profile of a single section of code/other event.
  */
-class Profile
+class Profile : public NamedObject
 {
 public:
 
 	Profile(const std::string &name, uint64_t sampleSize = 100, uint64_t warmupSize = 0)
-		: _name(name), _sampleSize(sampleSize), _warmupSize(warmupSize) { }
+		: NamedObject(name), _sampleSize(sampleSize), _warmupSize(warmupSize) { }
 
-	const std::string &name() const { return _name; }
 	uint64_t sampleSize() const { return _sampleSize; }
 	const OrderStatistics<uint64_t> &orderStatistics() const { return _orderStatistics; }
 	const RangedSummaryStatistics<uint64_t> &minStatistics() const { return _minStatistics; }
@@ -89,7 +89,7 @@ public:
 	}
 
 	void writeJson(FILE *file) {
-		fprintf(file, "{\"name\": \"%s\"", _name.c_str());
+		fprintf(file, "{\"name\": \"%s\"", name().c_str());
 		fprintf(file, ", \"warmup\": "); _warmupStatistics.writeJson(file);
 		fprintf(file, ", \"min\": "); _minStatistics.writeJson(file);
 		fprintf(file, ", \"f25\": "); _f25Statistics.writeJson(file);
@@ -105,7 +105,6 @@ public:
 private:
 
 	//Configuration
-	std::string _name;
 	uint64_t _sampleSize;
 	uint64_t _warmupSize;
 

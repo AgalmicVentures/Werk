@@ -3,6 +3,8 @@
 
 #include <string>
 
+#include "NamedObject.hpp"
+
 namespace werk
 {
 
@@ -12,17 +14,12 @@ namespace werk
  *
  * Named to enable easier debugging.
  */
-class Action
+class Action : public NamedObject
 {
 public:
-	Action(const std::string &name) : _name(name) { }
-
-	const std::string &name() const { return _name; }
+	Action(const std::string &name) : NamedObject(name) { }
 
 	virtual void execute() = 0;
-
-private:
-	std::string _name;
 };
 
 /**

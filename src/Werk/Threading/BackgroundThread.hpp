@@ -26,6 +26,8 @@ public:
 	}
 	~BackgroundThread() { stop(); }
 
+	bool stopped() const { return _stopped; }
+
 	uint64_t frequencyNs() const { return _frequencyNs; }
 	void setFrequencyNs(uint64_t frequencyNs) { _frequencyNs = frequencyNs; }
 
@@ -41,6 +43,7 @@ public:
 			_running = false;
 			_thread.join();
 		}
+		_stopped = true;
 	}
 
 private:
@@ -49,6 +52,7 @@ private:
 
 	//Background thread
 	std::thread _thread;
+	bool _stopped = false;
 
 	//Shared state
 	volatile uint64_t _frequencyNs;

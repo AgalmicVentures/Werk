@@ -18,6 +18,9 @@ class ApplicationContext
 public:
 
 	ApplicationContext(const std::string &logFilePath);
+	~ApplicationContext();
+
+	void shutdown();
 
 	//Background thread and tasks
 	BackgroundThread &backgroundThread() { return _backgroundThread; }

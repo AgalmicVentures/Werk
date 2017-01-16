@@ -7,9 +7,8 @@
 
 int main()
 {
+	//Create the application context with a blank path to redirect to stdout
 	werk::ApplicationContext context("");
-
-	context.log()->logRaw(werk::LogLevel::INFO, "Starting...");
 
 	werk::SummaryStatistics<double> s;
 	s.sample(5.0);
@@ -18,6 +17,8 @@ int main()
 	context.log()->log(werk::LogLevel::SUCCESS, "Hello world! count=%" PRIu64 " average=%f stddev=%f",
 		s.count(), s.average(), s.stddev());
 
-	context.backgroundThread().stop();
+	//This will be called automatically when the context falls out of scope, but is left in as an example
+	context.shutdown();
+
 	return 0;
 }

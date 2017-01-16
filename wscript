@@ -95,7 +95,12 @@ def configure(ctx):
 		'pthread',
 	]
 	if isMac:
-		ctx.env.LIBPATH.append('/usr/local/Cellar/boost/1.58.0/lib')
+		#Find a version of boost installed by brew
+		boostRootPath = '/usr/local/Cellar/boost'
+		boostVersion = os.listdir(boostRootPath)[-1]
+		boostPath = os.path.join(boostRootPath, boostVersion)
+		boostLibPath = os.path.join(boostPath, 'lib')
+		ctx.env.LIBPATH.append(boostLibPath)
 
 	Logs.info('Configured.')
 

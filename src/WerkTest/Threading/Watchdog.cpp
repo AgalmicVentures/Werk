@@ -10,10 +10,10 @@ BOOST_AUTO_TEST_SUITE(WatchdogTest)
 
 BOOST_AUTO_TEST_CASE(TestBasic)
 {
-    werk::CounterAction<volatile uint64_t> counterAction("counter");
+    werk::CounterAction<volatile uint64_t> counterAction("Counter");
     werk::BackgroundThread backgroundThread(1l * 1000 * 1000);
 
-	werk::Watchdog watchdog("watchdog", &backgroundThread.backgroundClock(), &counterAction, 20l * 1000 * 1000, 0);
+	werk::Watchdog watchdog("Watchdog", &backgroundThread.backgroundClock(), &counterAction, 20l * 1000 * 1000, 0);
     BOOST_REQUIRE_EQUAL(watchdog.interval(), 20l * 1000 * 1000);
     BOOST_REQUIRE_EQUAL(watchdog.allowedMisses(), 0);
 

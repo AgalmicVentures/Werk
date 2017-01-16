@@ -31,6 +31,8 @@ run at a configurable interval.
 
 Built-in actions include:
 * `CounterAction`: Counts the number of times the action is executed.
+* `LatchAction`: Sets a flag executed.
+* `NullAction`: Does nothing (useful as a placeholder or for testing).
 * `Watchdog`: Watches a flag and executes another `Action` if it does not get
 before a predefined interval expires. This allows for deadlock detection and
 many other behaviors to be run on the background thread.
@@ -77,6 +79,8 @@ the summary statistics to JSON for upstream analysis.
 ### Math
 A wide variety of math components are included:
 * `ContinuousEma`: Calculate an EMA with a continuous value.
+* `DiscreteDistribution`: Calculates statistics about a weighted set of ordered
+values, including probability information.
 * `DiscreteEma`: Calculate an EMA with discrete steps.
 * `OrderStatistics`: Calculate fractiles and other order statistics on a set of
 samples.

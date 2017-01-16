@@ -5,26 +5,31 @@ not fit the users' needs, each Werk component is available a-la-carte (albeit
 possibly with some dependencies, such as logging or configuration). Most output
 is in JSON to be easily machine-readable.
 
-## Design
+# Design
 Although Werk is not a framework and does not enforce a particular threading
 model, it does have several high level design rules in order to meet its
 performance requirements:
 * I/O and most other system calls should be deferred from any critical path
 thread into a background thread, and done asynchronously. Components that
-require I/O should be designed with this in mind.
+require I/O should be designed to support this, while still allowing synchronous
+execution when possible.
 * In the same vein, `new` generally should not be called after initialization.
 This has advantages besides avoiding a possible `sbrk()` call; for example, it
 guarantees that the application will not fail after startup by running out of
 memory.
 
-## Components
+# Components
+Components below are presented in roughly the order they would need to be
+instantiated; that is, components lower on the list may depend upon those above
+them. For a standard set of basic components, look at the `ApplicationContext`
+class.
 
 ### Background Thread
 To keep latency low on the main application thread(s), a `BackgroundThread`
 class offers a place to defer I/O from other components. A set of `Action`s is
 run at a configurable interval.
 
-Pre-built actions include:
+Built-in actions include:
 * `CounterAction`: Counts the number of times the action is executed.
 * `Watchdog`: Watches a flag and executes another `Action` if it does not get
 before a predefined interval expires. This allows for deadlock detection and
@@ -47,7 +52,7 @@ lines can be accepted and parsed by a `CommandManager`, which will forward
 execution to the appropriate `Command` instance. Command managers optionally
 start with a set of default, standard commands.
 
-Pre-built commands include:
+Built-in commands include:
 * `EchoCommand`: Logs the arguments at a certain log level.
 * `NullCommand`: Does nothing (useful as a placeholder for testing).
 * `ReloadConfigCommand`: Flags a configuration to be reloaded.
@@ -67,7 +72,7 @@ for an O(1) implementation while still collection some fractile information.
 `Profile`s are named and held by a `ProfileManager` class which allows exporting
 the summary statistics to JSON for upstream analysis.
 
-## Utilities
+# Utilities
 
 ### Math
 A wide variety of math components are included:

@@ -3,11 +3,16 @@
 
 #include <cstdio>
 
+#include "Werk/OS/Signals.hpp"
+
 namespace werk
 {
 
 ApplicationContext::ApplicationContext(const std::string &logFilePath)
 {
+	//Setup handlers for certain signals
+	setupSegfaultHandler();
+
 	_stdoutLog = new AsyncLog("StdoutLog", &_backgroundThread.backgroundClock());
 	_backgroundThread.addTask(_stdoutLog);
 

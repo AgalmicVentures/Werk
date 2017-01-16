@@ -22,7 +22,7 @@ class Log : public NamedObject
 public:
 
 	//Clock used for timestamping messages (may not be real time, e.g. in a simulation)
-	Log(const std::string &name, const werk::Clock *clock) : _name(name), _clock(clock) { }
+	Log(const std::string &name, const werk::Clock *clock) : NamedObject(name), _clock(clock) { }
 	virtual ~Log() { }
 
 	const werk::Clock *clock() const { return _clock; }

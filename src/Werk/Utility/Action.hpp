@@ -26,6 +26,17 @@ private:
 };
 
 /**
+ * Do nothing action.
+ */
+class NullAction : public Action
+{
+public:
+	NullAction(const std::string &name) : Action(name) { }
+
+	void execute() override { }
+};
+
+/**
  * An action that increments a counter every time it is executed. Very useful
  * for testing.
  */

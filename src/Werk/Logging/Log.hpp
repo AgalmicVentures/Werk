@@ -21,7 +21,7 @@ class Log
 public:
 
 	//Clock used for timestamping messages (may not be real time, e.g. in a simulation)
-	Log(const std::string &name, werk::Clock *clock) : _name(name), _clock(clock) { }
+	Log(const std::string &name, const werk::Clock *clock) : _name(name), _clock(clock) { }
 	virtual ~Log() { }
 
 	const std::string &name() const { return _name; }
@@ -32,7 +32,7 @@ public:
 
 private:
 	std::string _name;
-	werk::Clock *_clock;
+	const werk::Clock *_clock;
 };
 
 /**

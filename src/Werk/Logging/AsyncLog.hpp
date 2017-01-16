@@ -18,8 +18,8 @@ class AsyncLog : public Log, public Action
 {
 public:
 
-	AsyncLog(const std::string &name, werk::Clock *clock, FILE *file=stdout, const std::string &taskName="AsyncLog") :
-		Log(name, clock), Action(taskName), _file(file) { }
+	AsyncLog(const std::string &name, const werk::Clock *clock, FILE *file=stdout) :
+		Log(name, clock), Action(name + "_Writer"), _file(file) { }
 
 	virtual void log(LogLevel level, const char *format, ...) override;
 	virtual void logRaw(LogLevel level, const char *rawMessage) override;

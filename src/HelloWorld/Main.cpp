@@ -7,15 +7,15 @@
 
 int main()
 {
-	werk::ApplicationContext context("/dev/null");
+	werk::ApplicationContext context("");
 
-	context.stdoutLog()->logRaw(werk::LogLevel::INFO, "Starting...");
+	context.log()->logRaw(werk::LogLevel::INFO, "Starting...");
 
 	werk::SummaryStatistics<double> s;
 	s.sample(5.0);
 	s.sample(1.0);
 
-	context.stdoutLog()->log(werk::LogLevel::SUCCESS, "Hello world! count=%" PRIu64 " average=%f stddev=%f",
+	context.log()->log(werk::LogLevel::SUCCESS, "Hello world! count=%" PRIu64 " average=%f stddev=%f",
 		s.count(), s.average(), s.stddev());
 
 	context.backgroundThread().stop();

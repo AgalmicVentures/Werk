@@ -20,7 +20,7 @@ static void handleBusError(int /*signal*/, siginfo_t *info, void * /*context*/)
     }
 
     std::printf("\n\n******************** Bus Error ********************\n\n");
-    std::printf("Faulting address: 0x%lx\nCause: %s (%d)\n", (intptr_t) info->si_addr, cause, info->si_code);
+    std::printf("Faulting address: 0x%p\nCause: %s (%d)\n", info->si_addr, cause, info->si_code);
 
     std::abort();
 }
@@ -35,7 +35,7 @@ static void handleSegfault(int /*signal*/, siginfo_t *info, void * /*context*/)
     }
 
 	std::printf("\n\n******************** Segmentation Fault ********************\n\n");
-	std::printf("Faulting address: 0x%lx\nCause: %s (%d)\n", (intptr_t) info->si_addr, cause, info->si_code);
+	std::printf("Faulting address: 0x%p\nCause: %s (%d)\n", info->si_addr, cause, info->si_code);
 
 	std::abort();
 }

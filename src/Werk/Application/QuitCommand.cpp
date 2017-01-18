@@ -3,7 +3,7 @@
 
 #include <cstdlib>
 
-#include "Werk/Application/ApplicationContext.hpp"
+#include "ApplicationContext.hpp"
 
 namespace werk
 {

@@ -3,8 +3,9 @@
 
 #include <cstdio>
 
-#include "Werk/Commands/QuitCommand.hpp"
 #include "Werk/OS/Signals.hpp"
+
+#include "QuitCommand.hpp"
 
 namespace werk
 {

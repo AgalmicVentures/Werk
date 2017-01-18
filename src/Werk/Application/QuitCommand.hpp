@@ -1,9 +1,8 @@
 
 #pragma once
 
+#include "Werk/Commands/Command.hpp"
 #include "Werk/Logging/Log.hpp"
-
-#include "Command.hpp"
 
 namespace werk
 {

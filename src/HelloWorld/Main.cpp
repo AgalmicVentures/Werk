@@ -17,6 +17,8 @@ int main()
 	context.log()->log(werk::LogLevel::SUCCESS, "Hello world! count=%" PRIu64 " average=%f stddev=%f",
 		s.count(), s.average(), s.stddev());
 
+	context.commandManager()->execute("help");
+
 	//The next log line will never be printed since it quits here
 	context.commandManager()->execute("quit");
 

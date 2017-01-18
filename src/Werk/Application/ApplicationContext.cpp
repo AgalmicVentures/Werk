@@ -51,9 +51,15 @@ ApplicationContext::~ApplicationContext()
 void ApplicationContext::shutdown()
 {
 	if (_backgroundThread.stopped()) {
-		_log->logRaw(LogLevel::WARNING, "Already shut down.");
+		fprintf(stderr, "ApplicationContext::shutdown - Already shut down.\n");
 		return;
 	}
+
+	_log->logRaw(LogLevel::INFO, "Running shutdown actions...");
+	for (Action *action : _shutdownActions) {
+		action->execute();
+	}
+	_log->logRaw(LogLevel::SUCCESS, "Shutdown actions complete.");
 
 	_log->logRaw(LogLevel::INFO, "Shutting down...");
 	_backgroundThread.stop();

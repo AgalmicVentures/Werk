@@ -1,6 +1,9 @@
 
 #pragma once
 
+#include <string>
+#include <vector>
+
 #include "Werk/Commands/CommandManager.hpp"
 #include "Werk/Config/Config.hpp"
 #include "Werk/Logging/AsyncLog.hpp"
@@ -38,6 +41,8 @@ public:
 	const Clock &realTimeClock() const { return _realTimeClock; }
 	ProfileManager &profileManager() { return _profileManager; }
 	const ProfileManager &profileManager() const { return _profileManager; }
+	std::vector<Action *> &shutdownActions() { return _shutdownActions; }
+	const std::vector<Action *> &shutdownActions() const { return _shutdownActions; }
 
 private:
 	BackgroundThread _backgroundThread;
@@ -48,6 +53,7 @@ private:
 
 	Clock _realTimeClock;
 	ProfileManager _profileManager;
+	std::vector<Action *> _shutdownActions;
 };
 
 }

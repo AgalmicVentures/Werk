@@ -21,7 +21,7 @@ public:
 		Command("Echoes the arguments to the log."),
 		_log(log), _level(level) { }
 
-	virtual bool execute(const std::vector<std::string> &arguments) {
+	bool execute(const std::vector<std::string> &arguments) override {
 		_log->logRaw(_level, boost::algorithm::join(arguments, " ").c_str());
 		return true;
 	}

@@ -1,8 +1,6 @@
 
 #pragma once
 
-#include <boost/algorithm/string/join.hpp>
-
 #include "Werk/Logging/Log.hpp"
 
 #include "Command.hpp"

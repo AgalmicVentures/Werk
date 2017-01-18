@@ -17,7 +17,10 @@ int main()
 	context.log()->log(werk::LogLevel::SUCCESS, "Hello world! count=%" PRIu64 " average=%f stddev=%f",
 		s.count(), s.average(), s.stddev());
 
-	context.commandManager()->execute("help");
+	//The next log line will never be printed since it quits here
+	context.commandManager()->execute("quit");
+
+	context.log()->logRaw(werk::LogLevel::INFO, "Done.");
 
 	//This will be called automatically when the context falls out of scope, but is left in as an example
 	context.shutdown();

@@ -3,6 +3,7 @@
 
 #include <cstdio>
 
+#include "Werk/Commands/QuitCommand.hpp"
 #include "Werk/OS/Signals.hpp"
 
 namespace werk
@@ -32,6 +33,7 @@ ApplicationContext::ApplicationContext(const std::string &logFilePath)
 	_log->logRaw(LogLevel::SUCCESS, "<Config> Initialized.");
 
 	_commandManager = new CommandManager(_log);
+	_commandManager->add("quit", new QuitCommand(this));
 	_log->logRaw(LogLevel::SUCCESS, "<CommandManager> Initialized.");
 
 	_log->logRaw(LogLevel::SUCCESS, "<ApplicationContext> Initialized.");

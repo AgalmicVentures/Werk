@@ -5,9 +5,11 @@
 #include <string>
 #include <vector>
 
-#include "Werk/Commands/Command.hpp"
-#include "Werk/Commands/EchoCommand.hpp"
 #include "Werk/Logging/Log.hpp"
+
+#include "Command.hpp"
+#include "EchoCommand.hpp"
+#include "HelpCommand.hpp"
 
 namespace werk
 {
@@ -22,9 +24,11 @@ public:
 	CommandManager(Log *log, bool defaultCommands=true) : _log(log) {
 		//Default commands
 		if (defaultCommands) {
+			_commands["help"] = new HelpCommand(log, this);
+			_commands["null"] = new NullCommand();
+
 			_commands["echo"] = new EchoCommand(log);
 			_commands["error"] = new EchoCommand(log, LogLevel::ERROR);
-			_commands["null"] = new NullCommand();
 			_commands["warning"] = new EchoCommand(log, LogLevel::WARNING);
 		}
 	}

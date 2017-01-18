@@ -17,6 +17,8 @@ int main()
 	context.log()->log(werk::LogLevel::SUCCESS, "Hello world! count=%" PRIu64 " average=%f stddev=%f",
 		s.count(), s.average(), s.stddev());
 
+	context.commandManager()->execute("help");
+
 	//This will be called automatically when the context falls out of scope, but is left in as an example
 	context.shutdown();
 

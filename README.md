@@ -56,8 +56,10 @@ start with a set of default, standard commands.
 
 Built-in commands include:
 * `EchoCommand`: Logs the arguments at a certain log level.
+* `HelpCommand`: Logs help for all other registered commands.
 * `NullCommand`: Does nothing (useful as a placeholder for testing).
 * `ReloadConfigCommand`: Flags a configuration to be reloaded.
+* `QuitCommand`: Quits the program cleanly.
 
 A `CommandAction` helper class allows a `Command` to be run whenever an `Action`
 is needed, opening up many opportunities for connecting components.

@@ -88,7 +88,7 @@ public:
 		_maxStatistics.reset();
 	}
 
-	void writeJson(FILE *file) {
+	void writeJson(FILE *file) const {
 		fprintf(file, "{\"name\": \"%s\"", name().c_str());
 		fprintf(file, ", \"warmup\": "); _warmupStatistics.writeJson(file);
 		fprintf(file, ", \"min\": "); _minStatistics.writeJson(file);

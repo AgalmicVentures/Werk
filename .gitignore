@@ -31,3 +31,7 @@
 .lock-waf*
 .waf*
 build/
+
+# Other temporaries
+profiles.json
+*.log

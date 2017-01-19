@@ -33,7 +33,7 @@ public:
 		_profiles[profile->name()] = profile;
 	}
 
-	void writeJson(FILE *file) {
+	void writeJson(FILE *file) const {
 		for (auto i = _profiles.begin(); i != _profiles.end(); ++i) {
 			i->second->writeJson(file);
 		}

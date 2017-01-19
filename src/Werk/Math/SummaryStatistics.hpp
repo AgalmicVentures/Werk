@@ -45,7 +45,7 @@ public:
 		_m2 = 0;
 	}
 
-	void writeJson(FILE *file) {
+	void writeJson(FILE *file) const {
 		fprintf(file, "{\"count\": %" PRIu64 ", \"average\": %.12f, \"stddev\": %.12f}", _count, _average, stddev());
 	}
 
@@ -79,7 +79,7 @@ public:
 		}
 	}
 
-	void writeJson(FILE *file) {
+	void writeJson(FILE *file) const {
 		fprintf(file, "{\"count\": %" PRIu64 ", \"average\": %.12f, \"stddev\": %.12f, \"min\": %.12f, \"max\": %.12f}",
 			this->count(), this->average(), this->stddev(), static_cast<double>(_min), static_cast<double>(_max));
 	}

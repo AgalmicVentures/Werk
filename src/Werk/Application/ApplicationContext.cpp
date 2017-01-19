@@ -6,6 +6,7 @@
 
 #include "Werk/Config/ReloadConfigCommand.hpp"
 #include "Werk/OS/Signals.hpp"
+#include "Werk/Profiling/WriteProfilesAction.hpp"
 
 #include "QuitCommand.hpp"
 
@@ -75,6 +76,12 @@ ApplicationContext::ApplicationContext(const std::string &configPath)
 	_commandManager->add("reload", new ReloadConfigCommand(*_config));
 	_commandManager->add("quit", new QuitCommand(this));
 	_log->logRaw(LogLevel::SUCCESS, "<CommandManager> Initialized.");
+
+	const char *profilesPath = _config->getString("Application.ProfilesPath");
+	if (nullptr != profilesPath) {
+		_log->log(LogLevel::INFO, "Writing profiles to %s on shutdown.", profilesPath);
+		_shutdownActions.push_back(new WriteProfilesAction("WriteProfiles", _log, _profileManager, profilesPath));
+	}
 
 	/********** Finish Initialization **********/
 

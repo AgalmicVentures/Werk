@@ -25,6 +25,7 @@ ApplicationContext::ApplicationContext(const std::string &configPath)
 	/********** Stdout Log **********/
 
 	_stdoutLog = new AsyncLog("StdoutLog", &_backgroundThread.backgroundClock());
+	_logManager.add(_stdoutLog);
 	_backgroundThread.addTask(_stdoutLog);
 
 	/********** Config **********/
@@ -65,7 +66,8 @@ ApplicationContext::ApplicationContext(const std::string &configPath)
 		file = stderr;
 	}
 
-	_log = new AsyncLog("Log", &_backgroundThread.backgroundClock(), file),
+	_log = new AsyncLog("Log", &_backgroundThread.backgroundClock(), file);
+	_logManager.add(_log);
 	_backgroundThread.addTask(_log);
 	_config->setLog(_log);
 	_log->logRaw(LogLevel::SUCCESS, "<Log> Initialized.");

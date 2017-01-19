@@ -8,6 +8,7 @@
 #include "Werk/Config/Config.hpp"
 #include "Werk/Config/IniConfigSource.hpp"
 #include "Werk/Logging/AsyncLog.hpp"
+#include "Werk/Logging/LogManager.hpp"
 #include "Werk/Profiling/ProfileManager.hpp"
 #include "Werk/Threading/BackgroundThread.hpp"
 
@@ -29,6 +30,8 @@ public:
 	//Background thread and tasks
 	BackgroundThread &backgroundThread() { return _backgroundThread; }
 	const BackgroundThread &backgroundThread() const { return _backgroundThread; }
+	LogManager &logManager() { return _logManager; }
+	const LogManager &logManager() const { return _logManager; }
 	AsyncLog *stdoutLog() { return _stdoutLog; }
 	const AsyncLog *stdoutLog() const { return _stdoutLog; }
 	AsyncLog *log() { return _log; }
@@ -47,6 +50,7 @@ public:
 
 private:
 	BackgroundThread _backgroundThread;
+	LogManager _logManager;
 	AsyncLog *_stdoutLog;
 	AsyncLog *_log;
 	Config *_config;

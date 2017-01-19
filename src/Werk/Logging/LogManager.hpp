@@ -4,7 +4,7 @@
 #include <map>
 #include <string>
 
-namespcae werk
+namespace werk
 {
 
 class LogManager
@@ -13,7 +13,7 @@ public:
 	LogManager() {
 		//Create default logs
 		_nullLog = new NullLog("null");
-		registerLog(_nullLog);
+		add(_nullLog);
 	}
 
 	//Default logs
@@ -24,9 +24,9 @@ public:
 		auto i = _logs.find(name);
 		return i == _logs.end() ? nullptr : i->second;
 	}
-	void registerLog(Log *log) {
+	void add(Log *log) {
 		//TODO: check if already registered
-		_logs[log->Name()] = log;
+		_logs[log->name()] = log;
 	}
 
 private:

@@ -2,6 +2,7 @@
 #pragma once
 
 #include <atomic>
+#include <cassert>
 #include <cstdarg>
 #include <cstdint>
 #include <limits>
@@ -52,8 +53,14 @@ public:
 		_values.store(&_values1);
 	}
 
-	void registerConfigSource(ConfigSource *configSource) { _configSources.push_back(configSource); }
-	void registerConfigurable(Configurable *configurable) { _configurables.push_back(configurable); }
+	void addConfigSource(ConfigSource *configSource) { _configSources.push_back(configSource); }
+	void addConfigurable(Configurable *configurable) { _configurables.push_back(configurable); }
+
+	//This exists so the log can be swapped from stdout/stderr to a file once a config is read, if necessary
+	void setLog(Log *log) {
+		assert(nullptr != log);
+		_log = log;
+	}
 
 	//Flags the config to be reloaded in the background
 	void reloadConfig() { _reloadConfig = true; }

@@ -6,6 +6,7 @@
 
 #include "Werk/Commands/CommandManager.hpp"
 #include "Werk/Config/Config.hpp"
+#include "Werk/Config/IniConfigSource.hpp"
 #include "Werk/Logging/AsyncLog.hpp"
 #include "Werk/Profiling/ProfileManager.hpp"
 #include "Werk/Threading/BackgroundThread.hpp"

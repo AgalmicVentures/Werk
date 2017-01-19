@@ -87,24 +87,52 @@ ApplicationContext::ApplicationContext(const std::string &configPath)
 
 	/********** Finish Initialization **********/
 
+	//Load and run startup commands
+	//TODO: consider defering this until later, once the user has setup everything they need?
+	const char *startupCommandsStr = _config->getString("Application.StartupCommands");
+	if (nullptr != startupCommandsStr) {
+		//Split and run each command
+		boost::split(_startupCommands, startupCommandsStr, boost::is_any_of(";"));
+		for (auto &command : _startupCommands) {
+			_commandManager->execute(command);
+		}
+	}
+
 	_log->logRaw(LogLevel::SUCCESS, "<ApplicationContext> Initialized.");
 }
 
 ApplicationContext::~ApplicationContext()
 {
 	//Shut down, if not already done
-	if (!_backgroundThread.stopped()) {
+	if (!isShutdown()) {
 		shutdown();
 	}
 }
 
+bool ApplicationContext::isShutdown()
+{
+	return _backgroundThread.stopped();
+}
+
 void ApplicationContext::shutdown()
 {
-	if (_backgroundThread.stopped()) {
+	//Don't shut down twice
+	if (isShutdown()) {
 		fprintf(stderr, "ApplicationContext::shutdown - Already shut down.\n");
 		return;
 	}
 
+	//Load and run shutdown commands
+	const char *shutdownCommandsStr = _config->getString("Application.ShutdownCommands");
+	if (nullptr != shutdownCommandsStr) {
+		//Split on ; and run each command
+		boost::split(_shutdownCommands, shutdownCommandsStr, boost::is_any_of(";"));
+		for (auto &command : _startupCommands) {
+			_commandManager->execute(command);
+		}
+	}
+
+	//Run shutdown actions
 	_log->logRaw(LogLevel::INFO, "Running shutdown actions...");
 	for (Action *action : _shutdownActions) {
 		action->execute();

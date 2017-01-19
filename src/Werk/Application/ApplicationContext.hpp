@@ -25,6 +25,7 @@ public:
 	ApplicationContext(const std::string &logFilePath);
 	~ApplicationContext();
 
+	bool isShutdown();
 	void shutdown();
 
 	//Background thread and tasks
@@ -45,6 +46,10 @@ public:
 	const Clock &realTimeClock() const { return _realTimeClock; }
 	ProfileManager &profileManager() { return _profileManager; }
 	const ProfileManager &profileManager() const { return _profileManager; }
+	std::vector<std::string> &startupCommands() { return _startupCommands; }
+	const std::vector<std::string> &startupCommands() const { return _startupCommands; }
+	std::vector<std::string> &shutdownCommands() { return _shutdownCommands; }
+	const std::vector<std::string> &shutdownCommands() const { return _shutdownCommands; }
 	std::vector<Action *> &shutdownActions() { return _shutdownActions; }
 	const std::vector<Action *> &shutdownActions() const { return _shutdownActions; }
 
@@ -58,6 +63,8 @@ private:
 
 	Clock _realTimeClock;
 	ProfileManager _profileManager;
+	std::vector<std::string> _startupCommands;
+	std::vector<std::string> _shutdownCommands;
 	std::vector<Action *> _shutdownActions;
 };
 

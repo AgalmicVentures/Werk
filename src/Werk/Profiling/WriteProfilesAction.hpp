@@ -25,6 +25,7 @@ public:
 		}
 
 		_profileManager.writeJson(file);
+		std::fclose(file);
 	}
 
 private:

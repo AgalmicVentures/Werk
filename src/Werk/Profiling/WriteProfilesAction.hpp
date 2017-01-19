@@ -9,7 +9,7 @@ namespace werk
 {
 
 /**
- *
+ * Writes the profiles from a given profile manager to a given path.
  */
 class WriteProfilesAction : public Action
 {

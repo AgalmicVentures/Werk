@@ -12,6 +12,7 @@
 
 #include "Werk/Logging/Log.hpp"
 #include "Werk/Utility/Action.hpp"
+#include "Werk/Utility/Latch.hpp"
 
 namespace werk
 {
@@ -63,7 +64,7 @@ public:
 	}
 
 	//Flags the config to be reloaded in the background
-	void reloadConfig() { _reloadConfig = true; }
+	void reloadConfig() { _reloadConfig.set(); }
 
 	//Run in the background to reload
 	void execute() override;
@@ -93,8 +94,8 @@ protected:
 	std::vector<Configurable *> _configurables;
 
 	//State
-	volatile bool _reloadConfig = false;
-	volatile bool _changed = false;
+	Latch<volatile bool> _reloadConfig;
+	Latch<volatile bool> _changed;
 	std::atomic<ConfigValuesT *> _values;
 	ConfigValuesT _values1;
 	ConfigValuesT _values2;

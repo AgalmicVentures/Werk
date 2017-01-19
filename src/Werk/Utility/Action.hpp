@@ -34,27 +34,6 @@ public:
 };
 
 /**
- * An action that sets a flag (which can be reset, like a latch).
- *
- * Templated on type so that the boolean can be made volatile if necessary.
- */
-template <typename T=bool>
-class LatchAction : public Action
-{
-public:
-	LatchAction(const std::string &name) : Action(name) { }
-
-	bool flag() const { return _flag; }
-	void set() { _flag = true; }
-	void reset() { _flag = false; }
-
-	void execute() override { set(); }
-
-private:
-	T _flag = false;
-};
-
-/**
  * An action that increments a counter every time it is executed. Very useful
  * for testing.
  */

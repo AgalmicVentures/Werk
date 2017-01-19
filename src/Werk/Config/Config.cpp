@@ -8,10 +8,10 @@ namespace werk
 void Config::execute()
 {
 	//Don't reload unless asked
-	if (!_reloadConfig) {
+	if (!_reloadConfig.value()) {
 		return;
 	}
-	_reloadConfig = false;
+	_reloadConfig.reset();
 
 	//Select which values dictionary is not active
 	ConfigValuesT &newValues = _values.load() == &_values1 ? _values2 : _values1;
@@ -27,16 +27,16 @@ void Config::execute()
 
 	//Swap the configs atomically
 	_values.store(&newValues);
-	_changed = true;
+	_changed.set();
 }
 
 //Run on whatever thread the configurables live on
 void Config::reloadConfigurables() {
 	//Don't reload unless changed
-	if (!_changed) {
+	if (!_changed.value()) {
 		return;
 	}
-	_changed = false;
+	_changed.reset();
 
 	for (Configurable *configurable : _configurables) {
 		configurable->reloadConfig(*this);

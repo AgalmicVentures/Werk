@@ -5,6 +5,7 @@
 
 #include "Werk/OS/Time.hpp"
 #include "Werk/Utility/Action.hpp"
+#include "Werk/Utility/Latch.hpp"
 
 namespace werk
 {
@@ -26,15 +27,15 @@ public:
 	uint64_t allowedMisses() const { return _allowedMisses; }
 	Action *action() { return _action; }
 
-	bool flag() const { return _flag; }
-	void setFlag(bool flag=true) { _flag = flag; }
+	bool latch() const { return _latch.value(); }
+	void reset() { _latch.reset(); }
 
 	void execute() override {
 		uint64_t time = _clock->time();
 
 		//If the flag is set, everything is fine
-		if (_flag) {
-			_flag = false;
+		if (!_latch.value()) {
+			_latch.set();
 			_lastTime = time;
 			_misses = 0;
 			return;
@@ -60,7 +61,7 @@ private:
 	uint64_t _lastTime = 0;
 	uint64_t _misses = 0;
 
-	volatile bool _flag = true;
+	Latch<volatile bool> _latch;
 };
 
 }

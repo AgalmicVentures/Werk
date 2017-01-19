@@ -4,6 +4,7 @@
 #include <boost/algorithm/string.hpp>
 #include <cstdio>
 
+#include "Werk/Config/ReloadConfigCommand.hpp"
 #include "Werk/OS/Signals.hpp"
 
 #include "QuitCommand.hpp"
@@ -13,6 +14,10 @@ namespace werk
 
 ApplicationContext::ApplicationContext(const std::string &configPath)
 {
+	//And let's pull ourselves up by our bootstraps...
+
+	/********** Pre-Initialization **********/
+
 	//Setup handlers for certain signals
 	setupSegfaultHandler();
 
@@ -44,6 +49,7 @@ ApplicationContext::ApplicationContext(const std::string &configPath)
 	//Synchronously reload with everything
 	_config->addConfigSource(new IniConfigSource(configPath));
 	_config->reloadConfig();
+	_config->execute();
 
 	//Finally, with all files loaded, start reloading in the background
 	_backgroundThread.addTask(_config);
@@ -52,7 +58,7 @@ ApplicationContext::ApplicationContext(const std::string &configPath)
 	/********** Main Log **********/
 
 	const char *logPath = _config->getString("Application.LogPath");
-	FILE *file = nullptr == logPath ? stdout : std::fopen(logPath, "r");
+	FILE *file = nullptr == logPath ? stdout : std::fopen(logPath, "a");
 	if (nullptr == file) {
 		_stdoutLog->logRaw(LogLevel::ERROR, "Could not open log file, redirecting to stderr.\n");
 		file = stderr;
@@ -66,8 +72,11 @@ ApplicationContext::ApplicationContext(const std::string &configPath)
 	/********** Command Manager **********/
 
 	_commandManager = new CommandManager(_log);
+	_commandManager->add("reload", new ReloadConfigCommand(*_config));
 	_commandManager->add("quit", new QuitCommand(this));
 	_log->logRaw(LogLevel::SUCCESS, "<CommandManager> Initialized.");
+
+	/********** Finish Initialization **********/
 
 	_log->logRaw(LogLevel::SUCCESS, "<ApplicationContext> Initialized.");
 }

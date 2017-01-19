@@ -18,7 +18,7 @@ private:
 int main()
 {
 	//Create the application context with a blank path to redirect to stdout
-	werk::ApplicationContext context("");
+	werk::ApplicationContext context("src/HelloWorld/Test.ini");
 
 	werk::SummaryStatistics<double> s;
 	s.sample(5.0);

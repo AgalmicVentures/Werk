@@ -6,10 +6,33 @@
 #include <vector>
 
 #include "Werk/OS/Time.hpp"
+#include "Werk/Profiling/ProfileManager.hpp"
 #include "Werk/Utility/Action.hpp"
 
 namespace werk
 {
+
+class BackgroundThread;
+
+/**
+ * Not for public use.
+ */
+class BackgroundTask
+{
+public:
+
+	BackgroundTask(Action *action) :
+		_action(action), _profile(std::string("Background_") + action->name()) { }
+
+	Profile &profile() { return _profile; }
+	const Profile &profile() const { return _profile; }
+
+	void execute();
+
+private:
+	Action *_action;
+	Profile _profile;
+};
 
 /**
  * A background thread to run a number of `Action`s at regular intervals.
@@ -21,7 +44,9 @@ class BackgroundThread
 {
 public:
 
-	BackgroundThread(uint64_t frequencyNs=100ul * 1000 * 1000) : _frequencyNs(frequencyNs) {
+	BackgroundThread(ProfileManager *profileManager, uint64_t frequencyNs=10ul * 1000 * 1000) :
+		 _profileManager(profileManager), _frequencyNs(frequencyNs)
+	{
 		_thread = std::thread(&BackgroundThread::backgroundThread, this);
 	}
 	~BackgroundThread() { stop(); }
@@ -32,9 +57,15 @@ public:
 	void setFrequencyNs(uint64_t frequencyNs) { _frequencyNs = frequencyNs; }
 
 	//Tasks in the order they should be executed
-	std::vector<Action *> &tasks() { return _tasks; }
-	const std::vector<Action *> &tasks() const { return _tasks; }
-	void addTask(Action *task) { _tasks.push_back(task); }
+	std::vector<BackgroundTask *> &tasks() { return _tasks; }
+	const std::vector<BackgroundTask *> &tasks() const { return _tasks; }
+	void addTask(Action *action) {
+		BackgroundTask *task = new BackgroundTask(action);
+		if (nullptr != _profileManager) {
+			_profileManager->add(&task->profile());
+		}
+		_tasks.push_back(task);
+	}
 
 	const Clock &backgroundClock() const { return _backgroundClock; }
 
@@ -48,7 +79,8 @@ public:
 
 private:
 	//Config before
-	std::vector<Action *> _tasks;
+	ProfileManager *_profileManager;
+	std::vector<BackgroundTask *> _tasks;
 
 	//Background thread
 	std::thread _thread;

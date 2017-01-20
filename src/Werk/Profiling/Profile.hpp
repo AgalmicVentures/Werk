@@ -19,6 +19,8 @@ public:
 		: NamedObject(name), _sampleSize(sampleSize), _warmupSize(warmupSize) { }
 
 	uint64_t sampleSize() const { return _sampleSize; }
+	uint64_t count() const { return _count; }
+	const RangedSummaryStatistics<uint64_t> &warmupStatistics() const { return _warmupStatistics; }
 	const OrderStatistics<uint64_t> &orderStatistics() const { return _orderStatistics; }
 	const RangedSummaryStatistics<uint64_t> &minStatistics() const { return _minStatistics; }
 	const RangedSummaryStatistics<uint64_t> &f25Statistics() const { return _f25Statistics; }

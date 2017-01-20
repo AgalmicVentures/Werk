@@ -54,18 +54,18 @@ public:
 	const std::vector<Action *> &shutdownActions() const { return _shutdownActions; }
 
 private:
-	BackgroundThread _backgroundThread;
-	LogManager _logManager;
-	AsyncLog *_stdoutLog;
-	AsyncLog *_log;
-	Config *_config;
-	CommandManager *_commandManager;
-
 	Clock _realTimeClock;
 	ProfileManager _profileManager;
 	std::vector<std::string> _startupCommands;
 	std::vector<std::string> _shutdownCommands;
 	std::vector<Action *> _shutdownActions;
+
+	BackgroundThread _backgroundThread { &_profileManager };
+	LogManager _logManager;
+	AsyncLog *_stdoutLog;
+	AsyncLog *_log;
+	Config *_config;
+	CommandManager *_commandManager;
 };
 
 }

@@ -10,6 +10,13 @@
 namespace werk
 {
 
+void BackgroundTask::execute()
+{
+	_profile.start(werk::epochTime());
+	_action->execute();
+	_profile.stop(werk::epochTime());
+}
+
 /**
  * This method is the actual background thread.
  *

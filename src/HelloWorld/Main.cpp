@@ -1,6 +1,7 @@
 
 #include <cinttypes>
 #include <cstdio>
+#include <unistd.h>
 
 #include "Werk/Application/ApplicationContext.hpp"
 #include "Werk/Math/SummaryStatistics.hpp"
@@ -28,6 +29,8 @@ int main()
 		s.count(), s.average(), s.stddev());
 
 	context.commandManager()->execute("help");
+
+	sleep(5);
 
 	//The following log line will never be printed since it quits here; however, the shutdown action will execute and log
 	context.shutdownActions().push_back(new ShutdownAction("Shutdown", context.log()));

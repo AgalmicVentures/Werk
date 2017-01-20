@@ -49,7 +49,7 @@ class Config : public Action
 public:
 
 	Config(const std::string &name, Log *log) :
-		Action(name + "_Reloader"), _log(log)
+		Action(name + "_Reloader"), _log(log), _reloadConfigAction(name + "_ReloadAction", _reloadConfig)
 	{
 		_values.store(&_values1);
 	}
@@ -65,6 +65,7 @@ public:
 
 	//Flags the config to be reloaded in the background
 	void reloadConfig() { _reloadConfig.set(); }
+	Action *getReloadConfigAction() { return &_reloadConfigAction; }
 
 	//Run in the background to reload
 	void execute() override;
@@ -92,6 +93,9 @@ protected:
 	Log *_log;
 	std::vector<ConfigSource *> _configSources;
 	std::vector<Configurable *> _configurables;
+
+	//Helpers
+	SetLatchAction<volatile bool> _reloadConfigAction;
 
 	//State
 	Latch<volatile bool> _reloadConfig;

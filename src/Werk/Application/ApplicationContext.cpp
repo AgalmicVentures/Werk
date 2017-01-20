@@ -76,7 +76,8 @@ ApplicationContext::ApplicationContext(const std::string &configPath)
 
 	_commandManager = new CommandManager(_log);
 	_commandManager->add("reload", new ReloadConfigCommand(*_config));
-	_commandManager->add("quit", new QuitCommand(this));
+	Command *quitCommand = new QuitCommand(this);
+	_commandManager->add("quit", quitCommand);
 	_log->logRaw(LogLevel::SUCCESS, "<CommandManager> Initialized.");
 
 	const char *profilesPath = _config->getString("Application.ProfilesPath");
@@ -86,6 +87,10 @@ ApplicationContext::ApplicationContext(const std::string &configPath)
 	}
 
 	/********** Finish Initialization **********/
+
+	//Setup remaining signals
+	//SIGHUP -> reload config
+	setupSignalHandler(SIGHUP, _config->getReloadConfigAction());
 
 	//Load and run startup commands
 	//TODO: consider defering this until later, once the user has setup everything they need?

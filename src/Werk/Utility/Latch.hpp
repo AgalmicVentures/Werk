@@ -32,7 +32,7 @@ template <typename T=bool>
 class ResetLatchAction : public Action
 {
 public:
-	ResetLatchAction(const std::string &name, const Latch<T> &latch) :
+	ResetLatchAction(const std::string &name, Latch<T> &latch) :
 		Action(name), _latch(latch) { }
 
 	void execute() override { _latch.reset(); }
@@ -48,7 +48,7 @@ template <typename T=bool>
 class SetLatchAction : public Action
 {
 public:
-	SetLatchAction(const std::string &name, const Latch<T> &latch) :
+	SetLatchAction(const std::string &name, Latch<T> &latch) :
 		Action(name), _latch(latch) { }
 
 	void execute() override { _latch.set(); }

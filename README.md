@@ -19,15 +19,42 @@ guarantees that the application will not fail after startup by running out of
 memory.
 
 # Components
-Components below are presented in roughly the order they would need to be
-instantiated; that is, components lower on the list may depend upon those above
-them. For a standard set of basic components, look at the `ApplicationContext`
+Components below are presented in roughly the order that they depend upon each
+other. For a standard set of basic components, look at the `ApplicationContext`
 class.
+
+### Math
+A wide variety of math components are included:
+* `ContinuousEma`: Calculate an EMA with a continuous value.
+* `DiscreteDistribution`: Calculates statistics about a weighted set of ordered
+values, including probability information.
+* `DiscreteEma`: Calculate an EMA with discrete steps.
+* `OrderStatistics`: Calculate fractiles and other order statistics on a set of
+samples.
+* `SimpleLinearRegression`: Calculate a simple linear regression from two sets
+of samples.
+* `SummaryStatistics` and `RangedSummaryStatistics`: Calculate basic summary
+statistics (count, average, std-dev, and optionally min/max).
+
+### Profiling
+In order to maintain performant code and identify outliers which require
+remediation, a light-weight profiling implementation is provided. `Profile`s
+keep track of the start and end times of a given sample, and then insert the
+delta into an `OrderStatistics` instance. Once that instance has a certain
+number of samples (default=100), the `OrderStatistics` is sampled at various
+fractiles into a set `SummaryStatistics` instances, then cleared. This allows
+for an O(1) implementation while still collection some fractile information.
+
+`Profile`s are named and held by a `ProfileManager` class which allows exporting
+the summary statistics to JSON for upstream analysis.
 
 ### Background Thread
 To keep latency low on the main application thread(s), a `BackgroundThread`
 class offers a place to defer I/O from other components. A set of `Action`s is
-run at a configurable interval.
+run at a configurable interval. Although actions do not have a latency budget,
+they must return as all multitasking is cooperative. To ensure performance,
+background actions are automatically profiled by providing a `ProfileManager`
+to the `BackgroundThread` upon instantiation.
 
 Built-in actions include:
 * `CounterAction`: Counts the number of times the action is executed.
@@ -63,30 +90,3 @@ Built-in commands include:
 
 A `CommandAction` helper class allows a `Command` to be run whenever an `Action`
 is needed, opening up many opportunities for connecting components.
-
-### Profiling
-In order to maintain performant code and identify outliers which require
-remediation, a light-weight profiling implementation is provided. `Profile`s
-keep track of the start and end times of a given sample, and then insert the
-delta into an `OrderStatistics` instance. Once that instance has a certain
-number of samples (default=100), the `OrderStatistics` is sampled at various
-fractiles into a set `SummaryStatistics` instances, then cleared. This allows
-for an O(1) implementation while still collection some fractile information.
-
-`Profile`s are named and held by a `ProfileManager` class which allows exporting
-the summary statistics to JSON for upstream analysis.
-
-# Utilities
-
-### Math
-A wide variety of math components are included:
-* `ContinuousEma`: Calculate an EMA with a continuous value.
-* `DiscreteDistribution`: Calculates statistics about a weighted set of ordered
-values, including probability information.
-* `DiscreteEma`: Calculate an EMA with discrete steps.
-* `OrderStatistics`: Calculate fractiles and other order statistics on a set of
-samples.
-* `SimpleLinearRegression`: Calculate a simple linear regression from two sets
-of samples.
-* `SummaryStatistics` and `RangedSummaryStatistics`: Calculate basic summary
-statistics (count, average, std-dev, and optionally min/max).

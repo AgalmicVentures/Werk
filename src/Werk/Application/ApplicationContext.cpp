@@ -3,6 +3,7 @@
 
 #include <boost/algorithm/string.hpp>
 #include <cstdio>
+#include <signal.h>
 
 #include "Werk/Config/ReloadConfigCommand.hpp"
 #include "Werk/OS/Signals.hpp"

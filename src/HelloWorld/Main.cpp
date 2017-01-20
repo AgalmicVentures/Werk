@@ -4,6 +4,7 @@
 #include <unistd.h>
 
 #include "Werk/Application/ApplicationContext.hpp"
+#include "Werk/Logging/Loggable.hpp"
 #include "Werk/Math/SummaryStatistics.hpp"
 
 class ShutdownAction : public werk::Action
@@ -29,6 +30,9 @@ int main()
 		s.count(), s.average(), s.stddev());
 
 	context.commandManager()->execute("help");
+
+	werk::StringLoggable sl("This is a StringLoggable test...");
+	sl.logTo(context.log());
 
 	sleep(5);
 

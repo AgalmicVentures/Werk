@@ -28,6 +28,22 @@ public:
 	bool isShutdown();
 	void shutdown();
 
+	//Configuration
+	bool isRealTime() const { return _realTime; }
+	bool isSimulation() const { return _simulation; }
+	std::vector<std::string> &startupCommands() { return _startupCommands; }
+	const std::vector<std::string> &startupCommands() const { return _startupCommands; }
+	std::vector<std::string> &shutdownCommands() { return _shutdownCommands; }
+	const std::vector<std::string> &shutdownCommands() const { return _shutdownCommands; }
+
+	//Main thread
+	const Clock &realTimeClock() const { return _realTimeClock; }
+	const Clock *clock() const { return _clock; }
+	ProfileManager &profileManager() { return _profileManager; }
+	const ProfileManager &profileManager() const { return _profileManager; }
+	std::vector<Action *> &shutdownActions() { return _shutdownActions; }
+	const std::vector<Action *> &shutdownActions() const { return _shutdownActions; }
+
 	//Background thread and tasks
 	BackgroundThread &backgroundThread() { return _backgroundThread; }
 	const BackgroundThread &backgroundThread() const { return _backgroundThread; }
@@ -42,22 +58,15 @@ public:
 	CommandManager *commandManager() { return _commandManager; }
 	const CommandManager *commandManager() const { return _commandManager; }
 
-	//Main thread
-	const Clock &realTimeClock() const { return _realTimeClock; }
-	ProfileManager &profileManager() { return _profileManager; }
-	const ProfileManager &profileManager() const { return _profileManager; }
-	std::vector<std::string> &startupCommands() { return _startupCommands; }
-	const std::vector<std::string> &startupCommands() const { return _startupCommands; }
-	std::vector<std::string> &shutdownCommands() { return _shutdownCommands; }
-	const std::vector<std::string> &shutdownCommands() const { return _shutdownCommands; }
-	std::vector<Action *> &shutdownActions() { return _shutdownActions; }
-	const std::vector<Action *> &shutdownActions() const { return _shutdownActions; }
-
 private:
-	Clock _realTimeClock;
-	ProfileManager _profileManager;
+	bool _realTime;
+	bool _simulation;
 	std::vector<std::string> _startupCommands;
 	std::vector<std::string> _shutdownCommands;
+
+	Clock _realTimeClock;
+	Clock *_clock;
+	ProfileManager _profileManager;
 	std::vector<Action *> _shutdownActions;
 
 	BackgroundThread _backgroundThread { &_profileManager };

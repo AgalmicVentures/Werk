@@ -58,6 +58,10 @@ ApplicationContext::ApplicationContext(const std::string &configPath)
 	_backgroundThread.addTask(_config);
 	_stdoutLog->logRaw(LogLevel::SUCCESS, "<Config> Initialized.");
 
+	//Configure the background thread
+	uint64_t backgroundThreadFrequencyNs = _config->getUint64("Application.BackgroundFrequencyNs", _backgroundThread.frequencyNs());
+	_backgroundThread.setFrequencyNs(backgroundThreadFrequencyNs);
+
 	/********** Main Log **********/
 
 	const char *logPath = _config->getString("Application.LogPath");

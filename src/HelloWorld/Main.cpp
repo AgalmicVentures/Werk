@@ -34,9 +34,9 @@ int main()
 	werk::StringLoggable sl("This is a StringLoggable test...");
 	sl.logTo(context.log());
 
-	context.log()->logRaw(werk::LogLevel::INFO, "Sleeping...");
+	context.log()->logRaw(werk::LogLevel::ALERT, "Sleeping...");
 	sleep(5);
-	context.log()->logRaw(werk::LogLevel::INFO, "Slept.");
+	context.log()->logRaw(werk::LogLevel::WARNING, "Slept.");
 
 	//The following log line will never be printed since it quits here; however, the shutdown action will execute and log
 	context.shutdownActions().push_back(new ShutdownAction("Shutdown", context.log()));

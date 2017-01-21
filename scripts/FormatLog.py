@@ -13,7 +13,7 @@ blue = '\033[0;34m'
 levelColors = {
 	'CRITICAL': '\033[0;33;41m', #Yellow with a red background
 	'ERROR': red,
-	'WARNING': yellow,
+	'WARNING': '\033[38;5;202m',
 	'ALERT': yellow,
 	'SUCCESS': green,
 	'CONFIG': '\033[0;36m', #Cyan

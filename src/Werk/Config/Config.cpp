@@ -63,6 +63,27 @@ const char *Config::getString(const std::string &key, const char *defaultValue, 
 	return stringValue;
 }
 
+bool Config::getBool(const std::string &key, bool defaultValue, const char *help) const {
+	const ConfigValuesT * const values = _values;
+	auto i = values->find(key);
+
+	if (i == values->end()) {
+		_log->log(LogLevel::CONFIG, "<Config> [%s] = %s [DEFAULT]%s%s",
+			key.c_str(),
+			defaultValue ? "true" : "false",
+			help == nullptr ? "" : " -- ",
+			help == nullptr ? "" : help);
+		return defaultValue;
+	}
+
+	_log->log(LogLevel::CONFIG, "<Config> [%s] = %s%s%s",
+		key.c_str(),
+		i->second.c_str(),
+		help == nullptr ? "" : " -- ",
+		help == nullptr ? "" : help);
+	return i->second == "true" || i->second == "True";
+}
+
 double Config::getDouble(const std::string &key, double defaultValue, const char *help) const {
 	const char *stringValue = getStringRaw(key);
 	if (stringValue == nullptr) {
@@ -74,7 +95,7 @@ double Config::getDouble(const std::string &key, double defaultValue, const char
 		return defaultValue;
 	}
 
-	_log->log(LogLevel::CONFIG, "<Config> [%s] = %f%s%s",
+	_log->log(LogLevel::CONFIG, "<Config> [%s] = %s%s%s",
 		key.c_str(),
 		stringValue,
 		help == nullptr ? "" : " -- ",

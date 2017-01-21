@@ -82,6 +82,7 @@ public:
 
 	//Basic types
 	const char *getString(const std::string &key, const char *defaultValue=nullptr, const char *help=nullptr) const;
+	bool getBool(const std::string &key, bool defaultValue=false, const char *help=nullptr) const;
 	double getDouble(const std::string &key, double defaultValue=0, const char *help=nullptr) const;
 	int64_t getInt64(const std::string &key, int64_t defaultValue=0, const char *help=nullptr) const;
 	uint64_t getUint64(const std::string &key, uint64_t defaultValue=0, const char *help=nullptr) const;

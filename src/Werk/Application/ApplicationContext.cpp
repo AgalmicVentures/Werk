@@ -5,6 +5,8 @@
 #include <cstdio>
 #include <signal.h>
 
+#include "Werk/Console/ConsoleCommandReceiver.hpp"
+#include "Werk/Console/IpcConsoleServer.hpp"
 #include "Werk/OS/Signals.hpp"
 #include "Werk/Profiling/WriteProfilesAction.hpp"
 
@@ -104,6 +106,20 @@ ApplicationContext::ApplicationContext(const std::string &configPath)
 		_shutdownActions.push_back(new WriteProfilesAction("WriteProfiles", _log, _profileManager, profilesPath));
 	}
 
+	/********** Console **********/
+
+	//Consoles are only available for real time runs
+	if (_realTime) {
+		const char *ipcConsoleName = _config->getString("Application.IpcConsoleName");
+		if (nullptr != ipcConsoleName) {
+			_consoleServer.reset(new IpcConsoleServer(ipcConsoleName));
+
+			//Setup a background task to forward tasks to the command manager
+			ConsoleCommandReceiver *consoleCommandReceiver = new ConsoleCommandReceiver("IpcConsole", *_consoleServer, *_commandManager);
+			_backgroundThread.addTask(consoleCommandReceiver);
+		}
+	}
+
 	/********** Finish Initialization **********/
 
 	//Setup remaining signals
@@ -164,6 +180,9 @@ void ApplicationContext::shutdown()
 
 	_log->logRaw(LogLevel::INFO, "Shutting down...");
 	_backgroundThread.stop();
+
+	//Cleanup the console
+	_consoleServer.reset();
 }
 
 }

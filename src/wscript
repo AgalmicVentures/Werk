@@ -27,3 +27,17 @@ def build(bld):
 		target = '../bin/HelloWorld',
 		use    = ['Werk'],
 	)
+
+	#IPC console cleanup
+	bld.program(
+		source = 'IpcConsoleCleanup/Main.cpp',
+		target = '../bin/IpcConsoleCleanup',
+		use    = ['Werk'],
+	)
+
+	#IPC console client
+	bld.program(
+		source = 'IpcConsoleClient/Main.cpp',
+		target = '../bin/IpcConsoleClient',
+		use    = ['Werk'],
+	)

@@ -1,6 +1,7 @@
 
 #pragma once
 
+#include <memory>
 #include <string>
 #include <vector>
 
@@ -14,6 +15,8 @@
 
 namespace werk
 {
+
+class IpcConsoleServer;
 
 /**
  * Standard application context with all the basic components.
@@ -75,6 +78,7 @@ private:
 	AsyncLog *_log;
 	Config *_config;
 	CommandManager *_commandManager;
+	std::unique_ptr<IpcConsoleServer> _consoleServer;
 };
 
 }

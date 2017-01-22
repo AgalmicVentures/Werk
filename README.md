@@ -92,6 +92,12 @@ Built-in commands include:
 A `CommandAction` helper class allows a `Command` to be run whenever an `Action`
 is needed, opening up many opportunities for connecting components.
 
+### Console
+Consoles allow users to connect to a real time run and enter commands. Currently
+the only available console is the `IpcConsoleServer` and `IpcConsoleClient` pair
+which send commands over an IPC queue. The client application is built as
+`bin/build/IpcConsoleClient`.
+
 <a name="framework"></a>
 # Framework
 Althought Werk does not force the use of any particular threading model or set
@@ -117,6 +123,8 @@ in real time. Default true.
 run on startup.
 * `Application.ShutdownCommands`: Semicolon delimited list of command lines to
 run on shutdown.
+* `Application.IpcConsoleName`: The name of the IPC queue used for a console.
+Default none.
 
 On shutdown it runs shutdown commands, then shutdown actions which may be
 registered by any component, ensuring a clean shutdown.

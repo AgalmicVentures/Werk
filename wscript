@@ -93,6 +93,7 @@ def configure(ctx):
 	#Setup libraries
 	ctx.env.LIB = [
 		'pthread',
+		'rt',
 	]
 	if isMac:
 		#Find a version of boost installed by brew

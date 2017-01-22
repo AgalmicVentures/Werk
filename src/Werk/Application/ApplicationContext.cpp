@@ -5,7 +5,6 @@
 #include <cstdio>
 #include <signal.h>
 
-#include "Werk/Config/ReloadConfigCommand.hpp"
 #include "Werk/OS/Signals.hpp"
 #include "Werk/Profiling/WriteProfilesAction.hpp"
 
@@ -94,7 +93,7 @@ ApplicationContext::ApplicationContext(const std::string &configPath)
 	/********** Command Manager **********/
 
 	_commandManager = new CommandManager(_log);
-	_commandManager->add("reload", new ReloadConfigCommand(*_config));
+	_commandManager->add("reload", new ActionCommand(_config->getReloadConfigAction(), "Reloads the configuration."));
 	Command *quitCommand = new QuitCommand(this);
 	_commandManager->add("quit", quitCommand);
 	_log->logRaw(LogLevel::SUCCESS, "<CommandManager> Initialized.");

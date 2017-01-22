@@ -41,7 +41,25 @@ public:
 };
 
 /**
- * An `Action` that executes a command with certain arguments.
+ * A `Command` that executes an `Action`.
+ */
+class ActionCommand : public Command
+{
+public:
+	ActionCommand(Action *action, const std::string &help) :
+		Command(help), _action(action) { }
+
+	virtual bool execute(const std::vector<std::string> &/*arguments*/) override {
+		_action->execute();
+		return true;
+	}
+
+private:
+	Action *_action;
+};
+
+/**
+ * An `Action` that executes a `Command` with certain arguments.
  */
 class CommandAction : public Action
 {

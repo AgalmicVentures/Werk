@@ -1,9 +1,9 @@
 # Werk
 Werk is a C++ library of components for developing performance-sensitive,
-real-time applications. Rather than forcing an overarching framework which may
-not fit the users' needs, each Werk component is available a-la-carte (albeit
-possibly with some dependencies, such as logging or configuration). Most output
-is in JSON to be easily machine-readable.
+real-time applications. Each Werk component is available a-la-carte (albeit
+possibly with some dependencies, such as logging or configuration). A
+lightweight framework that combines the most common components is also
+[available](#framework).
 
 # Design
 Although Werk is not a framework and does not enforce a particular threading
@@ -18,6 +18,7 @@ This has advantages besides avoiding a possible `sbrk()` call; for example, it
 guarantees that the application will not fail after startup by running out of
 memory.
 
+<a name="components"></a>
 # Components
 Components below are presented in roughly the order that they depend upon each
 other. For a standard set of basic components, look at the `ApplicationContext`
@@ -90,3 +91,32 @@ Built-in commands include:
 
 A `CommandAction` helper class allows a `Command` to be run whenever an `Action`
 is needed, opening up many opportunities for connecting components.
+
+<a name="framework"></a>
+# Framework
+Althought Werk does not force the use of any particular threading model or set
+of components, it does offer a default combination of the most common components
+via the `ApplicationContext` class. Bootstrapping from a background thread and a
+logger that goes to `stdout`, it loads configs, creates a file log, sets up
+subsystems like commands and profiling, then runs some startup commands.
+
+It has the following configuration options:
+* `Application.ConfigPaths`: Only available in the primary config, this is a
+comma-separated list of other configs to load. Default none.
+* `Application.LogPath`: Path to the actual log file. If not present or cannot
+be opened, logs will go to stderr. Required.
+* `Application.ProfilesPath`: Path to profiling information JSON, written on
+shutdown. Default none.
+* `Application.BackgroundFrequencyNs`:  The frequency of the background thread,
+in nanoseconds. Default 10ms.
+* `Application.Simulation`: Boolean indicating whether the application is a
+simulation. Default false.
+* `Application.RealTime`: Boolean indicating whether the application is running
+in real time. Default true.
+* `Application.StartupCommands`: Semicolon delimited list of command lines to
+run on startup.
+* `Application.ShutdownCommands`: Semicolon delimited list of command lines to
+run on shutdown.
+
+On shutdown it runs shutdown commands, then shutdown actions which may be
+registered by any component, ensuring a clean shutdown.

@@ -6,10 +6,10 @@
 #include <vector>
 
 #include "Werk/Logging/Log.hpp"
+#include "Werk/Logging/Loggable.hpp"
 
 #include "Command.hpp"
 #include "EchoCommand.hpp"
-#include "HelpCommand.hpp"
 
 namespace werk
 {
@@ -17,15 +17,17 @@ namespace werk
 /**
  * Holds a collection of named commands and assists in forwarding user input to them.
  */
-class CommandManager
+class CommandManager : public Loggable
 {
 public:
 
 	CommandManager(Log *log, bool defaultCommands=true) : _log(log) {
 		//Default commands
 		if (defaultCommands) {
-			_commands["help"] = new HelpCommand(log, this);
 			_commands["null"] = new NullCommand();
+			_commands["?"] = _commands["help"] = new ActionCommand(
+				new LogAction("LogHelp", this, _log),
+				"Logs command help.");
 
 			_commands["echo"] = new EchoCommand(log);
 			_commands["error"] = new EchoCommand(log, LogLevel::ERROR);
@@ -44,6 +46,8 @@ public:
 
 	//Helper to create a new CommandAction from a command line
 	CommandAction *newCommandAction(const std::string &name, const std::string &commandLine);
+
+	void logTo(Log *log) const override;
 
 private:
 	Log *_log;

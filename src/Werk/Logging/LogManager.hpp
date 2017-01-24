@@ -4,15 +4,18 @@
 #include <map>
 #include <string>
 
+#include "Log.hpp"
+#include "Loggable.hpp"
+
 namespace werk
 {
 
-class LogManager
+class LogManager : public Loggable
 {
 public:
 	LogManager() {
 		//Create default logs
-		_nullLog = new NullLog("null");
+		_nullLog = new NullLog("Null");
 		add(_nullLog);
 	}
 
@@ -28,6 +31,8 @@ public:
 		//TODO: check if already registered
 		_logs[log->name()] = log;
 	}
+
+	void logTo(Log *log) const override;
 
 private:
 	//Map of all logs and some default logs

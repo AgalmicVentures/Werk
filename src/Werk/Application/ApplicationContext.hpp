@@ -9,6 +9,7 @@
 #include "Werk/Config/Config.hpp"
 #include "Werk/Config/IniConfigSource.hpp"
 #include "Werk/Logging/AsyncLog.hpp"
+#include "Werk/Logging/Loggable.hpp"
 #include "Werk/Logging/LogManager.hpp"
 #include "Werk/Profiling/ProfileManager.hpp"
 #include "Werk/Threading/BackgroundThread.hpp"
@@ -22,7 +23,7 @@ class IpcConsoleServer;
 /**
  * Standard application context with all the basic components.
  */
-class ApplicationContext
+class ApplicationContext : public Loggable
 {
 public:
 
@@ -31,6 +32,8 @@ public:
 
 	bool isShutdown();
 	void shutdown();
+
+	void logTo(Log *log) const override;
 
 	//Configuration
 	bool isRealTime() const { return _realTime; }

@@ -5,6 +5,7 @@
 #include <time.h>
 #include <vector>
 
+#include "Werk/Logging/Loggable.hpp"
 #include "Werk/OS/Time.hpp"
 #include "Werk/Profiling/ProfileManager.hpp"
 #include "Werk/Utility/Action.hpp"
@@ -24,6 +25,7 @@ public:
 	BackgroundTask(Action *action) :
 		_action(action), _profile(std::string("Background_") + action->name()) { }
 
+	const Action *action() const { return _action; }
 	Profile &profile() { return _profile; }
 	const Profile &profile() const { return _profile; }
 
@@ -40,7 +42,7 @@ private:
  * This is very useful e.g. for defering IO to another thread to keep latency low on
  * a main thread.
  */
-class BackgroundThread
+class BackgroundThread : public Loggable
 {
 public:
 
@@ -55,6 +57,8 @@ public:
 
 	uint64_t frequencyNs() const { return _frequencyNs; }
 	void setFrequencyNs(uint64_t frequencyNs) { _frequencyNs = frequencyNs; }
+
+	void logTo(Log *log) const override;
 
 	//Tasks in the order they should be executed
 	std::vector<BackgroundTask *> &tasks() { return _tasks; }

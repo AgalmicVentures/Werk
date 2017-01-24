@@ -96,7 +96,20 @@ ApplicationContext::ApplicationContext(const std::string &configPath)
 	/********** Command Manager **********/
 
 	_commandManager = new CommandManager(_log);
-	_commandManager->add("reload", new ActionCommand(_config->getReloadConfigAction(), "Reloads the configuration."));
+
+	_commandManager->add("app", new ActionCommand(
+		new LogAction("LogApplicationContext", this, _log),
+		"Logs information about the application."));
+	_commandManager->add("bg", new ActionCommand(
+		new LogAction("LogBackgroundTasks", &_backgroundThread, _log),
+		"Logs information about background tasks."));
+	_commandManager->add("logs", new ActionCommand(
+		new LogAction("LogLogs", &_logManager, _log),
+		"Logs information about existing log files."));
+	_commandManager->add("reload", new ActionCommand(
+		_config->getReloadConfigAction(),
+		"Reloads the configuration."));
+
 	Command *quitCommand = new QuitCommand(this);
 	_commandManager->add("quit", quitCommand);
 	_log->logRaw(LogLevel::SUCCESS, "<CommandManager> Initialized.");
@@ -147,6 +160,12 @@ ApplicationContext::~ApplicationContext()
 	if (!isShutdown()) {
 		shutdown();
 	}
+}
+
+void ApplicationContext::logTo(Log *log) const
+{
+	log->log(LogLevel::INFO, "<Context>  Real Time: %s", _realTime ? "Yes" : "No");
+	log->log(LogLevel::INFO, "<Context> Simulation: %s", _simulation ? "Yes" : "No");
 }
 
 bool ApplicationContext::isShutdown()

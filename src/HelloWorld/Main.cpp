@@ -35,7 +35,7 @@ int main()
 	sl.logTo(context.log());
 
 	context.log()->logRaw(werk::LogLevel::ALERT, "Sleeping...");
-	sleep(10);
+	sleep(15);
 	context.log()->logRaw(werk::LogLevel::WARNING, "Slept.");
 
 	//The following log line will never be printed since it quits here; however, the shutdown action will execute and log

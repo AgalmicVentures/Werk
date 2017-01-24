@@ -57,4 +57,25 @@ private:
 	Latch<T> &_latch;
 };
 
+/**
+ * An action that executes another action, if the latch is set.
+ */
+template <typename T=bool>
+class ConditionalAction : public Action
+{
+public:
+	ConditionalAction(const std::string &name, Latch<T> &latch, Action *action) :
+		Action(name), _latch(latch), _action(action) { }
+
+	void execute() override {
+		if (_latch.value()) {
+			_action->execute();
+		}
+	}
+
+private:
+	Latch<T> &_latch;
+	Action *_action;
+};
+
 }

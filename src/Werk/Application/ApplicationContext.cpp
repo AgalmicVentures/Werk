@@ -81,6 +81,9 @@ ApplicationContext::ApplicationContext(const std::string &configPath)
 	uint64_t backgroundThreadFrequencyNs = _config->getUint64("Application.BackgroundFrequencyNs", _backgroundThread.frequencyNs());
 	_backgroundThread.setFrequencyNs(backgroundThreadFrequencyNs);
 
+	//Set the instance ID
+	_instanceId = _config->getString("Application.InstanceID", "", "ID of this instance of the application");
+
 	//Real time mode or not? In non-real time mode, a secondary clock is instantiated
 	_realTime = _config->getBool("Application.RealTime", true,
 		"Indicates whether the application is running in real time or from a different clock");

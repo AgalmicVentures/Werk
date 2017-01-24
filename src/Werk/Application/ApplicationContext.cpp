@@ -84,6 +84,9 @@ ApplicationContext::ApplicationContext(const std::string &configPath)
 	//Set the instance ID
 	_instanceId = _config->getString("Application.InstanceID", "", "ID of this instance of the application");
 
+	_debug = _config->getBool("Application.Debug", false,
+		"Indicates whether the application should output additional debug information (even in release builds)");
+
 	//Real time mode or not? In non-real time mode, a secondary clock is instantiated
 	_realTime = _config->getBool("Application.RealTime", true,
 		"Indicates whether the application is running in real time or from a different clock");

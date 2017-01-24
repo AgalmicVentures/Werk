@@ -37,6 +37,7 @@ public:
 
 	//Configuration
 	const std::string &instanceId() { return _instanceId; }
+	bool isDebug() const { return _debug; }
 	bool isRealTime() const { return _realTime; }
 	bool isSimulation() const { return _simulation; }
 	std::vector<std::string> &startupCommands() { return _startupCommands; }
@@ -68,6 +69,7 @@ public:
 
 private:
 	std::string _instanceId;
+	bool _debug;
 	bool _realTime;
 	bool _simulation;
 	std::vector<std::string> _startupCommands;

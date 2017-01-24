@@ -12,6 +12,7 @@
 #include "Werk/Logging/LogManager.hpp"
 #include "Werk/Profiling/ProfileManager.hpp"
 #include "Werk/Threading/BackgroundThread.hpp"
+#include "Werk/Threading/ActionQueue.hpp"
 
 namespace werk
 {
@@ -73,6 +74,7 @@ private:
 	std::vector<Action *> _shutdownActions;
 
 	BackgroundThread _backgroundThread { &_profileManager };
+	ActionQueue<> _backgroundActionQueue { "BackgroundActionQueue" };
 	LogManager _logManager;
 	AsyncLog *_stdoutLog;
 	AsyncLog *_log;

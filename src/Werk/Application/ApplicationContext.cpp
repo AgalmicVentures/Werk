@@ -23,6 +23,7 @@ ApplicationContext::ApplicationContext(const std::string &configPath)
 
 	//Setup handlers for certain signals
 	setupSegfaultHandler();
+	_backgroundThread.addTask(&_backgroundActionQueue);
 
 	/********** Stdout Log **********/
 

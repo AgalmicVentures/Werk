@@ -22,7 +22,8 @@ public:
 		_log(log), _level(level) { }
 
 	bool execute(const std::vector<std::string> &arguments) override {
-		_log->logRaw(_level, boost::algorithm::join(arguments, " ").c_str());
+		//Join all but the first argument since the command name needn't be echoed
+		_log->logRaw(_level, boost::algorithm::join(boost::make_iterator_range(arguments.begin() + 1, arguments.end()), " ").c_str());
 		return true;
 	}
 

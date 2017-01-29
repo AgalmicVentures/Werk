@@ -9,6 +9,7 @@
 #include "Werk/OS/Time.hpp"
 #include "Werk/Profiling/ProfileManager.hpp"
 #include "Werk/Utility/Action.hpp"
+#include "Werk/Utility/Latch.hpp"
 
 namespace werk
 {
@@ -29,11 +30,15 @@ public:
 	Profile &profile() { return _profile; }
 	const Profile &profile() const { return _profile; }
 
+	Latch<volatile bool> &active() { return _active; }
+	const Latch<volatile bool> &active() const { return _active; }
+
 	void execute();
 
 private:
 	Action *_action;
 	Profile _profile;
+	Latch<volatile bool> _active { true };
 };
 
 /**

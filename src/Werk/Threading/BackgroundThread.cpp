@@ -13,6 +13,10 @@ namespace werk
 
 void BackgroundTask::execute()
 {
+	if (!_active.value()) {
+		return;
+	}
+
 	_profile.start(werk::epochTime());
 	_action->execute();
 	_profile.stop(werk::epochTime());
@@ -23,7 +27,8 @@ void BackgroundThread::logTo(Log *log) const
 	log->log(LogLevel::INFO, "<BackgroundThread> Frequency (ns): %" PRIu64, _frequencyNs);
 	log->log(LogLevel::INFO, "<BackgroundThread> Tasks (%zu):", _tasks.size());
 	for (BackgroundTask *task : _tasks) {
-		log->log(LogLevel::INFO, "  %24s    %" PRIu64, task->action()->name().c_str(), task->profile().count());
+		log->log(LogLevel::INFO, "  %24s    %8s    Count=%" PRIu64,
+			task->action()->name().c_str(), task->active().value() ? "Active" : "Inactive", task->profile().count());
 	}
 }
 

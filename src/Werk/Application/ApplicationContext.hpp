@@ -54,12 +54,16 @@ public:
 	const Clock *clock() const { return _clock; }
 	ProfileManager &profileManager() { return _profileManager; }
 	const ProfileManager &profileManager() const { return _profileManager; }
+	ActionQueue<> &foregroundActionQueue() { return _backgroundActionQueue; }
+	const ActionQueue<> &foregroundActionQueue() const { return _backgroundActionQueue; }
 	std::vector<Action *> &shutdownActions() { return _shutdownActions; }
 	const std::vector<Action *> &shutdownActions() const { return _shutdownActions; }
 
 	//Background thread and tasks
 	BackgroundThread &backgroundThread() { return _backgroundThread; }
 	const BackgroundThread &backgroundThread() const { return _backgroundThread; }
+	ActionQueue<> &backgroundActionQueue() { return _backgroundActionQueue; }
+	const ActionQueue<> &backgroundActionQueue() const { return _backgroundActionQueue; }
 	LogManager &logManager() { return _logManager; }
 	const LogManager &logManager() const { return _logManager; }
 	AsyncLog *stdoutLog() { return _stdoutLog; }
@@ -82,6 +86,7 @@ private:
 	Clock _realTimeClock;
 	Clock *_clock;
 	ProfileManager _profileManager;
+	ActionQueue<> _foregroundActionQueue { "ForegroundActionQueue" };
 	std::vector<Action *> _shutdownActions;
 
 	Latch<volatile bool> _quitting;

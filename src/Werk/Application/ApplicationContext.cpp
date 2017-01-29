@@ -236,6 +236,9 @@ void ApplicationContext::run()
 	while (!_quitting.value()) {
 		//TODO: run a main loop action
 
+		//Run other queued actions
+		_foregroundActionQueue.execute();
+
 		//Made it through another loop, reset the watchdog
 		watchdog->reset();
 	}

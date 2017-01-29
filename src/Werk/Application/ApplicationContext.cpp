@@ -9,8 +9,7 @@
 #include "Werk/Console/IpcConsoleServer.hpp"
 #include "Werk/OS/Signals.hpp"
 #include "Werk/Profiling/WriteProfilesAction.hpp"
-
-#include "QuitCommand.hpp"
+#include "Werk/Threading/Watchdog.hpp"
 
 namespace werk
 {
@@ -116,8 +115,9 @@ ApplicationContext::ApplicationContext(const std::string &configPath)
 		_config->getReloadConfigAction(),
 		"Reloads the configuration."));
 
-	Command *quitCommand = new QuitCommand(this);
-	_commandManager->add("quit", quitCommand);
+	_commandManager->add("quit", new ActionCommand(
+		new SetLatchAction<volatile bool>("Quit", _quitting),
+		"Quits the application cleanly."));
 	_log->logRaw(LogLevel::SUCCESS, "<CommandManager> Initialized.");
 
 	const char *profilesPath = _config->getString("Application.ProfilesPath");
@@ -209,6 +209,31 @@ void ApplicationContext::shutdown()
 
 	//Cleanup the console
 	_consoleServer.reset();
+}
+
+void ApplicationContext::run()
+{
+	//Setup the background watchdog timer
+	uint64_t watchdogInterval = _config->getUint64("Application.WatchdogInterval", 0, "Interval of the main thread watchdog (ns)");
+	uint64_t watchdogAllowedMisses = _config->getUint64("Application.WatchdogAllowedMisses", 1, "Number of times the main thread can miss the watchdog");
+	//TODO: configurable watchdog action (and also the threading on this action's logging is wrong
+	Watchdog *watchdog = new Watchdog("Watchdog", &_backgroundThread.backgroundClock(),
+		new LogAction("WatchdogWarning", new StringLoggable("Missed watchdog!", LogLevel::WARNING), _log),
+		watchdogInterval, watchdogAllowedMisses);
+
+	if (0 != watchdogInterval) {
+		//TODO: check against background thread frequency
+		_backgroundThread.addTask(watchdog);
+	}
+
+	while (!_quitting.value()) {
+		//TODO: run a main loop action
+
+		//Made it through another loop, set the watchdog
+		watchdog->reset();
+	}
+
+	shutdown();
 }
 
 }

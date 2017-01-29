@@ -7,7 +7,7 @@ namespace werk
 {
 
 void StringLoggable::logTo(Log *log) const {
-	log->logRaw(LogLevel::INFO, value().c_str());
+	log->logRaw(_level, value().c_str());
 }
 
 }

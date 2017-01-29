@@ -114,7 +114,7 @@ int64_t Config::getInt64(const std::string &key, int64_t defaultValue, const cha
 		return defaultValue;
 	}
 
-	_log->log(LogLevel::CONFIG, "<Config> [%s] = %" PRIi64 "%s%s",
+	_log->log(LogLevel::CONFIG, "<Config> [%s] = %s%s%s",
 		key.c_str(),
 		stringValue,
 		help == nullptr ? "" : " -- ",
@@ -133,7 +133,7 @@ uint64_t Config::getUint64(const std::string &key, uint64_t defaultValue, const 
 		return defaultValue;
 	}
 
-	_log->log(LogLevel::CONFIG, "<Config> [%s] = %" PRIu64 "%s%s",
+	_log->log(LogLevel::CONFIG, "<Config> [%s] = %s%s%s",
 		key.c_str(),
 		stringValue,
 		help == nullptr ? "" : " -- ",

@@ -14,6 +14,7 @@
 #include "Werk/Profiling/ProfileManager.hpp"
 #include "Werk/Threading/BackgroundThread.hpp"
 #include "Werk/Threading/ActionQueue.hpp"
+#include "Werk/Utility/Latch.hpp"
 
 namespace werk
 {
@@ -32,6 +33,9 @@ public:
 
 	bool isShutdown();
 	void shutdown();
+
+	//Optional main loop
+	void run();
 
 	void logTo(Log *log) const override;
 
@@ -79,6 +83,8 @@ private:
 	Clock *_clock;
 	ProfileManager _profileManager;
 	std::vector<Action *> _shutdownActions;
+
+	Latch<volatile bool> _quitting;
 
 	BackgroundThread _backgroundThread { &_profileManager };
 	ActionQueue<> _backgroundActionQueue { "BackgroundActionQueue" };

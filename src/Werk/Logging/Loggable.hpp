@@ -3,6 +3,8 @@
 
 #include "Werk/Utility/Action.hpp"
 
+#include "LogMessage.hpp"
+
 namespace werk
 {
 
@@ -23,7 +25,8 @@ public:
 class StringLoggable : public Loggable
 {
 public:
-	StringLoggable(const std::string value) : _value(value) { }
+	StringLoggable(const std::string value, LogLevel level=LogLevel::INFO) :
+		_value(value), _level(level) { }
 
 	const std::string &value() const { return _value; }
 
@@ -31,6 +34,7 @@ public:
 
 private:
 	std::string _value;
+	LogLevel _level;
 };
 
 /**

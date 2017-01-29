@@ -34,18 +34,10 @@ int main()
 	werk::StringLoggable sl("This is a StringLoggable test...");
 	sl.logTo(context.log());
 
-	context.log()->logRaw(werk::LogLevel::ALERT, "Sleeping...");
-	sleep(15);
-	context.log()->logRaw(werk::LogLevel::WARNING, "Slept.");
-
-	//The following log line will never be printed since it quits here; however, the shutdown action will execute and log
 	context.shutdownActions().push_back(new ShutdownAction("Shutdown", context.log()));
-	context.commandManager()->execute("quit");
 
-	context.log()->logRaw(werk::LogLevel::INFO, "Done.");
-
-	//This will be called automatically when the context falls out of scope, but is left in as an example
-	context.shutdown();
+	context.log()->logRaw(werk::LogLevel::ALERT, "Starting main loop...");
+	context.run();
 
 	return 0;
 }

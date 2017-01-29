@@ -35,8 +35,6 @@ static void handleSegfault(int /*signal*/, siginfo_t *info, void * /*context*/)
 	switch (info->si_code) {
 	case SEGV_ACCERR: cause = "SEGV_ACCERR - Access Permissions Error";  break;
 	case SEGV_BNDERR: cause = "SEGV_BNDERR - Bounds Check Error"; break;
-	case SEGV_MAPERR: cause = "SEGV_MAPERR - Map Error"; break;
-	case SEGV_PKUERR: cause = "SEGV_PKUERR - Memory Protection Key Error"; break;
 	default: cause = "Unknown";
 	}
 

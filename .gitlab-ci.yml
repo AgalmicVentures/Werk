@@ -28,6 +28,7 @@ unit_test_job:
 hello_world_job:
   stage: functional_test
   script:
+    - build/bin/IpcConsoleCleanup console
     - build/bin/HelloWorld &
     - export HELLO_PID=$!
     - sleep 5

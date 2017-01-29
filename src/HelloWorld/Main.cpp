@@ -36,7 +36,6 @@ int main()
 
 	context.shutdownActions().push_back(new ShutdownAction("Shutdown", context.log()));
 
-	context.log()->logRaw(werk::LogLevel::ALERT, "Starting main loop...");
 	context.run();
 
 	return 0;

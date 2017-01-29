@@ -115,8 +115,9 @@ ApplicationContext::ApplicationContext(const std::string &configPath)
 		_config->getReloadConfigAction(),
 		"Reloads the configuration."));
 
+	Action *quitAction = new SetLatchAction<volatile bool>("Quit", _quitting);
 	_commandManager->add("quit", new ActionCommand(
-		new SetLatchAction<volatile bool>("Quit", _quitting),
+		quitAction,
 		"Quits the application cleanly."));
 	_log->logRaw(LogLevel::SUCCESS, "<CommandManager> Initialized.");
 
@@ -144,7 +145,12 @@ ApplicationContext::ApplicationContext(const std::string &configPath)
 
 	//Setup remaining signals
 	//SIGHUP -> reload config
-	setupSignalHandler(SIGHUP, _config->getReloadConfigAction());
+	if (!setupSignalHandler(SIGHUP, _config->getReloadConfigAction())) {
+		_log->log(LogLevel::ERROR, "Failed to setup SIGHUP handler.");
+	}
+	if (!setupSignalHandler(SIGINT, quitAction)) {
+		_log->log(LogLevel::ERROR, "Failed to setup SIGINT handler.");
+	}
 
 	//Load and run startup commands
 	//TODO: consider defering this until later, once the user has setup everything they need?
@@ -226,12 +232,14 @@ void ApplicationContext::run()
 		_backgroundThread.addTask(watchdog);
 	}
 
+	_log->logRaw(LogLevel::ALERT, "Entering main loop...");
 	while (!_quitting.value()) {
 		//TODO: run a main loop action
 
-		//Made it through another loop, set the watchdog
+		//Made it through another loop, reset the watchdog
 		watchdog->reset();
 	}
+	_log->logRaw(LogLevel::ALERT, "Exiting main loop...");
 
 	shutdown();
 }

@@ -13,28 +13,28 @@ namespace werk
 
 static void handleBusError(int /*signal*/, siginfo_t *info, void * /*context*/)
 {
-    const char *cause;
-    switch (info->si_code) {
-    case BUS_ADRALN: cause = "Incorrect Memory Alignment";  break;
-    case BUS_ADRERR: cause = "Nonexistent Physical Address"; break;
-    case BUS_OBJERR: cause = "Object Error (Hardware)"; break;
-    default: cause = "Unknown";
-    }
+	const char *cause;
+	switch (info->si_code) {
+	case BUS_ADRALN: cause = "Incorrect Memory Alignment";  break;
+	case BUS_ADRERR: cause = "Nonexistent Physical Address"; break;
+	case BUS_OBJERR: cause = "Object Error (Hardware)"; break;
+	default: cause = "Unknown";
+	}
 
-    std::printf("\n\n******************** Bus Error ********************\n\n");
-    std::printf("Faulting address: 0x%p\nCause: %s (%d)\n", info->si_addr, cause, info->si_code);
+	std::printf("\n\n******************** Bus Error ********************\n\n");
+	std::printf("Faulting address: 0x%p\nCause: %s (%d)\n", info->si_addr, cause, info->si_code);
 
-    std::abort();
+	std::abort();
 }
 
 static void handleSegfault(int /*signal*/, siginfo_t *info, void * /*context*/)
 {
-    const char *cause;
-    switch (info->si_code) {
-    case SEGV_ACCERR: cause = "Access Permissions Error";  break;
-    case SEGV_MAPERR: cause = "Map Error"; break;
-    default: cause = "Unknown";
-    }
+	const char *cause;
+	switch (info->si_code) {
+	case SEGV_ACCERR: cause = "Access Permissions Error";  break;
+	case SEGV_MAPERR: cause = "Map Error"; break;
+	default: cause = "Unknown";
+	}
 
 	std::printf("\n\n******************** Segmentation Fault ********************\n\n");
 	std::printf("Faulting address: 0x%p\nCause: %s (%d)\n", info->si_addr, cause, info->si_code);
@@ -49,85 +49,100 @@ static Action *sigusr2Action = nullptr;
 
 static void handleSignal(int signal, siginfo_t * /*info*/, void * /*context*/)
 {
-    //Get the appropriate action
-    Action *action = nullptr;
-    switch (signal) {
-    case SIGHUP:
-        action = sighupAction;
-        break;
-    case SIGINT:
-        action = sigintAction;
-        break;
-    case SIGUSR1:
-        action = sigusr1Action;
-        break;
-    case SIGUSR2:
-        action = sigusr2Action;
-        break;
-    }
+	//Get the appropriate action
+	Action *action = nullptr;
+	switch (signal) {
+	case SIGHUP:
+		action = sighupAction;
+		break;
+	case SIGINT:
+		action = sigintAction;
+		break;
+	case SIGUSR1:
+		action = sigusr1Action;
+		break;
+	case SIGUSR2:
+		action = sigusr2Action;
+		break;
+	}
 
-    //Run it
-    if (nullptr != action) {
-        action->execute();
-    }
+	//Run it
+	if (nullptr != action) {
+		action->execute();
+	}
 }
 
 bool setupSegfaultHandler()
 {
-    struct sigaction sa;
+	struct sigaction sa;
 
-    std::memset(&sa, 0, sizeof(sa));
-    sa.sa_sigaction = handleSegfault;
-    sa.sa_flags = SA_SIGINFO;
-    if (0 > sigaction(SIGSEGV, &sa, nullptr)) {
-        //TODO: log
-        return false;
-    }
+	//Setup an alternate stack in case these happen because of running out of
+	//stack space
+	stack_t ss;
+	ss.ss_sp = new char[SIGSTKSZ];
+	if (ss.ss_sp == NULL) {
+		return false;
+	}
+	ss.ss_size = SIGSTKSZ;
+	ss.ss_flags = 0;
+	if (sigaltstack(&ss, NULL) == -1) {
+		return false;
+	}
 
-    std::memset(&sa, 0, sizeof(sa));
-    sa.sa_sigaction = handleBusError;
-    sa.sa_flags = SA_SIGINFO;
-    if (0 > sigaction(SIGBUS, &sa, nullptr)) {
-        //TODO: log
-        return false;
-    }
+	//Segfaults
+	std::memset(&sa, 0, sizeof(sa));
+	sa.sa_sigaction = handleSegfault;
+	sa.sa_flags = SA_SIGINFO | SA_ONSTACK;
+	if (0 > sigaction(SIGSEGV, &sa, nullptr)) {
+		//TODO: log
+		return false;
+	}
 
-    return true;
+	//Bus errors
+	std::memset(&sa, 0, sizeof(sa));
+	sa.sa_sigaction = handleBusError;
+	sa.sa_flags = SA_SIGINFO | SA_ONSTACK;
+	if (0 > sigaction(SIGBUS, &sa, nullptr)) {
+		//TODO: log
+		return false;
+	}
+
+	return true;
 }
 
 bool setupSignalHandler(int signal, Action *action)
 {
-    struct sigaction sa;
+	struct sigaction sa;
 
-    //Set the action
-    switch (signal) {
-    case SIGHUP:
-        sighupAction = action;
-        break;
-    case SIGINT:
-        sigintAction = action;
-        break;
-    case SIGUSR1:
-        sigusr1Action = action;
-        break;
-    case SIGUSR2:
-        sigusr2Action = action;
-        break;
-    default:
-        fprintf(stderr, "Cannot setup signal handler for signal %d - only SIGHUP, SIGUSR1 & 2 and SIGINT may be set this way\n", signal);
-        return false;
-    }
+	//Set the action
+	switch (signal) {
+	case SIGHUP:
+		sighupAction = action;
+		break;
+	case SIGINT:
+		sigintAction = action;
+		break;
+	case SIGUSR1:
+		sigusr1Action = action;
+		break;
+	case SIGUSR2:
+		sigusr2Action = action;
+		break;
+	default:
+		fprintf(stderr, "Cannot setup signal handler for signal %d - only SIGHUP, SIGUSR1 & 2 and SIGINT may be set this way\n", signal);
+		return false;
+	}
 
-    //Register the handler
-    std::memset(&sa, 0, sizeof(sa));
-    sa.sa_sigaction = handleSignal;
-    sa.sa_flags = SA_SIGINFO;
-    if (0 > sigaction(signal, &sa, nullptr)) {
-        //TODO: log
-        return false;
-    }
+	//Register the handler
+	std::memset(&sa, 0, sizeof(sa));
+	sa.sa_sigaction = handleSignal;
+	sa.sa_flags = SA_SIGINFO;
+	if (0 > sigaction(signal, &sa, nullptr)) {
+		//TODO: log
+		return false;
+	}
 
-    return true;
+	return true;
 }
 
 }

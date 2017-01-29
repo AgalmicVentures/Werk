@@ -83,11 +83,11 @@ execution to the appropriate `Command` instance. Command managers optionally
 start with a set of default, standard commands.
 
 Built-in commands include:
-* `EchoCommand`: Logs the arguments at a certain log level.
-* `HelpCommand`: Logs help for all other registered commands.
-* `NullCommand`: Does nothing (useful as a placeholder for testing).
-* `ReloadConfigCommand`: Flags a configuration to be reloaded.
-* `QuitCommand`: Quits the program cleanly.
+* `echo`, `warning`, `error` (`EchoCommand`): Logs the arguments at a certain
+log level.
+* `null` (`NullCommand`): Does nothing (useful as a placeholder for testing).
+* `?`, `help`: Logs information about commands.
+* `version`: Logs the version of Werk the application is running.
 
 A `CommandAction` helper class allows a `Command` to be run whenever an `Action`
 is needed, opening up many opportunities for connecting components.
@@ -111,10 +111,14 @@ It has the following configuration options:
 comma-separated list of other configs to load. Default none.
 * `Application.LogPath`: Path to the actual log file. If not present or cannot
 be opened, logs will go to stderr. Required.
+* `Application.InstanceID`: ID of this instance of the application, for audit
+trail purposes.
 * `Application.ProfilesPath`: Path to profiling information JSON, written on
 shutdown. Default none.
 * `Application.BackgroundFrequencyNs`:  The frequency of the background thread,
 in nanoseconds. Default 10ms.
+* `Application.Debug`: Boolean indicating whether the application is in debug
+mode (causing it to output additional information). Default false.
 * `Application.Simulation`: Boolean indicating whether the application is a
 simulation. Default false.
 * `Application.RealTime`: Boolean indicating whether the application is running
@@ -125,6 +129,13 @@ run on startup.
 run on shutdown.
 * `Application.IpcConsoleName`: The name of the IPC queue used for a console.
 Default none.
+
+The application adds additional default commands:
+* `app`: Logs information about the high level state of the application.
+* `bg`: Logs information about background tasks.
+* `logs`: Logs information about what logs are available.
+* `reload`: Reloads the configuration.
+* `quit`: Quits the application cleanly.
 
 On shutdown it runs shutdown commands, then shutdown actions which may be
 registered by any component, ensuring a clean shutdown.

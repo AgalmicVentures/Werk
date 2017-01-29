@@ -7,6 +7,7 @@
 
 #include "Werk/Logging/Log.hpp"
 #include "Werk/Logging/Loggable.hpp"
+#include "Werk/Version.hpp"
 
 #include "Command.hpp"
 #include "EchoCommand.hpp"
@@ -32,6 +33,10 @@ public:
 			_commands["echo"] = new EchoCommand(log);
 			_commands["error"] = new EchoCommand(log, LogLevel::ERROR);
 			_commands["warning"] = new EchoCommand(log, LogLevel::WARNING);
+
+			_commands["version"] = new ActionCommand(
+				new LogAction("LogVersion", new StringLoggable(std::string("Version: ") + getVersion()), log),
+				"Logs the version of Werk underlying the application.");
 		}
 	}
 

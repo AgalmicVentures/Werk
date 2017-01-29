@@ -2,6 +2,7 @@
 def build(bld):
 	#Main library
 	bld.stlib(
+		defines = ['WERK_VERSION=\"%s\"' % bld.env.VERSION],
 		source = bld.path.ant_glob('Werk/**/*.cpp', excl=[]),
 		target = '../lib/Werk',
 		name   = 'Werk',

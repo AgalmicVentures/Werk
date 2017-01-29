@@ -11,6 +11,8 @@ VERSION = '1.0'
 top = '.'
 out = 'build'
 
+versionCommand = 'git rev-parse HEAD'.split(' ')
+
 #################### Helpers ####################
 
 stars = '*' * 20
@@ -106,6 +108,19 @@ def configure(ctx):
 	Logs.info('Configured.')
 
 def build(ctx):
+	#Called when the dependency tree needs to be computed, not only 'build'
+	#(e.g. it also is called for 'clean').
+
+	#Check the version immediately before the build happens
+	import subprocess
+	try:
+		version = subprocess.check_output(versionCommand).strip()
+		Logs.info('Building version %s' % version)
+	except subprocess.CalledProcessError:
+		version = 'NotInGit'
+		Logs.warn('Building vout of version control, so no version string is available')
+	ctx.env.VERSION = version
+
 	ctx.add_pre_fun(_preBuild)
 	ctx.add_post_fun(_postBuild)
 

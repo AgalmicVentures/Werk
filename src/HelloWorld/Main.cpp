@@ -6,6 +6,7 @@
 #include "Werk/Application/ApplicationContext.hpp"
 #include "Werk/Logging/Loggable.hpp"
 #include "Werk/Math/SummaryStatistics.hpp"
+#include "Werk/Threading/Timer.hpp"
 
 class ShutdownAction : public werk::Action
 {
@@ -22,6 +23,12 @@ int main()
 	//Create the application context with a blank path to redirect to stdout
 	werk::ApplicationContext context("src/HelloWorld/Test.ini");
 
+	werk::StringLoggable sl("Checking in...");
+	werk::Timer timer("Timer", &context.backgroundThread().backgroundClock(),
+		new werk::LogAction("TimerLog", &sl, context.log()),
+		60l * 1000 * 1000 * 1000);
+	context.backgroundThread().addTask(&timer);
+
 	werk::SummaryStatistics<double> s;
 	s.sample(5.0);
 	s.sample(1.0);
@@ -30,9 +37,6 @@ int main()
 		s.count(), s.average(), s.stddev());
 
 	context.commandManager()->execute("help");
-
-	werk::StringLoggable sl("This is a StringLoggable test...");
-	sl.logTo(context.log());
 
 	context.shutdownActions().push_back(new ShutdownAction("Shutdown", context.log()));
 

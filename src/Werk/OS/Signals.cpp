@@ -18,8 +18,6 @@ static void handleBusError(int /*signal*/, siginfo_t *info, void * /*context*/)
 	case BUS_ADRALN: cause = "BUS_ADRALN - Incorrect Memory Alignment";  break;
 	case BUS_ADRERR: cause = "BUS_ADRERR - Nonexistent Physical Address"; break;
 	case BUS_OBJERR: cause = "BUS_OBJERR - Object Error (Hardware)"; break;
-	case BUS_MCEERR_AR: cause = "BUS_MCEERR_AR - Error on machine check, required action (Hardware)"; break;
-	case BUS_MCEERR_AO: cause = "BUS_MCEERR_AO - Error on machine check, optional action (Hardware)"; break;
 	default: cause = "Unknown";
 	}
 

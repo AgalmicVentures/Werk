@@ -15,9 +15,11 @@ static void handleBusError(int /*signal*/, siginfo_t *info, void * /*context*/)
 {
 	const char *cause;
 	switch (info->si_code) {
-	case BUS_ADRALN: cause = "Incorrect Memory Alignment";  break;
-	case BUS_ADRERR: cause = "Nonexistent Physical Address"; break;
-	case BUS_OBJERR: cause = "Object Error (Hardware)"; break;
+	case BUS_ADRALN: cause = "BUS_ADRALN - Incorrect Memory Alignment";  break;
+	case BUS_ADRERR: cause = "BUS_ADRERR - Nonexistent Physical Address"; break;
+	case BUS_OBJERR: cause = "BUS_OBJERR - Object Error (Hardware)"; break;
+	case BUS_MCEERR_AR: cause = "BUS_MCEERR_AR - Error on machine check, required action (Hardware)"; break;
+	case BUS_MCEERR_AO: cause = "BUS_MCEERR_AO - Error on machine check, optional action (Hardware)"; break;
 	default: cause = "Unknown";
 	}
 
@@ -31,8 +33,10 @@ static void handleSegfault(int /*signal*/, siginfo_t *info, void * /*context*/)
 {
 	const char *cause;
 	switch (info->si_code) {
-	case SEGV_ACCERR: cause = "Access Permissions Error";  break;
-	case SEGV_MAPERR: cause = "Map Error"; break;
+	case SEGV_ACCERR: cause = "SEGV_ACCERR - Access Permissions Error";  break;
+	case SEGV_BNDERR: cause = "SEGV_BNDERR - Bounds Check Error"; break;
+	case SEGV_MAPERR: cause = "SEGV_MAPERR - Map Error"; break;
+	case SEGV_PKUERR: cause = "SEGV_PKUERR - Memory Protection Key Error"; break;
 	default: cause = "Unknown";
 	}
 
@@ -94,7 +98,6 @@ bool setupSegfaultHandler()
 	sa.sa_sigaction = handleSegfault;
 	sa.sa_flags = SA_SIGINFO | SA_ONSTACK;
 	if (0 > sigaction(SIGSEGV, &sa, nullptr)) {
-		//TODO: log
 		return false;
 	}
 
@@ -103,7 +106,6 @@ bool setupSegfaultHandler()
 	sa.sa_sigaction = handleBusError;
 	sa.sa_flags = SA_SIGINFO | SA_ONSTACK;
 	if (0 > sigaction(SIGBUS, &sa, nullptr)) {
-		//TODO: log
 		return false;
 	}
 
@@ -138,7 +140,6 @@ bool setupSignalHandler(int signal, Action *action)
 	sa.sa_sigaction = handleSignal;
 	sa.sa_flags = SA_SIGINFO;
 	if (0 > sigaction(signal, &sa, nullptr)) {
-		//TODO: log
 		return false;
 	}
 

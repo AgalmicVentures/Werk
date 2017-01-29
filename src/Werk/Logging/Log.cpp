@@ -1,5 +1,5 @@
 
-#include "LogMessage.hpp"
+#include "Log.hpp"
 
 namespace werk {
 

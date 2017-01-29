@@ -4,25 +4,9 @@
 #include <cstdint>
 #include <cstring>
 
-namespace werk {
+#include "Log.hpp"
 
-/**
- * Level of the log, ordered to allow simple filtering.
- */
-enum class LogLevel
-{
-	CRITICAL,
-	ERROR,
-	WARNING,
-	ALERT,
-	SUCCESS,
-	CONFIG,
-	INFO,
-	DETAIL,
-	JSON,
-	TRACE
-};
-extern const char *logLevels[];
+namespace werk {
 
 /**
  * Log message container for passing between threads.

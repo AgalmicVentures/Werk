@@ -6,6 +6,7 @@
 #include <cstdio>
 
 #include "Log.hpp"
+#include "LogMessage.hpp"
 
 #include "Werk/Utility/Action.hpp"
 

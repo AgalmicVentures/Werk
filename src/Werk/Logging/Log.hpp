@@ -6,12 +6,28 @@
 #include <cstdio>
 #include <string>
 
-#include "LogMessage.hpp"
-
 #include "Werk/OS/Time.hpp"
 #include "Werk/Utility/NamedObject.hpp"
 
 namespace werk {
+
+/**
+ * Level of the log, ordered to allow simple filtering.
+ */
+enum class LogLevel
+{
+	CRITICAL,
+	ERROR,
+	WARNING,
+	ALERT,
+	SUCCESS,
+	CONFIG,
+	INFO,
+	DETAIL,
+	JSON,
+	TRACE
+};
+extern const char *logLevels[];
 
 /**
  * Top level abstract log class which allows the logging backend to accomodate different

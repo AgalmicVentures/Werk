@@ -32,7 +32,7 @@ hello_world_job:
     - build/bin/HelloWorld &
     - export HELLO_PID=$!
     - sleep 5
-    - kill $HELLO_PID
+    - kill -INT $HELLO_PID
     - cat profiles.json
   dependencies:
     - build_job

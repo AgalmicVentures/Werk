@@ -8,8 +8,6 @@
 namespace werk
 {
 
-class Log;
-
 /**
  * Loggable interface, for objects that can be logged.
  */

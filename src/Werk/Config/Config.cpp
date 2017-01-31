@@ -101,12 +101,13 @@ double Config::getDouble(const std::string &key, double defaultValue, const char
 		return defaultValue;
 	}
 
-	_log->log(LogLevel::CONFIG, "<Config> [%s] = %s%s%s",
+	double value = std::stod(stringValue);
+	_log->log(LogLevel::CONFIG, "<Config> [%s] = %s (%f)%s%s",
 		key.c_str(),
-		stringValue,
+		stringValue, value,
 		help == nullptr ? "" : " -- ",
 		help == nullptr ? "" : help);
-	return stringValue != nullptr ? std::stod(stringValue) : defaultValue;
+	return value;
 }
 
 int64_t Config::getInt64(const std::string &key, int64_t defaultValue, const char *help) const
@@ -121,12 +122,13 @@ int64_t Config::getInt64(const std::string &key, int64_t defaultValue, const cha
 		return defaultValue;
 	}
 
-	_log->log(LogLevel::CONFIG, "<Config> [%s] = %s%s%s",
+	int64_t value = std::stoll(stringValue);
+	_log->log(LogLevel::CONFIG, "<Config> [%s] = %s (%" PRIi64 ")%s%s",
 		key.c_str(),
-		stringValue,
+		stringValue, value,
 		help == nullptr ? "" : " -- ",
 		help == nullptr ? "" : help);
-	return stringValue != nullptr ? std::stoll(stringValue) : defaultValue;
+	return value;
 }
 
 uint64_t Config::getUint64(const std::string &key, uint64_t defaultValue, const char *help) const
@@ -141,12 +143,13 @@ uint64_t Config::getUint64(const std::string &key, uint64_t defaultValue, const 
 		return defaultValue;
 	}
 
-	_log->log(LogLevel::CONFIG, "<Config> [%s] = %s%s%s",
+	uint64_t value = std::stoull(stringValue);
+	_log->log(LogLevel::CONFIG, "<Config> [%s] = %s (%" PRIu64 ")%s%s",
 		key.c_str(),
-		stringValue,
+		stringValue, value,
 		help == nullptr ? "" : " -- ",
 		help == nullptr ? "" : help);
-	return stringValue != nullptr ? std::stoull(stringValue) : defaultValue;
+	return value;
 }
 
 uint64_t Config::getStorageAmount(const std::string &key, uint64_t defaultValue, const char *help) const

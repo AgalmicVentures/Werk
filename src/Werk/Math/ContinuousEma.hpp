@@ -40,12 +40,7 @@ public:
 			//Calculating 1 - alpha since after 3 half lives, 1/8 should be left of the old value and 7/8 of the value should be the new
 			//Intentionally remove the negation by swapping the subtraction
 			double logOneMinusAlpha = _factor * (_lastIndex - index);
-
-			//If this is updated frequently, a 4th order taylor series is within <1% of the
-			//actual value (logAlpha is <0.1), yielding a 5x speedup when in Horner form.
-			//double oneMinusAlpha = std::exp(logOneMinusAlpha);
-			double oneMinusAlpha = 1 + logOneMinusAlpha * (1 + logOneMinusAlpha / 2 * (1 + logOneMinusAlpha / 3 * (1 + logOneMinusAlpha / 4)));
-
+			double oneMinusAlpha = std::exp(logOneMinusAlpha);
 			_value = (1.0 - oneMinusAlpha) * sample + oneMinusAlpha * _value;
 		}
 		_lastIndex = index;

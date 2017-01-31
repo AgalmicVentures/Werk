@@ -77,7 +77,7 @@ ApplicationContext::ApplicationContext(const std::string &configPath)
 	/********** Configure Existing Components Now That Log Is Setup **********/
 
 	//Background thread
-	uint64_t backgroundThreadFrequencyNs = _config->getUint64("Application.BackgroundFrequencyNs", _backgroundThread.frequencyNs());
+	uint64_t backgroundThreadFrequencyNs = _config->getTimeAmount("Application.BackgroundFrequencyNs", _backgroundThread.frequencyNs());
 	_backgroundThread.setFrequencyNs(backgroundThreadFrequencyNs);
 
 	//Set the instance ID
@@ -220,7 +220,7 @@ void ApplicationContext::shutdown()
 void ApplicationContext::run()
 {
 	//Setup the background watchdog timer
-	uint64_t watchdogInterval = _config->getUint64("Application.WatchdogInterval", 0, "Interval of the main thread watchdog (ns)");
+	uint64_t watchdogInterval = _config->getTimeAmount("Application.WatchdogInterval", 0, "Interval of the main thread watchdog (ns)");
 	uint64_t watchdogAllowedMisses = _config->getUint64("Application.WatchdogAllowedMisses", 1, "Number of times the main thread can miss the watchdog");
 	//TODO: configurable watchdog action (and also the threading on this action's logging is wrong
 	Watchdog *watchdog = new Watchdog("Watchdog", &_backgroundThread.backgroundClock(),

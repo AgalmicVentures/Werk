@@ -24,7 +24,7 @@ void BackgroundTask::execute()
 
 void BackgroundThread::logTo(Log *log) const
 {
-	log->log(LogLevel::INFO, "<BackgroundThread> Frequency (ns): %" PRIu64, _frequencyNs);
+	log->log(LogLevel::INFO, "<BackgroundThread> Frequency (ns): %" PRIu64, _intervalNs);
 	log->log(LogLevel::INFO, "<BackgroundThread> Tasks (%zu):", _tasks.size());
 	for (BackgroundTask *task : _tasks) {
 		log->log(LogLevel::INFO, "  %24s    %8s    Count=%" PRIu64,
@@ -54,10 +54,10 @@ void BackgroundThread::backgroundThread()
 			break;
 		}
 
-		//Delay, updating the frequency since it may be updated on another thread
+		//Delay, updating the interval since it may be updated on another thread
 		const uint64_t nanosPerSecond = 1000000000l;
-		_delay.tv_sec = _frequencyNs / nanosPerSecond;
-		_delay.tv_nsec = _frequencyNs % nanosPerSecond;
+		_delay.tv_sec = _intervalNs / nanosPerSecond;
+		_delay.tv_nsec = _intervalNs % nanosPerSecond;
 		nanosleep(&_delay, nullptr);
 	}
 }

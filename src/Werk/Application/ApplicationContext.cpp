@@ -77,8 +77,8 @@ ApplicationContext::ApplicationContext(const std::string &configPath)
 	/********** Configure Existing Components Now That Log Is Setup **********/
 
 	//Background thread
-	uint64_t backgroundThreadFrequencyNs = _config->getTimeAmount("Application.BackgroundFrequencyNs", _backgroundThread.frequencyNs());
-	_backgroundThread.setFrequencyNs(backgroundThreadFrequencyNs);
+	uint64_t backgroundThreadIntervalNs = _config->getTimeAmount("Application.BackgroundThreadInterval", _backgroundThread.intervalNs());
+	_backgroundThread.setIntervalNs(backgroundThreadIntervalNs);
 
 	//Set the instance ID
 	_instanceId = _config->getString("Application.InstanceID", "", "ID of this instance of the application");
@@ -228,7 +228,9 @@ void ApplicationContext::run()
 		watchdogInterval, watchdogAllowedMisses);
 
 	if (0 != watchdogInterval) {
-		//TODO: check against background thread frequency
+		if (watchdogInterval <= 2 * _backgroundThread.intervalNs()) {
+			_log->logRaw(LogLevel::ERROR, "Watchdog interval is less than double background thread interval.");
+		}
 		_backgroundThread.addTask(watchdog);
 	}
 

@@ -51,8 +51,8 @@ class BackgroundThread : public Loggable
 {
 public:
 
-	BackgroundThread(ProfileManager *profileManager, uint64_t frequencyNs=10ul * 1000 * 1000) :
-		 _profileManager(profileManager), _frequencyNs(frequencyNs)
+	BackgroundThread(ProfileManager *profileManager, uint64_t intervalNs=10ul * 1000 * 1000) :
+		 _profileManager(profileManager), _intervalNs(intervalNs)
 	{
 		_thread = std::thread(&BackgroundThread::backgroundThread, this);
 	}
@@ -60,8 +60,8 @@ public:
 
 	bool stopped() const { return _stopped; }
 
-	uint64_t frequencyNs() const { return _frequencyNs; }
-	void setFrequencyNs(uint64_t frequencyNs) { _frequencyNs = frequencyNs; }
+	uint64_t intervalNs() const { return _intervalNs; }
+	void setIntervalNs(uint64_t intervalNs) { _intervalNs = intervalNs; }
 
 	void logTo(Log *log) const override;
 
@@ -96,7 +96,7 @@ private:
 	bool _stopped = false;
 
 	//Shared state
-	volatile uint64_t _frequencyNs;
+	volatile uint64_t _intervalNs;
 	volatile bool _running = true;
 
 	//Background thread state & method

@@ -5,6 +5,7 @@
 #include <cstdio>
 #include <signal.h>
 
+#include "Werk/Commands/WriteCommandLogAction.hpp"
 #include "Werk/Console/ConsoleCommandReceiver.hpp"
 #include "Werk/Console/IpcConsoleServer.hpp"
 #include "Werk/OS/Signals.hpp"
@@ -100,7 +101,7 @@ ApplicationContext::ApplicationContext(const std::string &configPath)
 
 	/********** Command Manager **********/
 
-	_commandManager = new CommandManager(_log);
+	_commandManager = new CommandManager(_backgroundThread.backgroundClock(), _log);
 
 	_commandManager->add("app", new ActionCommand(
 		new LogAction("LogApplicationContext", this, _log),
@@ -120,6 +121,12 @@ ApplicationContext::ApplicationContext(const std::string &configPath)
 		quitAction,
 		"Quits the application cleanly."));
 	_log->logRaw(LogLevel::SUCCESS, "<CommandManager> Initialized.");
+
+	const char *commandLogPath = _config->getString("Application.CommandLogPath");
+	if (nullptr != commandLogPath) {
+		_log->log(LogLevel::INFO, "Writing command log to %s on shutdown.", commandLogPath);
+		_shutdownActions.push_back(new WriteCommandLogAction("WriteCommandLog", _log, *_commandManager, commandLogPath));
+	}
 
 	const char *profilesPath = _config->getString("Application.ProfilesPath");
 	if (nullptr != profilesPath) {
@@ -176,6 +183,7 @@ ApplicationContext::~ApplicationContext()
 
 void ApplicationContext::logTo(Log *log) const
 {
+	log->log(LogLevel::INFO, "<Context>      Debug: %s", _debug ? "Yes" : "No");
 	log->log(LogLevel::INFO, "<Context>  Real Time: %s", _realTime ? "Yes" : "No");
 	log->log(LogLevel::INFO, "<Context> Simulation: %s", _simulation ? "Yes" : "No");
 }

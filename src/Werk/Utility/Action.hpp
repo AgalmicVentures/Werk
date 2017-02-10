@@ -35,7 +35,8 @@ public:
 
 /**
  * An action that increments a counter every time it is executed. Very useful
- * for testing.
+ * for testing, and appropriate where an entirely separate `Counter` would be
+ * inconvenient.
  */
 template <typename T=uint64_t>
 class CounterAction : public Action

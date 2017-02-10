@@ -53,4 +53,20 @@ private:
 	T _count = 0;
 };
 
+/**
+ * An action that resets a component (many components have a `void reset()` method).
+ */
+template <typename T>
+class ResetAction : public Action
+{
+public:
+	ResetAction(const std::string &name, T &object) :
+		Action(name), _object(object) { }
+
+	void execute() override { _object.reset(); }
+
+private:
+	T &_object;
+};
+
 }

@@ -26,23 +26,7 @@ private:
 };
 
 /**
- * An action that resets a `Latch`.
- */
-template <typename T=bool>
-class ResetLatchAction : public Action
-{
-public:
-	ResetLatchAction(const std::string &name, Latch<T> &latch) :
-		Action(name), _latch(latch) { }
-
-	void execute() override { _latch.reset(); }
-
-private:
-	Latch<T> &_latch;
-};
-
-/**
- * An action that sets a `Latch`.
+ * An action that sets a `Latch`. To reset, use a generic `ResetAction`.
  */
 template <typename T=bool>
 class SetLatchAction : public Action

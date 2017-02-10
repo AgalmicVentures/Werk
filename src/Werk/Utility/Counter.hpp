@@ -59,28 +59,7 @@ private:
 };
 
 /**
- * An action that resets a `Counter`.
- */
-template <
-	typename T=uint64_t,
-	T initialValue=0,
-	T incrementValue=1,
-	CounterMode mode=CounterMode::ADD
->
-class ResetCounterAction : public Action
-{
-public:
-	ResetCounterAction(const std::string &name, Counter<T, initialValue, incrementValue, mode> &counter) :
-		Action(name), _counter(counter) { }
-
-	void execute() override { _counter.reset(); }
-
-private:
-	Counter<T, initialValue, incrementValue, mode> &_counter;
-};
-
-/**
- * An action that increments a `Counter`.
+ * An action that increments a `Counter`. To reset, use a generic `ResetAction`.
  */
 template <
 	typename T=uint64_t,

@@ -60,11 +60,14 @@ to the `BackgroundThread` upon instantiation.
 Built-in actions include:
 * `ActionQueue`: Queues other `Action`s to be run a single time -- useful for
 queueing actions to be run on another thread.
+* `ConditionalAction`: Executes another `Action` only if a `Latch` is set.
 * `CounterAction`: Counts the number of times the action is executed.
-* `LatchAction`: Sets a flag executed.
+* `IncrementCounterAction`: Increments a `Counter` (appropriate when a more
+complex counter is needed than the simple one in `CounterAction`).
 * `NullAction`: Does nothing (useful as a placeholder or for testing).
 * `ResetAction`: Resets any component that has a `void reset()` method (`Latch`,
 `Counter`, `Watchdog`, etc.).
+* `SetLatchAction`: Sets a flag.
 * `Watchdog`: Watches a flag and executes another `Action` if it does not get
 before a predefined interval expires. This allows for deadlock detection and
 many other behaviors to be run on the background thread.
@@ -109,7 +112,8 @@ Althought Werk does not force the use of any particular threading model or set
 of components, it does offer a default combination of the most common components
 via the `ApplicationContext` class. Bootstrapping from a background thread and a
 logger that goes to `stdout`, it loads configs, creates a file log, sets up
-subsystems like commands and profiling, then runs some startup commands.
+subsystems like commands and profiling, then runs some startup commands. An
+optional main loop may then be run.
 
 It has the following configuration options:
 * `Application.ConfigPaths`: Only available in the primary config, this is a
@@ -120,7 +124,7 @@ be opened, logs will go to stderr. Required.
 trail purposes.
 * `Application.ProfilesPath`: Path to profiling information JSON, written on
 shutdown. Default none.
-* `Application.BackgroundFrequencyNs`:  The frequency of the background thread,
+* `Application.BackgroundThreadInterval`:  The interval of the background thread,
 in nanoseconds. Default 10ms.
 * `Application.Debug`: Boolean indicating whether the application is in debug
 mode (causing it to output additional information). Default false.
@@ -134,6 +138,9 @@ run on startup.
 run on shutdown.
 * `Application.IpcConsoleName`: The name of the IPC queue used for a console.
 Default none.
+* `Application.WatchdogInterval`: The interval of the foreground thread watchdog.
+* `Application.WatchdogAllowedMisses`: The number of times the foreground thread
+can miss resetting the application watchdog.
 
 The application adds additional default commands:
 * `app`: Logs information about the high level state of the application.

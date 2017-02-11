@@ -58,9 +58,13 @@ background actions are automatically profiled by providing a `ProfileManager`
 to the `BackgroundThread` upon instantiation.
 
 Built-in actions include:
+* `ActionQueue`: Queues other `Action`s to be run a single time -- useful for
+queueing actions to be run on another thread.
 * `CounterAction`: Counts the number of times the action is executed.
 * `LatchAction`: Sets a flag executed.
 * `NullAction`: Does nothing (useful as a placeholder or for testing).
+* `ResetAction`: Resets any component that has a `void reset()` method (`Latch`,
+`Counter`, `Watchdog`, etc.).
 * `Watchdog`: Watches a flag and executes another `Action` if it does not get
 before a predefined interval expires. This allows for deadlock detection and
 many other behaviors to be run on the background thread.
@@ -88,6 +92,7 @@ log level.
 * `null` (`NullCommand`): Does nothing (useful as a placeholder for testing).
 * `?`, `help`: Logs information about commands.
 * `version`: Logs the version of Werk the application is running.
+* `redo`: Runs the last command again.
 
 A `CommandAction` helper class allows a `Command` to be run whenever an `Action`
 is needed, opening up many opportunities for connecting components.

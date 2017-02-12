@@ -19,6 +19,7 @@ class Action : public NamedObject
 {
 public:
 	Action(const std::string &name) : NamedObject(name) { }
+	virtual ~Action() { }
 
 	virtual void execute() = 0;
 };

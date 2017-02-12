@@ -25,6 +25,7 @@ BOOST_AUTO_TEST_CASE(TestDefaultCommands)
 	action->execute();
 	action->execute();
     BOOST_REQUIRE_EQUAL(commandManager.commandHistory().size(), 3);
+	delete action;
 
 	BOOST_REQUIRE(commandManager.newCommandAction("missingAction", "asdf") == nullptr);
 }

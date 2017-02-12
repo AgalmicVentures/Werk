@@ -17,6 +17,7 @@ class Command
 public:
 
 	Command(const std::string &help) : _help(help) { }
+	virtual ~Command() { }
 
 	const std::string &help() const { return _help; }
 

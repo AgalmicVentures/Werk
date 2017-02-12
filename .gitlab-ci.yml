@@ -2,6 +2,7 @@
 stages:
   - build
   - unit_test
+  - valgrind_test
   - functional_test
 
 build_job:
@@ -20,6 +21,15 @@ unit_test_job:
   stage: unit_test
   script:
     - ./waf test
+  dependencies:
+    - build_job
+  only:
+    - master
+
+valgrind_test_job:
+  stage: valgrind_test
+  script:
+    - ./waf valgrind
   dependencies:
     - build_job
   only:

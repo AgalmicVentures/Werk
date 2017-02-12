@@ -95,8 +95,8 @@ def configure(ctx):
 	#Setup libraries
 	ctx.env.LIB = [
 		'pthread',
-		'rt',
 	]
+
 	if isMac:
 		#Find a version of boost installed by brew
 		boostRootPath = '/usr/local/Cellar/boost'
@@ -104,6 +104,10 @@ def configure(ctx):
 		boostPath = os.path.join(boostRootPath, boostVersion)
 		boostLibPath = os.path.join(boostPath, 'lib')
 		ctx.env.LIBPATH.append(boostLibPath)
+	else:
+		ctx.env.LIB += [
+			'rt',
+		]
 
 	Logs.info('Configured.')
 
@@ -127,7 +131,7 @@ def build(ctx):
 	ctx.recurse('src')
 	#TODO: ctx.recurse('test')
 
-def test(ctx):
+def test(ctx, valgrind=False):
 	stars = '*' * 30
 	Logs.info('%s Running Unit Tests %s' % (stars, stars))
 
@@ -135,9 +139,15 @@ def test(ctx):
 	if not os.path.exists(binary):
 		raise RuntimeError('Missing binary: %s' % binary)
 
+	if valgrind:
+		binary = 'valgrind --error-exitcode=99 ' + binary
+
 	exitCode = os.system(binary)
 	if exitCode != 0:
 		raise RuntimeError('Non-zero return: %s -> %d' % (binary, exitCode))
+
+def valgrind(ctx):
+	test(ctx, valgrind=True)
 
 def profile(ctx):
 	stars = '*' * 30

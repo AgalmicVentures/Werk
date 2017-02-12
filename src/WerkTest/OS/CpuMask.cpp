@@ -11,4 +11,13 @@ BOOST_AUTO_TEST_CASE(TestGetProcessorCount)
 	BOOST_REQUIRE(processorCount >= 1);
 }
 
+BOOST_AUTO_TEST_CASE(TestCpuMask)
+{
+	werk::CpuMask mask(werk::getProcessorCount());
+	mask.set(0);
+	mask.set(1);
+
+	mask.apply();
+}
+
 BOOST_AUTO_TEST_SUITE_END()

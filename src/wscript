@@ -22,6 +22,13 @@ def build(bld):
 		use    = ['Werk'],
 	)
 
+	#Version
+	bld.program(
+		source = 'WerkVersion/Main.cpp',
+		target = '../bin/WerkVersion',
+		use    = ['Werk'],
+	)
+
 	#Hello world
 	bld.program(
 		source = 'HelloWorld/Main.cpp',

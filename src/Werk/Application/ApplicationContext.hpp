@@ -40,6 +40,7 @@ public:
 	void logTo(Log *log) const override;
 
 	//Configuration
+	size_t processorCount() const { return _processorCount; }
 	const std::string &instanceId() { return _instanceId; }
 	bool isDebug() const { return _debug; }
 	bool isRealTime() const { return _realTime; }
@@ -76,6 +77,7 @@ public:
 	const CommandManager *commandManager() const { return _commandManager; }
 
 private:
+	size_t _processorCount;
 	std::string _instanceId;
 	bool _debug;
 	bool _realTime;

@@ -8,6 +8,7 @@
 #include "Werk/Commands/WriteCommandLogAction.hpp"
 #include "Werk/Console/ConsoleCommandReceiver.hpp"
 #include "Werk/Console/IpcConsoleServer.hpp"
+#include "Werk/OS/CpuMask.hpp"
 #include "Werk/OS/Signals.hpp"
 #include "Werk/Profiling/WriteProfilesAction.hpp"
 #include "Werk/Threading/Watchdog.hpp"
@@ -80,6 +81,10 @@ ApplicationContext::ApplicationContext(const std::string &configPath)
 	//Background thread
 	uint64_t backgroundThreadIntervalNs = _config->getTimeAmount("Application.BackgroundThreadInterval", _backgroundThread.intervalNs());
 	_backgroundThread.setIntervalNs(backgroundThreadIntervalNs);
+
+	//Detect processors
+	_processorCount = getProcessorCount();
+	_log->log(LogLevel::INFO, "Detected %zu CPU cores.", _processorCount);
 
 	//Set the instance ID
 	_instanceId = _config->getString("Application.InstanceID", "", "ID of this instance of the application");

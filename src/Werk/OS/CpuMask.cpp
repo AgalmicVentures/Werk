@@ -1,8 +1,6 @@
 
 #include "CpuMask.hpp"
 
-#define _GNU_SOURCE
-#include <sched.h>
 #include <unistd.h>
 
 namespace werk

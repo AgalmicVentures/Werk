@@ -2,8 +2,11 @@
 #pragma once
 
 #include <cstddef>
+#include <sched.h>
 
-struct cpu_set_t;
+#ifdef __MACH__
+	struct cpu_set_t;
+#endif
 
 namespace werk
 {

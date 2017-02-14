@@ -23,7 +23,7 @@ CpuMask::CpuMask(size_t processorCount) : _processorCount(processorCount)
 CpuMask::~CpuMask()
 {
 #ifndef __MACH__
-	CPU_FREE(msk->mask);
+	CPU_FREE(_mask);
 #endif
 }
 

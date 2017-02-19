@@ -49,13 +49,8 @@ public:
 	}
 
 	void execute() override {
-		//Nothing to do if no tasks run
-		if (_tasks.size() == 0) {
-			return;
-		}
-
 		uint64_t time = _clock->time();
-		do {
+		while (_tasks.size() > 0) {
 			//Get the next task
 			auto i = _tasks.begin();
 			uint64_t nextTime = i->first;
@@ -74,7 +69,7 @@ public:
 			} else {
 				delete task;
 			}
-		} while (true); //Exit condition in middle
+		}
 	}
 
 protected:

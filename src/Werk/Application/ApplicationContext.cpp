@@ -163,6 +163,7 @@ ApplicationContext::ApplicationContext(const std::string &configPath)
 
 	//Configure scheduled commands
 	//TODO: consider defering this until later, once the user has setup everything they need?
+	/*
 	const char *scheduledCommandsStr = _config->getString("Application.ScheduledCommands");
 	if (nullptr != scheduledCommandsStr) {
 		//Split and add each command
@@ -175,6 +176,7 @@ ApplicationContext::ApplicationContext(const std::string &configPath)
 			//TODO: schedule it
 		}
 	}
+	*/
 
 	/********** Finish Initialization **********/
 

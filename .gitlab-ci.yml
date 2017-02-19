@@ -2,7 +2,6 @@
 stages:
   - build
   - unit_test
-  - valgrind_unit_test
   - profile
   - functional_test
 
@@ -28,9 +27,9 @@ unit_test_job:
     - master
 
 valgrind_unit_test_job:
-  stage: valgrind_unit_test
+  stage: unit_test
   script:
-    - ./waf valgrind
+    - ./waf test --valgrind
   dependencies:
     - build_job
   only:
@@ -40,6 +39,15 @@ profile_job:
   stage: profile
   script:
     - ./waf profile
+  dependencies:
+    - build_job
+  only:
+    - master
+
+valgrind_profile_job:
+  stage: profile
+  script:
+    - ./waf profile --valgrind
   dependencies:
     - build_job
   only:

@@ -54,6 +54,7 @@ def options(ctx):
 
 	ctx.add_option('-d', '--debug', dest='debug', default=False, action='store_true', help='Debug mode')
 	ctx.add_option('-s', '--symbols', dest='symbols', default=False, action='store_true', help='Debug symbols (on by default in debug mode)')
+	ctx.add_option('--valgrind', action='store_true', help='Enable valgrind for the action if applicable')
 
 	Logs.info('Options loaded.')
 
@@ -131,7 +132,7 @@ def build(ctx):
 	ctx.recurse('src')
 	#TODO: ctx.recurse('test')
 
-def test(ctx, valgrind=False):
+def test(ctx):
 	stars = '*' * 30
 	Logs.info('%s Running Unit Tests %s' % (stars, stars))
 
@@ -139,15 +140,12 @@ def test(ctx, valgrind=False):
 	if not os.path.exists(binary):
 		raise RuntimeError('Missing binary: %s' % binary)
 
-	if valgrind:
+	if ctx.options.valgrind:
 		binary = 'valgrind --error-exitcode=99 ' + binary
 
 	exitCode = os.system(binary)
 	if exitCode != 0:
 		raise RuntimeError('Non-zero return: %s -> %d' % (binary, exitCode))
-
-def valgrind(ctx):
-	test(ctx, valgrind=True)
 
 def profile(ctx):
 	stars = '*' * 30
@@ -156,6 +154,9 @@ def profile(ctx):
 	binary = 'build/test/WerkProfile'
 	if not os.path.exists(binary):
 		raise RuntimeError('Missing binary: %s' % binary)
+
+	if ctx.options.valgrind:
+		binary = 'valgrind --error-exitcode=99 ' + binary
 
 	exitCode = os.system(binary)
 	if exitCode != 0:

@@ -164,10 +164,12 @@ ApplicationContext::ApplicationContext(const std::string &configPath)
 	//Configure scheduled commands
 	//TODO: consider defering this until later, once the user has setup everything they need?
 	const char *scheduledCommandsStr = _config->getString("Application.ScheduledCommands");
-	if (nullptr != startupCommandsStr) {
+	if (nullptr != scheduledCommandsStr) {
 		//Split and add each command
-		boost::split(_startupCommands, startupCommandsStr, boost::is_any_of(";"));
-		for (auto &command : _startupCommands) {
+		std::vector<std::string> scheduledCommands;
+		boost::split(scheduledCommands, scheduledCommandsStr, boost::is_any_of(";"));
+		for (auto &command : scheduledCommands) {
+			(void) command;
 			//TODO: parse the time
 			//TODO: get the command action
 			//TODO: schedule it

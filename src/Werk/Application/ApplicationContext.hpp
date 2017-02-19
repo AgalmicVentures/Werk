@@ -12,8 +12,9 @@
 #include "Werk/Logging/Loggable.hpp"
 #include "Werk/Logging/LogManager.hpp"
 #include "Werk/Profiling/ProfileManager.hpp"
-#include "Werk/Threading/BackgroundThread.hpp"
 #include "Werk/Threading/ActionQueue.hpp"
+#include "Werk/Threading/BackgroundThread.hpp"
+#include "Werk/Threading/Scheduler.hpp"
 #include "Werk/Utility/Latch.hpp"
 
 namespace werk
@@ -101,6 +102,7 @@ private:
 	Config *_config;
 	CommandManager *_commandManager;
 	std::unique_ptr<IpcConsoleServer> _consoleServer;
+	Scheduler *_scheduler;
 };
 
 }

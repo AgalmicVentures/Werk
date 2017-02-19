@@ -24,6 +24,8 @@ ApplicationContext::ApplicationContext(const std::string &configPath)
 
 	//Setup handlers for certain signals
 	setupSegfaultHandler();
+
+	_realTimeClock.setEpochTime();
 	_backgroundThread.addTask(&_backgroundActionQueue);
 
 	/********** Stdout Log **********/
@@ -153,6 +155,25 @@ ApplicationContext::ApplicationContext(const std::string &configPath)
 		}
 	}
 
+	/********** Scheduler **********/
+
+	//TODO: set this up with the simulated clock so it can be used in simulations
+	_scheduler = new Scheduler("Scheduler", &_backgroundThread.backgroundClock());
+	_backgroundThread.addTask(_scheduler);
+
+	//Configure scheduled commands
+	//TODO: consider defering this until later, once the user has setup everything they need?
+	const char *scheduledCommandsStr = _config->getString("Application.ScheduledCommands");
+	if (nullptr != startupCommandsStr) {
+		//Split and add each command
+		boost::split(_startupCommands, startupCommandsStr, boost::is_any_of(";"));
+		for (auto &command : _startupCommands) {
+			//TODO: parse the time
+			//TODO: get the command action
+			//TODO: schedule it
+		}
+	}
+
 	/********** Finish Initialization **********/
 
 	//Setup remaining signals
@@ -249,6 +270,8 @@ void ApplicationContext::run()
 
 	_log->logRaw(LogLevel::ALERT, "Entering main loop...");
 	while (!_quitting.value()) {
+		_realTimeClock.setEpochTime();
+
 		//TODO: run a main loop action
 
 		//Run other queued actions

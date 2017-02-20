@@ -255,7 +255,7 @@ void ApplicationContext::shutdown()
 	_consoleServer.reset();
 }
 
-void ApplicationContext::run()
+void ApplicationContext::run(Action *mainAction)
 {
 	//Setup the background watchdog timer
 	uint64_t watchdogInterval = _config->getTimeAmount("Application.WatchdogInterval", 0, "Interval of the main thread watchdog (ns)");
@@ -276,7 +276,8 @@ void ApplicationContext::run()
 	while (!_quitting.value()) {
 		_realTimeClock.setEpochTime();
 
-		//TODO: run a main loop action
+		//Run the main action
+		mainAction->execute();
 
 		//Run other queued actions
 		_foregroundActionQueue.execute();

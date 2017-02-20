@@ -34,6 +34,8 @@ public:
 
 	void execute() override { }
 };
+//NOTE: Although this shared instance is not const, that's not actually a problem
+extern NullAction NULL_ACTION;
 
 /**
  * An action that increments a counter every time it is executed. Very useful

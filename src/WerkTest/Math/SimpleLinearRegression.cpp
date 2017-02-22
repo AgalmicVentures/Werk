@@ -20,12 +20,14 @@ BOOST_AUTO_TEST_CASE(TestBasic)
 	BOOST_REQUIRE_EQUAL(r.count(), 2);
 	BOOST_REQUIRE_EQUAL(r.beta(), 2.0);
 	BOOST_REQUIRE_EQUAL(r.correlation(), 1.0);
+	BOOST_REQUIRE_EQUAL(r.predict(2.0), 6.0);
 
 	r.sample(5.0, 12.0);
 	BOOST_REQUIRE_EQUAL(r.count(), 3);
 	BOOST_REQUIRE_EQUAL(r.correlation(), 1.0);
 	BOOST_REQUIRE_CLOSE(r.beta(), 2.0, 0.000000001);
 	BOOST_REQUIRE_CLOSE(r.alpha(), 2.0, 0.000000001);
+	BOOST_REQUIRE_CLOSE(r.predict(2.0), 6.0, 0.000000001);
 
 	r.reset();
 	BOOST_REQUIRE_EQUAL(r.count(), 0);

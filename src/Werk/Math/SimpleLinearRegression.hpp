@@ -32,6 +32,11 @@ public:
 		return _y.average() - _x.average() * beta();
 	}
 
+	//Predicts a y value given an x value
+	double predict(double x) {
+		return beta() * (x - _x.average()) + _y.average();
+	}
+
 	void sample(double x, double y) {
 		_x.sample(x);
 		_y.sample(y);

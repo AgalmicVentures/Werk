@@ -36,15 +36,19 @@ samples.
 of samples.
 * `SummaryStatistics` and `RangedSummaryStatistics`: Calculate basic summary
 statistics (count, average, std-dev, and optionally min/max).
+* `WeightedSummaryStatistics`: Calculate summary statistics on a weighted set
+of samples.
 
 ### Profiling
 In order to maintain performant code and identify outliers which require
-remediation, a light-weight profiling implementation is provided. `Profile`s
-keep track of the start and end times of a given sample, and then insert the
-delta into an `OrderStatistics` instance. Once that instance has a certain
-number of samples (default=100), the `OrderStatistics` is sampled at various
-fractiles into a set `SummaryStatistics` instances, then cleared. This allows
-for an O(1) implementation while still collection some fractile information.
+remediation, a light-weight profiling implementation is provided.
+
+`Profile`s keep track of the start and end times of a given sample, and then
+insert the delta into an `OrderStatistics` instance. Once that instance has a
+certain number of samples (default=100), the `OrderStatistics` is sampled at
+various fractiles into a set `SummaryStatistics` instances, then cleared. This
+allows for an O(1) implementation while still collecting information about the
+50th, 75th, 90th, 95th, and 99th percentile times.
 
 `Profile`s are named and held by a `ProfileManager` class which allows exporting
 the summary statistics to JSON for upstream analysis.

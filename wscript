@@ -132,6 +132,7 @@ def build(ctx):
 	#Build each of the subprojects
 	ctx.recurse('src')
 
+valgrindStr = 'valgrind --error-exitcode=99 --gen-suppressions=all --suppressions=./valgrind.supp '
 def test(ctx):
 	stars = '*' * 30
 	Logs.info('%s Running Unit Tests %s' % (stars, stars))
@@ -141,7 +142,7 @@ def test(ctx):
 		raise RuntimeError('Missing binary: %s' % binary)
 
 	if ctx.options.valgrind:
-		binary = 'valgrind --error-exitcode=99 --suppressions=./valgrind.supp ' + binary
+		binary = valgrindStr + binary
 
 	exitCode = os.system(binary)
 	if exitCode != 0:
@@ -156,7 +157,7 @@ def profile(ctx):
 		raise RuntimeError('Missing binary: %s' % binary)
 
 	if ctx.options.valgrind:
-		binary = 'valgrind --error-exitcode=99 --suppressions=./valgrind.supp ' + binary
+		binary = valgrindStr + binary
 
 	exitCode = os.system(binary)
 	if exitCode != 0:

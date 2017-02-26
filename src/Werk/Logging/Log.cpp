@@ -1,7 +1,8 @@
 
 #include "Log.hpp"
 
-namespace werk {
+namespace werk
+{
 
 const char *logLevels[] {
 	"CRITICAL",

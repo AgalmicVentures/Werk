@@ -50,9 +50,8 @@ public:
 
 	void execute() override {
 		uint64_t time = _clock->time();
-		while (_tasks.size() > 0) {
+		for (auto i = _tasks.begin(); i != _tasks.end(); i = _tasks.begin()) {
 			//Get the next task
-			auto i = _tasks.begin();
 			uint64_t nextTime = i->first;
 			ScheduledTask *task = i->second;
 

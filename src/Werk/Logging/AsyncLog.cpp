@@ -7,7 +7,8 @@
 
 #include "Werk/OS/Time.hpp"
 
-namespace werk {
+namespace werk
+{
 
 //TODO: move formatting to housekeeping thread
 void AsyncLog::log(LogLevel level, const char *format, ...)

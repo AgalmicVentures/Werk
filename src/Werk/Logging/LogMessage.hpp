@@ -32,13 +32,8 @@ public:
 	char message[maxLineLength];
 
 	LogMessage() { }
-	LogMessage(const LogMessage &m) {
-		std::memcpy(this, &m, headerSize + m.length);
-	}
-	LogMessage &operator=(const LogMessage &m) {
-		std::memcpy(this, &m, headerSize + m.length);
-		return *this;
-	}
+	LogMessage(const LogMessage &m) = default;
+	LogMessage &operator=(const LogMessage &m) = default;
 };
 
 }

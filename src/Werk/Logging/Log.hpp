@@ -9,7 +9,8 @@
 #include "Werk/OS/Time.hpp"
 #include "Werk/Utility/NamedObject.hpp"
 
-namespace werk {
+namespace werk
+{
 
 /**
  * Level of the log, ordered to allow simple filtering.

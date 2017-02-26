@@ -22,7 +22,6 @@ void Config::execute()
 	//Reload all configs
 	for (ConfigSource *configSource : _configSources) {
 		if (!configSource->reloadConfig(newValues)) {
-			//TODO: fix this, this is the wrong log
 			_log->logRaw(LogLevel::ERROR, "Failed to load config");
 		}
 	}

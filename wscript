@@ -129,8 +129,8 @@ def build(ctx):
 	ctx.add_pre_fun(_preBuild)
 	ctx.add_post_fun(_postBuild)
 
+	#Build each of the subprojects
 	ctx.recurse('src')
-	#TODO: ctx.recurse('test')
 
 def test(ctx):
 	stars = '*' * 30

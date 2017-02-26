@@ -9,9 +9,6 @@
 namespace werk
 {
 
-//TODO: consider the relationship between this and the IdGenerator class -- do they both need to exist?
-//TODO: reset, increment actions (is there a clean way to pass these template parameters around in C++11?
-
 /**
  * Various modes for the `Counter` class.
  */
@@ -23,7 +20,8 @@ enum class CounterMode
 };
 
 /**
- * A integer counter that encapsulates most common behaviors.
+ * A integer counter that encapsulates most common behaviors. Similar to the
+ * `IdGenerator` class, except with static parameters.
  *
  * NOTE: Not compatible with doubles due to limitations on template parameters.
  */

@@ -141,7 +141,7 @@ def test(ctx):
 		raise RuntimeError('Missing binary: %s' % binary)
 
 	if ctx.options.valgrind:
-		binary = 'valgrind --error-exitcode=99 ' + binary
+		binary = 'valgrind --error-exitcode=99 --suppressions=./valgrind.supp ' + binary
 
 	exitCode = os.system(binary)
 	if exitCode != 0:
@@ -156,7 +156,7 @@ def profile(ctx):
 		raise RuntimeError('Missing binary: %s' % binary)
 
 	if ctx.options.valgrind:
-		binary = 'valgrind --error-exitcode=99 ' + binary
+		binary = 'valgrind --error-exitcode=99 --suppressions=./valgrind.supp ' + binary
 
 	exitCode = os.system(binary)
 	if exitCode != 0:

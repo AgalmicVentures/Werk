@@ -1,0 +1,8 @@
+{
+   Logger_MPMC_Queue_False_Positive
+   Memcheck:Cond
+   fun:_ZN5boost8lockfree5queueIN4werk10LogMessageENS0_8capacityILm2048EEENS_9parameter5void_ES7_E7do_pushILb0EEEbRKS3_
+   fun:_ZN4werk8AsyncLog6logRawENS_8LogLevelEPKc
+   fun:_Z10profileLogRN4werk14ProfileManagerE
+   fun:main
+}

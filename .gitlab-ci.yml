@@ -21,7 +21,7 @@ debug_build_job:
       - build/test/
     expire_in: 3d
   script:
-    - ./waf configure clean build
+    - ./waf configure -d clean build
   only:
     - master
 
@@ -85,7 +85,7 @@ release_build_job:
       - build/test/
     expire_in: 3d
   script:
-    - ./waf configure -d clean build
+    - ./waf configure clean build
   only:
     - master
 

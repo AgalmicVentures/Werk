@@ -1,20 +1,14 @@
 
 stages:
-  #Debug
-  - debug_build
-  - debug_unit_test
-  - debug_profile
-  - debug_functional_test
-  #Release
-  - release_build
-  - release_unit_test
-  - release_profile
-  - release_functional_test
+  - build
+  - unit_test
+  - profile
+  - functional_test
 
 ##### Debug #####
 
 debug_build_job:
-  stage: debug_build
+  stage: build
   artifacts:
     paths:
       - build/bin/
@@ -26,7 +20,7 @@ debug_build_job:
     - master
 
 debug_unit_test_job:
-  stage: debug_unit_test
+  stage: unit_test
   script:
     - ./waf test
   dependencies:
@@ -35,7 +29,7 @@ debug_unit_test_job:
     - master
 
 debug_valgrind_unit_test_job:
-  stage: debug_unit_test
+  stage: unit_test
   script:
     - ./waf test --valgrind
   dependencies:
@@ -44,7 +38,7 @@ debug_valgrind_unit_test_job:
     - master
 
 debug_profile_job:
-  stage: debug_profile
+  stage: profile
   script:
     - ./waf profile
   dependencies:
@@ -53,7 +47,7 @@ debug_profile_job:
     - master
 
 debug_valgrind_profile_job:
-  stage: debug_profile
+  stage: profile
   script:
     - ./waf profile --valgrind
   dependencies:
@@ -62,7 +56,7 @@ debug_valgrind_profile_job:
     - master
 
 debug_hello_world_job:
-  stage: debug_functional_test
+  stage: functional_test
   script:
     - build/bin/IpcConsoleCleanup console
     - build/bin/HelloWorld &
@@ -78,7 +72,7 @@ debug_hello_world_job:
 ##### Release #####
 
 release_build_job:
-  stage: release_build
+  stage: build
   artifacts:
     paths:
       - build/bin/
@@ -90,7 +84,7 @@ release_build_job:
     - master
 
 release_unit_test_job:
-  stage: release_unit_test
+  stage: unit_test
   script:
     - ./waf test
   dependencies:
@@ -99,7 +93,7 @@ release_unit_test_job:
     - master
 
 release_valgrind_unit_test_job:
-  stage: release_unit_test
+  stage: unit_test
   script:
     - ./waf test --valgrind
   dependencies:
@@ -108,7 +102,7 @@ release_valgrind_unit_test_job:
     - master
 
 release_profile_job:
-  stage: release_profile
+  stage: profile
   script:
     - ./waf profile
   dependencies:
@@ -117,7 +111,7 @@ release_profile_job:
     - master
 
 release_valgrind_profile_job:
-  stage: release_profile
+  stage: profile
   script:
     - ./waf profile --valgrind
   dependencies:
@@ -126,7 +120,7 @@ release_valgrind_profile_job:
     - master
 
 release_hello_world_job:
-  stage: release_functional_test
+  stage: functional_test
   script:
     - build/bin/IpcConsoleCleanup console
     - build/bin/HelloWorld &

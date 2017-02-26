@@ -1,12 +1,20 @@
 
 stages:
-  - build
-  - unit_test
-  - profile
-  - functional_test
+  #Debug
+  - debug_build
+  - debug_unit_test
+  - debug_profile
+  - debug_functional_test
+  #Release
+  - release_build
+  - release_unit_test
+  - release_profile
+  - release_functional_test
 
-build_job:
-  stage: build
+##### Debug #####
+
+debug_build_job:
+  stage: debug_build
   artifacts:
     paths:
       - build/bin/
@@ -17,44 +25,44 @@ build_job:
   only:
     - master
 
-unit_test_job:
-  stage: unit_test
+debug_unit_test_job:
+  stage: debug_unit_test
   script:
     - ./waf test
   dependencies:
-    - build_job
+    - debug_build_job
   only:
     - master
 
-valgrind_unit_test_job:
-  stage: unit_test
+debug_valgrind_unit_test_job:
+  stage: debug_unit_test
   script:
     - ./waf test --valgrind
   dependencies:
-    - build_job
+    - debug_build_job
   only:
     - master
 
-profile_job:
-  stage: profile
+debug_profile_job:
+  stage: debug_profile
   script:
     - ./waf profile
   dependencies:
-    - build_job
+    - debug_build_job
   only:
     - master
 
-valgrind_profile_job:
-  stage: profile
+debug_valgrind_profile_job:
+  stage: debug_profile
   script:
     - ./waf profile --valgrind
   dependencies:
-    - build_job
+    - debug_build_job
   only:
     - master
 
-hello_world_job:
-  stage: functional_test
+debug_hello_world_job:
+  stage: debug_functional_test
   script:
     - build/bin/IpcConsoleCleanup console
     - build/bin/HelloWorld &
@@ -63,6 +71,70 @@ hello_world_job:
     - kill -INT $HELLO_PID
     - cat profiles.json
   dependencies:
-    - build_job
+    - debug_build_job
+  only:
+    - master
+
+##### Release #####
+
+release_build_job:
+  stage: release_build
+  artifacts:
+    paths:
+      - build/bin/
+      - build/test/
+    expire_in: 3d
+  script:
+    - ./waf configure -d clean build
+  only:
+    - master
+
+release_unit_test_job:
+  stage: release_unit_test
+  script:
+    - ./waf test
+  dependencies:
+    - release_build_job
+  only:
+    - master
+
+release_valgrind_unit_test_job:
+  stage: release_unit_test
+  script:
+    - ./waf test --valgrind
+  dependencies:
+    - release_build_job
+  only:
+    - master
+
+release_profile_job:
+  stage: release_profile
+  script:
+    - ./waf profile
+  dependencies:
+    - release_build_job
+  only:
+    - master
+
+release_valgrind_profile_job:
+  stage: release_profile
+  script:
+    - ./waf profile --valgrind
+  dependencies:
+    - release_build_job
+  only:
+    - master
+
+release_hello_world_job:
+  stage: release_functional_test
+  script:
+    - build/bin/IpcConsoleCleanup console
+    - build/bin/HelloWorld &
+    - export HELLO_PID=$!
+    - sleep 5
+    - kill -INT $HELLO_PID
+    - cat profiles.json
+  dependencies:
+    - release_build_job
   only:
     - master

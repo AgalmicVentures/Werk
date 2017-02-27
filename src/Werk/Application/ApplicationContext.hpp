@@ -46,6 +46,7 @@ public:
 	bool isDebug() const { return _debug; }
 	bool isRealTime() const { return _realTime; }
 	bool isSimulation() const { return _simulation; }
+	const std::string &temporaryPath() const { return _temporaryPath; }
 	std::vector<std::string> &startupCommands() { return _startupCommands; }
 	const std::vector<std::string> &startupCommands() const { return _startupCommands; }
 	std::vector<std::string> &shutdownCommands() { return _shutdownCommands; }
@@ -83,6 +84,7 @@ private:
 	bool _debug;
 	bool _realTime;
 	bool _simulation;
+	std::string _temporaryPath;
 	std::vector<std::string> _startupCommands;
 	std::vector<std::string> _shutdownCommands;
 

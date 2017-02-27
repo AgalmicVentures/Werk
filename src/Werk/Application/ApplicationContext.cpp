@@ -106,6 +106,9 @@ ApplicationContext::ApplicationContext(const std::string &configPath)
 	_simulation = _config->getBool("Application.Simulation", false,
 		"Indicates whether the application is running a simulation or not");
 
+	//Set the temporary path
+	_temporaryPath = _config->getString("Application.TemporaryPath", "/tmp", "Path to put temporary files in");
+
 	/********** Command Manager **********/
 
 	_commandManager = new CommandManager(_backgroundThread.backgroundClock(), _log);

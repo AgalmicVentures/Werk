@@ -13,6 +13,12 @@ extern const UnitsT STORAGE_UNITS;
 extern const UnitsT TIME_UNITS;
 
 /**
+ * Calculates the information needed to format the value with units:
+ * the scaled value, and the units themselves.
+ */
+void formatUnits(uint64_t value, const UnitsT &units, double &scaledValue, const char *&unitStr);
+
+/**
  * Parses a value with the given sort of units.
  */
 uint64_t parseUnits(const std::string &value, const UnitsT &units);

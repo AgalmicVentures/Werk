@@ -4,6 +4,8 @@
 namespace werk
 {
 
+const std::string NO_UNIT("");
+
 const UnitsT STORAGE_UNITS = {
 	{ "P", 1024ul * 1024 * 1024 * 1024 * 1024 },
 	{ "T", 1024ul * 1024 * 1024 * 1024 },
@@ -20,6 +22,22 @@ const UnitsT TIME_UNITS = {
 	{ "us", 1000ul },
 	{ "ns", 1ul },
 };
+
+void formatUnits(uint64_t value, const UnitsT &units, double &scaledValue, const char *&unitStr)
+{
+	//By default, have no units
+	scaledValue = static_cast<double>(value);
+	unitStr = NO_UNIT.c_str();
+
+	//Otherwise, find an appropriate scaling factor
+	for (auto &unit : units) {
+		if (value >= unit.second) {
+			scaledValue /= unit.second;
+			unitStr = unit.first.c_str();
+			break;
+		}
+	}
+}
 
 uint64_t parseUnits(const std::string &value, const UnitsT &units)
 {

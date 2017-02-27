@@ -41,7 +41,8 @@ void BackgroundThread::logTo(Log *log) const
 void BackgroundThread::backgroundThread()
 {
 	while (true) {
-		//Update the epoch time
+		//Update the time
+		_mainClock.setTime(_mainClockTime);
 		_backgroundClock.setEpochTime();
 
 		//Execute all the tasks

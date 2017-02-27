@@ -63,6 +63,9 @@ public:
 	uint64_t intervalNs() const { return _intervalNs; }
 	void setIntervalNs(uint64_t intervalNs) { _intervalNs = intervalNs; }
 
+	//Used to pass time back from the main thread during e.g. simulations
+	void setMainClockTime(uint64_t time) { _mainClockTime = time; }
+
 	void logTo(Log *log) const override;
 
 	//Tasks in the order they should be executed
@@ -76,6 +79,7 @@ public:
 		_tasks.push_back(task);
 	}
 
+	const Clock &mainClock() const { return _backgroundClock; }
 	const Clock &backgroundClock() const { return _backgroundClock; }
 
 	void stop() {
@@ -98,8 +102,10 @@ private:
 	//Shared state
 	volatile uint64_t _intervalNs;
 	volatile bool _running = true;
+	volatile uint64_t _mainClockTime = 0;
 
 	//Background thread state & method
+	Clock _mainClock; //NOTE: this clock is not the actual main thread clock, only synchronized to it
 	Clock _backgroundClock;
 	timespec _delay;
 	void backgroundThread();

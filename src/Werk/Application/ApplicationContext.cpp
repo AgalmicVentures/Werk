@@ -158,7 +158,7 @@ ApplicationContext::ApplicationContext(const std::string &configPath)
 	/********** Scheduler **********/
 
 	//TODO: set this up with the simulated clock so it can be used in simulations
-	_scheduler = new Scheduler("Scheduler", &_backgroundThread.backgroundClock());
+	_scheduler = new Scheduler("Scheduler", &_backgroundThread.mainClock());
 	_backgroundThread.addTask(_scheduler);
 
 	//Configure scheduled commands
@@ -283,6 +283,7 @@ void ApplicationContext::run(Action *mainAction)
 		_foregroundActionQueue.execute();
 
 		//Made it through another loop, reset the watchdog
+		_backgroundThread.setMainClockTime(_clock->time());
 		watchdog->reset();
 	}
 	_log->logRaw(LogLevel::ALERT, "Exiting main loop...");

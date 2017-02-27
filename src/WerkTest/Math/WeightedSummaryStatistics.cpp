@@ -1,6 +1,7 @@
 
 #include <boost/test/unit_test.hpp>
 
+#include "Werk/Math/SummaryStatistics.hpp"
 #include "Werk/Math/WeightedSummaryStatistics.hpp"
 
 BOOST_AUTO_TEST_SUITE(WeightedSummaryStatisticsTest)
@@ -55,6 +56,23 @@ BOOST_AUTO_TEST_CASE(TestBasicUnequalWeights)
 	BOOST_REQUIRE_EQUAL(s.sum(), 6.0);
 	BOOST_REQUIRE_EQUAL(s.average(), 2.0);
 	BOOST_REQUIRE_EQUAL(s.variance(), 3.0);
+}
+
+BOOST_AUTO_TEST_CASE(TestAdvancedEqualWeights)
+{
+	werk::SummaryStatistics<double> s1;
+	werk::WeightedSummaryStatistics s2;
+
+	for (double i = 0.0; i < 1000.0; ++i) {
+		s1.sample(i);
+		s2.sample(i, 1.0);
+
+		BOOST_REQUIRE_EQUAL(s1.count(), s2.count());
+		BOOST_REQUIRE_EQUAL(s1.sum(), s2.sum());
+		BOOST_REQUIRE_EQUAL(s2.weightSum(), i + 1.0);
+		BOOST_REQUIRE_EQUAL(s1.average(), s2.average());
+		BOOST_REQUIRE_EQUAL(s1.variance(), s2.variance());
+	}
 }
 
 BOOST_AUTO_TEST_SUITE_END()

@@ -84,9 +84,10 @@ ApplicationContext::ApplicationContext(const std::string &configPath)
 	uint64_t backgroundThreadIntervalNs = _config->getTimeAmount("Application.BackgroundThreadInterval", _backgroundThread.intervalNs());
 	_backgroundThread.setIntervalNs(backgroundThreadIntervalNs);
 
-	//Detect processors
+	//Detect hardware
 	_processorCount = getProcessorCount();
-	_log->log(LogLevel::INFO, "Detected %zu CPU cores.", _processorCount);
+	//TODO: detect RAM for #84
+	_log->log(LogLevel::JSON, "{\"type\":\"startup.hardware\",\"processorCount\":%zu}", _processorCount);
 
 	//Set the instance ID
 	_instanceId = _config->getString("Application.InstanceID", "", "ID of this instance of the application");
@@ -203,7 +204,7 @@ ApplicationContext::ApplicationContext(const std::string &configPath)
 		}
 	}
 
-	_log->logRaw(LogLevel::SUCCESS, "<ApplicationContext> Initialized.");
+	_log->logRaw(LogLevel::JSON, "{\"type\":\"startup.initialized\"}");
 }
 
 ApplicationContext::~ApplicationContext()
@@ -245,13 +246,13 @@ void ApplicationContext::shutdown()
 	}
 
 	//Run shutdown actions
-	_log->logRaw(LogLevel::INFO, "Running shutdown actions...");
+	_log->logRaw(LogLevel::JSON, "{\"type\":\"shutdown.shutdownActions\"}");
 	for (Action *action : _shutdownActions) {
 		action->execute();
 	}
-	_log->logRaw(LogLevel::SUCCESS, "Shutdown actions complete.");
+	_log->logRaw(LogLevel::JSON, "{\"type\":\"shutdown.shutdownActionsComplete\"}");
 
-	_log->logRaw(LogLevel::INFO, "Shutting down...");
+	_log->logRaw(LogLevel::JSON, "{\"type\":\"shutdown.shuttingDown\"}");
 	_backgroundThread.stop();
 
 	//Cleanup the console
@@ -275,7 +276,7 @@ void ApplicationContext::run(Action *mainAction)
 		_backgroundThread.addTask(watchdog);
 	}
 
-	_log->logRaw(LogLevel::ALERT, "Entering main loop...");
+	_log->logRaw(LogLevel::JSON, "{\"type\":\"mainLoop.enter\"}");
 	while (!_quitting.value()) {
 		_realTimeClock.setEpochTime();
 
@@ -289,7 +290,7 @@ void ApplicationContext::run(Action *mainAction)
 		_backgroundThread.setMainClockTime(_clock->time());
 		watchdog->reset();
 	}
-	_log->logRaw(LogLevel::ALERT, "Exiting main loop...");
+	_log->logRaw(LogLevel::JSON, "{\"type\":\"mainLoop.exit\"}");
 
 	shutdown();
 }

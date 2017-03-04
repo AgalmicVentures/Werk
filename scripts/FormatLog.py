@@ -24,24 +24,51 @@ levelColors = {
 	'UNKNOWN': nc,
 }
 
+#TODO: load more from a file
+jsonMessageTranslations = {
+	'mainLoop.enter': ('ALERT', '<ApplicationContext> Entering main loop...'),
+	'mainLoop.exit': ('ALERT', '<ApplicationContext> Exiting main loop...'),
+
+	'shutdown.shutdownActions': ('INFO', '<ApplicationContext> Running shutdown actions...'),
+	'shutdown.shutdownActionsComplete': ('SUCCESS', '<ApplicationContext> Shutdown actions complete.'),
+	'shutdown.shuttingDown': ('INFO', '<ApplicationContext> Shutting down...'),
+
+	'startup.hardware': ('INFO', '<ApplicationContext> Detected %(processorCount)s CPU cores.'),
+	'startup.initialized': ('SUCCESS', '<ApplicationContext> Initialized.'),
+}
+
 def handleLine(line):
 	#Get basics
 	n = line.get('n', 0)
 	time = line.get('t', 0)
 	timeSec, timeNs = divmod(time, 1000 * 1000 * 1000)
-	level = line.get('level', 'UNKNOWN')
+	level = line.get('level')
+
+	message = None
+	if level is None:
+		#Handle JSON data
+		data = line.get('data', {})
+		messageTranslation = jsonMessageTranslations.get(data.get('type'))
+		if messageTranslation is not None:
+			try:
+				message = messageTranslation[1] % data
+				level = messageTranslation[0]
+			except KeyError as e:
+				message = str(e)
+	else:
+		message = line.get('message')
 
 	#Colorize
 	color = levelColors.get(level)
 
-	message = line.get('message')
 	if message is None:
-		return
+			return
 
 	print('%s[%05d] [%s.%09d] %8s - %s%s' % (color, n, timeSec, timeNs, level, message, nc))
 
 def main():
 	#TODO: parse arguments
+	#TODO: allow loading additional JSON translation dictionaries
 
 	quitting = False
 	while True:

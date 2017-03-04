@@ -76,18 +76,20 @@ const char *Config::getString(const std::string &key, const char *defaultValue, 
 bool Config::getBool(const std::string &key, bool defaultValue, const char *help) const
 {
 	bool value = defaultValue;
+	const char *stringValue = value ? "true" : "false";
 	const char *defaultLogValue = " [DEFAULT]";
 
 	const ConfigValuesT * const values = _values;
 	auto i = values->find(key);
 	if (i != values->end()) {
 		value = i->second == "true" || i->second == "True";
+		stringValue = i->second.c_str();
 		defaultLogValue = "";
 	}
 
-	_log->log(LogLevel::CONFIG, "<Config> [%s] = %s%s%s",
+	_log->log(LogLevel::CONFIG, "<Config> [%s] = %s%s%s%s",
 		key.c_str(),
-		i->second.c_str(),
+		stringValue,
 		defaultLogValue,
 		help == nullptr ? "" : " -- ",
 		help == nullptr ? "" : help);

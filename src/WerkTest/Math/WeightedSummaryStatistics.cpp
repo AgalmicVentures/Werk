@@ -39,7 +39,7 @@ BOOST_AUTO_TEST_CASE(TestBasicEqualWeights)
 
 	BOOST_REQUIRE_EQUAL(s.count(), 2);
 	BOOST_REQUIRE_EQUAL(s.weightSum(), 4.0);
-	BOOST_REQUIRE_EQUAL(s.sum(), 6.0);
+	BOOST_REQUIRE_EQUAL(s.sum(), 12.0);
 	BOOST_REQUIRE_EQUAL(s.average(), 3.0);
 	BOOST_REQUIRE_EQUAL(s.variance(), 4.0);
 	BOOST_REQUIRE_EQUAL(s.stddev(), 2.0);
@@ -53,7 +53,7 @@ BOOST_AUTO_TEST_CASE(TestBasicUnequalWeights)
 
 	BOOST_REQUIRE_EQUAL(s.count(), 2);
 	BOOST_REQUIRE_EQUAL(s.weightSum(), 4.0);
-	BOOST_REQUIRE_EQUAL(s.sum(), 6.0);
+	BOOST_REQUIRE_EQUAL(s.sum(), 8.0);
 	BOOST_REQUIRE_EQUAL(s.average(), 2.0);
 	BOOST_REQUIRE_EQUAL(s.variance(), 3.0);
 }

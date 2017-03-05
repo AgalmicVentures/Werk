@@ -33,7 +33,7 @@ public:
 	void sample(double value, double weight) {
 		_count += 1;
 		_weightSum += weight;
-		_sum += value;
+		_sum += value * weight;
 
 		double delta = value - _average;
 		_average += delta * weight / _weightSum;

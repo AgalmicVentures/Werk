@@ -11,6 +11,7 @@
 #include "Werk/Logging/AsyncLog.hpp"
 #include "Werk/Logging/Loggable.hpp"
 #include "Werk/Logging/LogManager.hpp"
+#include "Werk/OS/DynamicLibraryManager.hpp"
 #include "Werk/Profiling/ProfileManager.hpp"
 #include "Werk/Threading/ActionQueue.hpp"
 #include "Werk/Threading/BackgroundThread.hpp"
@@ -51,6 +52,8 @@ public:
 	const std::vector<std::string> &startupCommands() const { return _startupCommands; }
 	std::vector<std::string> &shutdownCommands() { return _shutdownCommands; }
 	const std::vector<std::string> &shutdownCommands() const { return _shutdownCommands; }
+	DynamicLibraryManager &dynamicLibraryManager() { return _dynamicLibraryManager; }
+	const DynamicLibraryManager &dynamicLibraryManager() const { return _dynamicLibraryManager; }
 
 	//Main thread
 	const Clock &realTimeClock() const { return _realTimeClock; }
@@ -87,6 +90,7 @@ private:
 	std::string _temporaryPath;
 	std::vector<std::string> _startupCommands;
 	std::vector<std::string> _shutdownCommands;
+	DynamicLibraryManager _dynamicLibraryManager;
 
 	Clock _realTimeClock;
 	Clock *_clock;

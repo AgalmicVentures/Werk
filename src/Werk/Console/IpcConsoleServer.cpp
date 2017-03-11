@@ -10,8 +10,7 @@ bool IpcConsoleServer::receive(uint32_t &sequenceNumber, std::string &message)
 	char buffer[sizeof(ConsoleMessage)];
 	size_t receivedSize;
 	unsigned int priority;
-	if (!_queue.try_receive(buffer, sizeof(ConsoleMessage), receivedSize, priority))
-	{
+	if (!_queue.try_receive(buffer, sizeof(ConsoleMessage), receivedSize, priority)) {
 		return false;
 	}
 

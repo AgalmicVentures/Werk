@@ -2,6 +2,7 @@
 #pragma once
 
 #include <algorithm>
+#include <cmath>
 #include <cstdint>
 #include <vector>
 
@@ -11,7 +12,7 @@ namespace werk
 /**
  * Holds a set of samples and allows taking order statistics on them.
  */
-template <typename T>
+template <typename T, bool handleNaN=false>
 class OrderStatistics
 {
 public:
@@ -47,6 +48,10 @@ public:
 	T q3() const { return fractile(0.75); }
 
 	void sample(T t) {
+		if (handleNaN && std::isnan(t)) {
+			return;
+		}
+
 		_samples.push_back(t);
 		_dirty = true;
 	}

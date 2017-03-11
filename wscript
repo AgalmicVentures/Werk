@@ -95,6 +95,7 @@ def configure(ctx):
 
 	#Setup libraries
 	ctx.env.LIB = [
+		'dl',
 		'pthread',
 	]
 

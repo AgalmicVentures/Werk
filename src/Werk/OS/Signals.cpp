@@ -1,10 +1,10 @@
 
 #include "Signals.hpp"
 
+#include <csignal>
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
-#include <signal.h>
 
 #include "Werk/Utility/Action.hpp"
 
@@ -80,12 +80,12 @@ bool setupSegfaultHandler()
 	//stack space
 	stack_t ss;
 	ss.ss_sp = new char[SIGSTKSZ];
-	if (ss.ss_sp == NULL) {
+	if (ss.ss_sp == nullptr) {
 		return false;
 	}
 	ss.ss_size = SIGSTKSZ;
 	ss.ss_flags = 0;
-	if (sigaltstack(&ss, NULL) == -1) {
+	if (sigaltstack(&ss, nullptr) == -1) {
 		return false;
 	}
 
@@ -127,7 +127,7 @@ bool setupSignalHandler(int signal, Action *action)
 		sigusr2Action = action;
 		break;
 	default:
-		fprintf(stderr, "Cannot setup signal handler for signal %d - only SIGHUP, SIGUSR1 & 2 and SIGINT may be set this way\n", signal);
+		std::fprintf(stderr, "Cannot setup signal handler for signal %d - only SIGHUP, SIGUSR1 & 2 and SIGINT may be set this way\n", signal);
 		return false;
 	}
 

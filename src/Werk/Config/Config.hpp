@@ -73,7 +73,7 @@ public:
 	//Run on whatever thread the configurables live on
 	void reloadConfigurables();
 
-	//Basic value-as-string accessor - this is the method that every inheriting class must override (return NULL if the key is missing)
+	//Basic value-as-string accessor - this is the method that every inheriting class must override (return nullptr if the key is missing)
 	const char *getStringRaw(const std::string &key) const {
 		const ConfigValuesT * const values = _values;
 		auto i = values->find(key);

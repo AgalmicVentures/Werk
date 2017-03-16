@@ -27,13 +27,13 @@ DynamicLibrary *DynamicLibraryManager::load(const std::string &path)
 	//Load it
 	//TODO: error handling
 	void *handle = dlopen(path.c_str(), RTLD_NOW | RTLD_LOCAL);
-	printf("got it? %p %s\n", handle, dlerror());
+	std::printf("got it? %p %s\n", handle, dlerror());
 	if (nullptr != handle) {
 		const auto j = _libraries.emplace(path, handle);
 		if (j.second) {
 			return &j.first->second;
 		}
-		printf("wtf?\n");
+		std::printf("wtf?\n");
 	}
 
 	return nullptr;

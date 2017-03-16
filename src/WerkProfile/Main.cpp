@@ -9,7 +9,7 @@ void profileLog(werk::ProfileManager &profileManager)
 {
 	werk::BackgroundThread backgroundThread(nullptr, 1l * 1000 * 1000);
 
-	FILE *file = fopen("/dev/null", "a");
+	FILE *file = std::fopen("/dev/null", "a");
 	werk::AsyncLog *log = new werk::AsyncLog("Log", &backgroundThread.backgroundClock(), file);
 	backgroundThread.addTask(log);
 

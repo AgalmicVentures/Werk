@@ -48,7 +48,7 @@ public:
 	}
 
 	void writeJson(FILE *file) const {
-		fprintf(file, "{\"count\": %" PRIu64 ", \"average\": %.12f, \"stddev\": %.12f}", _count, _average, stddev());
+		std::fprintf(file, "{\"count\": %" PRIu64 ", \"average\": %.12f, \"stddev\": %.12f}", _count, _average, stddev());
 	}
 
 private:

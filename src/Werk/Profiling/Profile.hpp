@@ -91,17 +91,17 @@ public:
 	}
 
 	void writeJson(FILE *file) const {
-		fprintf(file, "{\"name\": \"%s\"", name().c_str());
-		fprintf(file, ", \"warmup\": "); _warmupStatistics.writeJson(file);
-		fprintf(file, ", \"min\": "); _minStatistics.writeJson(file);
-		fprintf(file, ", \"f25\": "); _f25Statistics.writeJson(file);
-		fprintf(file, ", \"f50\": "); _f50Statistics.writeJson(file);
-		fprintf(file, ", \"f75\": "); _f75Statistics.writeJson(file);
-		fprintf(file, ", \"f90\": "); _f90Statistics.writeJson(file);
-		fprintf(file, ", \"f95\": "); _f95Statistics.writeJson(file);
-		fprintf(file, ", \"f99\": "); _f99Statistics.writeJson(file);
-		fprintf(file, ", \"max\": "); _maxStatistics.writeJson(file);
-		fprintf(file, "}\n");
+		std::fprintf(file, "{\"name\": \"%s\"", name().c_str());
+		std::fprintf(file, ", \"warmup\": "); _warmupStatistics.writeJson(file);
+		std::fprintf(file, ", \"min\": "); _minStatistics.writeJson(file);
+		std::fprintf(file, ", \"f25\": "); _f25Statistics.writeJson(file);
+		std::fprintf(file, ", \"f50\": "); _f50Statistics.writeJson(file);
+		std::fprintf(file, ", \"f75\": "); _f75Statistics.writeJson(file);
+		std::fprintf(file, ", \"f90\": "); _f90Statistics.writeJson(file);
+		std::fprintf(file, ", \"f95\": "); _f95Statistics.writeJson(file);
+		std::fprintf(file, ", \"f99\": "); _f99Statistics.writeJson(file);
+		std::fprintf(file, ", \"max\": "); _maxStatistics.writeJson(file);
+		std::fprintf(file, "}\n");
 	}
 
 private:

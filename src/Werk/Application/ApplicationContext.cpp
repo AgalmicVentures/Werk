@@ -2,8 +2,8 @@
 #include "ApplicationContext.hpp"
 
 #include <boost/algorithm/string.hpp>
+#include <csignal>
 #include <cstdio>
-#include <signal.h>
 
 #include "Werk/Commands/WriteCommandLogAction.hpp"
 #include "Werk/Console/ConsoleCommandReceiver.hpp"
@@ -231,7 +231,7 @@ void ApplicationContext::shutdown()
 {
 	//Don't shut down twice
 	if (isShutdown()) {
-		fprintf(stderr, "ApplicationContext::shutdown - Already shut down.\n");
+		std::fprintf(stderr, "ApplicationContext::shutdown - Already shut down.\n");
 		return;
 	}
 

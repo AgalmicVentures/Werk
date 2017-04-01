@@ -25,7 +25,8 @@ other. For a standard set of basic components, look at the `ApplicationContext`
 class.
 
 ### Math
-A wide variety of math components are included:
+To enable analytics (e.g. for profiling), a variety of signal processing and
+statistical components are included:
 * `ContinuousEma`: Calculate an EMA with a continuous value.
 * `DiscreteDistribution`: Calculates statistics about a weighted set of ordered
 values, including probability information.
@@ -119,7 +120,8 @@ logger that goes to `stdout`, it loads configs, creates a file log, sets up
 subsystems like commands and profiling, then runs some startup commands. An
 optional main loop may then be run.
 
-It has the following configuration options:
+## Startup
+On startup, the following configuration options are read:
 * `Application.ConfigPaths`: Only available in the primary config, this is a
 comma-separated list of other configs to load. Default none.
 * `Application.LogPath`: Path to the actual log file. If not present or cannot
@@ -138,20 +140,29 @@ simulation. Default false.
 in real time. Default true.
 * `Application.StartupCommands`: Semicolon delimited list of command lines to
 run on startup.
-* `Application.ShutdownCommands`: Semicolon delimited list of command lines to
-run on shutdown.
 * `Application.IpcConsoleName`: The name of the IPC queue used for a console.
 Default none.
+
+## Run Time
+If the optional main loop is used by calling `ApplicationContext::run()`, first
+some configurations are read:
 * `Application.WatchdogInterval`: The interval of the foreground thread watchdog.
 * `Application.WatchdogAllowedMisses`: The number of times the foreground thread
 can miss resetting the application watchdog.
 
-The application adds additional default commands:
+Then a main loop is started which updates the curren time, runs a main `Action`,
+then executes any defered `Action`s in the foreground queue and resets the
+watchdog.
+
+### Commands
+The application context adds additional default commands:
 * `app`: Logs information about the high level state of the application.
 * `bg`: Logs information about background tasks.
 * `logs`: Logs information about what logs are available.
 * `reload`: Reloads the configuration.
-* `quit`: Quits the application cleanly.
+* `quit`: Quits the application cleanly, running shutdown commands and actions.
 
-On shutdown it runs shutdown commands, then shutdown actions which may be
-registered by any component, ensuring a clean shutdown.
+## Shutdown
+On shutdown it runs shutdown commands (read from `Application.ShutdownCommands`),
+then shutdown actions which may be registered by any component, ensuring a clean
+shutdown.

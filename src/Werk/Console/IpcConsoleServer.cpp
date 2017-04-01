@@ -15,7 +15,7 @@ bool IpcConsoleServer::receive(uint32_t &sequenceNumber, std::string &message)
 	}
 
 	//Deserialize the message
-	ConsoleMessage *consoleMessage = (ConsoleMessage *) buffer;
+	const ConsoleMessage *consoleMessage = (const ConsoleMessage *) buffer;
 	sequenceNumber = consoleMessage->sequenceNumber;
 	message = consoleMessage->message;
 	return true;

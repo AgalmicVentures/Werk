@@ -39,8 +39,8 @@ public:
 		} else {
 			//Calculating 1 - alpha since after 3 half lives, 1/8 should be left of the old value and 7/8 of the value should be the new
 			//Intentionally remove the negation by swapping the subtraction
-			double logOneMinusAlpha = _factor * (_lastIndex - index);
-			double oneMinusAlpha = std::exp(logOneMinusAlpha);
+			const double logOneMinusAlpha = _factor * (_lastIndex - index);
+			const double oneMinusAlpha = std::exp(logOneMinusAlpha);
 			_value = (1.0 - oneMinusAlpha) * sample + oneMinusAlpha * _value;
 		}
 		_lastIndex = index;

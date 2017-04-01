@@ -25,6 +25,8 @@ class IpcConsoleServer;
 
 /**
  * Standard application context with all the basic components.
+ *
+ * NOTE: It is not necessary to use this; components may be used a-la-carte.
  */
 class ApplicationContext : public Loggable
 {
@@ -82,6 +84,7 @@ public:
 	const CommandManager *commandManager() const { return _commandManager; }
 
 private:
+	//Configuration
 	size_t _processorCount;
 	std::string _instanceId;
 	bool _debug;
@@ -92,14 +95,17 @@ private:
 	std::vector<std::string> _shutdownCommands;
 	DynamicLibraryManager _dynamicLibraryManager;
 
+	//Foreground thread state
 	Clock _realTimeClock;
 	Clock *_clock;
 	ProfileManager _profileManager;
 	ActionQueue<> _foregroundActionQueue { "ForegroundActionQueue" };
 	std::vector<Action *> _shutdownActions;
 
+	//Shared state
 	Latch<volatile bool> _quitting;
 
+	//Background thread state
 	BackgroundThread _backgroundThread { &_profileManager };
 	ActionQueue<> _backgroundActionQueue { "BackgroundActionQueue" };
 	LogManager _logManager;

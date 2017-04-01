@@ -34,7 +34,7 @@ public:
 		_count += 1;
 		_sum += t;
 
-		double delta = t - _average;
+		const double delta = t - _average;
 		_average += delta / static_cast<double>(_count);
 		_m2 += delta * (t - _average);
 	}

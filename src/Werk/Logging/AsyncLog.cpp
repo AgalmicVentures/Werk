@@ -22,7 +22,7 @@ void AsyncLog::log(LogLevel level, const char *format, ...)
 	//Format the message
 	va_list args;
 	va_start(args, format);
-	int n = std::vsnprintf(message.message, LogMessage::maxLineLength, format, args);
+	const int n = std::vsnprintf(message.message, LogMessage::maxLineLength, format, args);
 	if (n < 0) {
 		//TODO: error handling
 		message.length = LogMessage::maxLineLength;

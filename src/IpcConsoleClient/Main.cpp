@@ -26,7 +26,7 @@ int main(int argc, char **argv)
 		std::string input;
 		std::vector<std::string> messages;
 		while (std::getline(std::cin, input)) {
-			if (input.length() == 0) {
+			if (input.empty()) {
 				//Skip 0 length inputs
 				continue;
 			} else if (input == "reconnect") {

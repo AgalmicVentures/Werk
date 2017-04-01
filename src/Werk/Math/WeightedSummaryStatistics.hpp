@@ -35,7 +35,7 @@ public:
 		_weightSum += weight;
 		_sum += value * weight;
 
-		double delta = value - _average;
+		const double delta = value - _average;
 		_average += delta * weight / _weightSum;
 		_m2 += delta * weight * (value - _average);
 	}

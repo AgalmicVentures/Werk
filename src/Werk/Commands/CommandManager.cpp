@@ -22,7 +22,7 @@ bool CommandManager::execute(const std::string &commandLine)
 
 bool CommandManager::execute(const std::vector<std::string> &arguments)
 {
-	if (arguments.size() == 0) {
+	if (arguments.empty()) {
 		_log->logRaw(LogLevel::CRITICAL, "Got zero-length arguments to CommandManager::execute");
 		return false;
 	}

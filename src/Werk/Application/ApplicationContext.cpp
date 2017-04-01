@@ -68,7 +68,7 @@ ApplicationContext::ApplicationContext(const std::string &configPath)
 	const char *logPath = _config->getString("Application.LogPath");
 	FILE *file = nullptr == logPath ? stdout : std::fopen(logPath, "a");
 	if (nullptr == file) {
-		_stdoutLog->logRaw(LogLevel::ERROR, "Could not open log file, redirecting to stderr.\n");
+		_stdoutLog->logRaw(LogLevel::ERROR, "Could not open log file, redirecting to stderr.");
 		file = stderr;
 	}
 
@@ -81,7 +81,7 @@ ApplicationContext::ApplicationContext(const std::string &configPath)
 	/********** Configure Existing Components Now That Log Is Setup **********/
 
 	//Background thread
-	uint64_t backgroundThreadIntervalNs = _config->getTimeAmount("Application.BackgroundThreadInterval", _backgroundThread.intervalNs());
+	const uint64_t backgroundThreadIntervalNs = _config->getTimeAmount("Application.BackgroundThreadInterval", _backgroundThread.intervalNs());
 	_backgroundThread.setIntervalNs(backgroundThreadIntervalNs);
 
 	//Detect hardware
@@ -107,8 +107,12 @@ ApplicationContext::ApplicationContext(const std::string &configPath)
 	_simulation = _config->getBool("Application.Simulation", false,
 		"Indicates whether the application is running a simulation or not");
 
-	//Set the temporary path
+	//Set the temporary path (but do not allow an empty string, or logging to / )
 	_temporaryPath = _config->getString("Application.TemporaryPath", "/tmp", "Path to put temporary files in");
+	if (_temporaryPath.length() < 2) {
+		_stdoutLog->logRaw(LogLevel::ERROR, "Invalid temporary path; defaulting to /tmp.");
+		_temporaryPath = "/tmp";
+	}
 
 	/********** Command Manager **********/
 
@@ -262,8 +266,10 @@ void ApplicationContext::shutdown()
 void ApplicationContext::run(Action *mainAction)
 {
 	//Setup the background watchdog timer
-	uint64_t watchdogInterval = _config->getTimeAmount("Application.WatchdogInterval", 0, "Interval of the main thread watchdog (ns)");
-	uint64_t watchdogAllowedMisses = _config->getUint64("Application.WatchdogAllowedMisses", 1, "Number of times the main thread can miss the watchdog");
+	const uint64_t watchdogInterval = _config->getTimeAmount("Application.WatchdogInterval", 0,
+		"Interval of the main thread watchdog (ns)");
+	const uint64_t watchdogAllowedMisses = _config->getUint64("Application.WatchdogAllowedMisses", 1,
+		"Number of times the main thread can miss the watchdog");
 	//TODO: configurable watchdog action
 	Watchdog *watchdog = new Watchdog("Watchdog", &_backgroundThread.backgroundClock(),
 		new LogAction("WatchdogWarning", new StringLoggable("Missed watchdog!", LogLevel::WARNING), _log),
@@ -276,17 +282,16 @@ void ApplicationContext::run(Action *mainAction)
 		_backgroundThread.addTask(watchdog);
 	}
 
+	//Run the main loop
 	_log->logRaw(LogLevel::JSON, "{\"type\":\"mainLoop.enter\"}");
 	while (!_quitting.value()) {
 		_realTimeClock.setEpochTime();
-
-		//Run the main action
 		mainAction->execute();
 
-		//Run other queued actions
+		//Run other queued actions after the main action
 		_foregroundActionQueue.execute();
 
-		//Made it through another loop, reset the watchdog
+		//Made it through another loop, update background objects -- update clock, reset the watchdog
 		_backgroundThread.setMainClockTime(_clock->time());
 		watchdog->reset();
 	}

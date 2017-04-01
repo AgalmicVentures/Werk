@@ -27,13 +27,11 @@ DynamicLibrary *DynamicLibraryManager::load(const std::string &path)
 	//Load it
 	//TODO: error handling
 	void *handle = dlopen(path.c_str(), RTLD_NOW | RTLD_LOCAL);
-	std::printf("got it? %p %s\n", handle, dlerror());
 	if (nullptr != handle) {
 		const auto j = _libraries.emplace(path, handle);
 		if (j.second) {
 			return &j.first->second;
 		}
-		std::printf("wtf?\n");
 	}
 
 	return nullptr;
@@ -46,7 +44,7 @@ void DynamicLibraryManager::unload(const std::string &path)
 		return;
 	}
 
-	//Unload it
+	//Delete it which will automatically unload it
 	_libraries.erase(i);
 }
 

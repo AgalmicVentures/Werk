@@ -1,6 +1,7 @@
 
 #pragma once
 
+#include <cassert>
 #include <map>
 #include <string>
 
@@ -13,7 +14,9 @@ namespace werk
 class DynamicLibrary
 {
 public:
-	DynamicLibrary(void *handle) : _handle(handle) { }
+	DynamicLibrary(void *handle) : _handle(handle) {
+		assert(nullptr != handle);
+	}
 	~DynamicLibrary();
 
 	void *getSymbol(const char *name);

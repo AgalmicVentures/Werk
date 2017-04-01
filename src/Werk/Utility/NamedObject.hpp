@@ -18,7 +18,7 @@ public:
 	const std::string &name() const { return _name; }
 
 private:
-	std::string _name;
+	const std::string _name;
 };
 
 }

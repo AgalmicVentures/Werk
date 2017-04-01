@@ -4,11 +4,13 @@
 #include <boost/algorithm/string.hpp>
 #include <csignal>
 #include <cstdio>
+#include <unistd.h>
 
 #include "Werk/Commands/WriteCommandLogAction.hpp"
 #include "Werk/Console/ConsoleCommandReceiver.hpp"
 #include "Werk/Console/IpcConsoleServer.hpp"
 #include "Werk/OS/CpuMask.hpp"
+#include "Werk/OS/OS.hpp"
 #include "Werk/OS/Signals.hpp"
 #include "Werk/Profiling/WriteProfilesAction.hpp"
 #include "Werk/Threading/Watchdog.hpp"
@@ -78,16 +80,43 @@ ApplicationContext::ApplicationContext(const std::string &configPath)
 	_config->setLog(_log);
 	_log->logRaw(LogLevel::SUCCESS, "<Log> Initialized.");
 
+	/********** Detect System State Now That Log Is Setup **********/
+
+	/***** Software State *****/
+
+	//PID's
+	pid_t pid = getpid();
+	pid_t ppid = getppid();
+
+	//Current working directory
+	char currentWorkingDirectory[1024];
+	if (nullptr == getcwd(currentWorkingDirectory, sizeof(currentWorkingDirectory))) {
+		strcpy(currentWorkingDirectory, "Error getting current working directory.");
+	}
+
+	//Hostname
+	char hostname[1024];
+	if (0 != gethostname(hostname, sizeof(hostname))) {
+		strcpy(hostname, "Error getting hostname.");
+	}
+
+	_log->log(LogLevel::JSON, "{\"type\":\"startup.software\",\"os\":\"%s\",\"pid\":%ld,\"ppid\":%ld,\"cwd\":\"%s\",\"hostname\":\"%s\"}",
+		getOperatingSystemName(), pid, ppid, currentWorkingDirectory, hostname);
+
+	/***** Hardware State *****/
+
+	//Process
+	_processorCount = getProcessorCount();
+
+	//TODO: detect RAM for #84
+
+	_log->log(LogLevel::JSON, "{\"type\":\"startup.hardware\",\"processorCount\":%zu}", _processorCount);
+
 	/********** Configure Existing Components Now That Log Is Setup **********/
 
 	//Background thread
 	const uint64_t backgroundThreadIntervalNs = _config->getTimeAmount("Application.BackgroundThreadInterval", _backgroundThread.intervalNs());
 	_backgroundThread.setIntervalNs(backgroundThreadIntervalNs);
-
-	//Detect hardware
-	_processorCount = getProcessorCount();
-	//TODO: detect RAM for #84
-	_log->log(LogLevel::JSON, "{\"type\":\"startup.hardware\",\"processorCount\":%zu}", _processorCount);
 
 	//Set the instance ID
 	_instanceId = _config->getString("Application.InstanceID", "", "ID of this instance of the application");
@@ -112,6 +141,13 @@ ApplicationContext::ApplicationContext(const std::string &configPath)
 	if (_temporaryPath.length() < 2) {
 		_stdoutLog->logRaw(LogLevel::ERROR, "Invalid temporary path; defaulting to /tmp.");
 		_temporaryPath = "/tmp";
+	}
+
+	//Setup profiling output
+	const char *profilesPath = _config->getString("Application.ProfilesPath");
+	if (nullptr != profilesPath) {
+		_log->log(LogLevel::INFO, "Writing profiles to %s on shutdown.", profilesPath);
+		_shutdownActions.push_back(new WriteProfilesAction("WriteProfiles", _log, _profileManager, profilesPath));
 	}
 
 	/********** Command Manager **********/
@@ -141,12 +177,6 @@ ApplicationContext::ApplicationContext(const std::string &configPath)
 	if (nullptr != commandLogPath) {
 		_log->log(LogLevel::INFO, "Writing command log to %s on shutdown.", commandLogPath);
 		_shutdownActions.push_back(new WriteCommandLogAction("WriteCommandLog", _log, *_commandManager, commandLogPath));
-	}
-
-	const char *profilesPath = _config->getString("Application.ProfilesPath");
-	if (nullptr != profilesPath) {
-		_log->log(LogLevel::INFO, "Writing profiles to %s on shutdown.", profilesPath);
-		_shutdownActions.push_back(new WriteProfilesAction("WriteProfiles", _log, _profileManager, profilesPath));
 	}
 
 	/********** Console **********/

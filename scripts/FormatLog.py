@@ -24,7 +24,6 @@ levelColors = {
 	'UNKNOWN': nc,
 }
 
-#TODO: load more from a file
 jsonMessageTranslations = {
 	'mainLoop.enter': ('ALERT', '<ApplicationContext> Entering main loop...'),
 	'mainLoop.exit': ('ALERT', '<ApplicationContext> Exiting main loop...'),
@@ -33,7 +32,8 @@ jsonMessageTranslations = {
 	'shutdown.shutdownActionsComplete': ('SUCCESS', '<ApplicationContext> Shutdown actions complete.'),
 	'shutdown.shuttingDown': ('INFO', '<ApplicationContext> Shutting down...'),
 
-	'startup.hardware': ('INFO', '<ApplicationContext> Detected %(processorCount)s CPU cores.'),
+	'startup.software': ('INFO', '<ApplicationContext> Detected... OS: %(os)s | Hostname: %(hostname)s | PID: %(pid)s | PPID: %(ppid)s | CWD: %(cwd)s.'),
+	'startup.hardware': ('INFO', '<ApplicationContext> Detected... %(processorCount)s CPU cores.'),
 	'startup.initialized': ('SUCCESS', '<ApplicationContext> Initialized.'),
 }
 
@@ -67,8 +67,11 @@ def handleLine(line):
 	print('%s[%05d] [%s.%09d] %8s - %s%s' % (color, n, timeSec, timeNs, level, message, nc))
 
 def main():
-	#TODO: parse arguments
+	#Parse arguments
+	parser = argparse.ArgumentParser(description='Log Formatting Script (For Humans)')
 	#TODO: allow loading additional JSON translation dictionaries
+
+	arguments = parser.parse_args(sys.argv[1:])
 
 	quitting = False
 	while True:
@@ -85,7 +88,7 @@ def main():
 			else:
 				quitting = True
 				continue
-		except Exception as e:
+		except Exception as e: # @suppress the general exception warning, it's important to let nothing through
 			print('Exception thrown: %s -- %s' % (type(e), e))
 			break
 

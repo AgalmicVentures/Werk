@@ -132,7 +132,7 @@ asynchronously with `AsyncLog` on a `BackgroundThread`.
 A reloadable configuration system which can read from multiple `ConfigSource`s
 (allowing integration with standard formats as well as custom and proprietary
 ones) and propagate updates to a set of `Configurable` objects. As `Config`s are
-read, the values are logged, allowing for future reconstruction.
+read, the values are logged, making everything auditable.
 
 ### Commands
 To allow for easy configuration of actions, and also user input, string command
@@ -167,11 +167,16 @@ subsystems like commands and profiling, then runs some startup commands. An
 optional main loop may then be run.
 
 ## Startup
-On startup, the following configuration options are read:
+On startup, default signal handlers are register for segfaults and bus errors,
+the background thread is started, then logging and configuration ar
+bootstrapped:
 * `Application.ConfigPaths`: Only available in the primary config, this is a
 comma-separated list of other configs to load. Default none.
 * `Application.LogPath`: Path to the actual log file. If not present or cannot
 be opened, logs will go to stderr. Required.
+
+Then the following configuration options are read and their respective
+components initialized:
 * `Application.InstanceID`: ID of this instance of the application, for audit
 trail purposes.
 * `Application.ProfilesPath`: Path to profiling information JSON, written on
@@ -184,10 +189,13 @@ mode (causing it to output additional information). Default false.
 simulation. Default false.
 * `Application.RealTime`: Boolean indicating whether the application is running
 in real time. Default true.
-* `Application.StartupCommands`: Semicolon delimited list of command lines to
-run on startup.
 * `Application.IpcConsoleName`: The name of the IPC queue used for a console.
 Default none.
+
+Finally, the background task `Scheduler` is started and startup commands are
+run:
+* `Application.StartupCommands`: Semicolon delimited list of command lines to
+run on startup.
 
 ## Run Time
 If the optional main loop is used by calling `ApplicationContext::run()`, first

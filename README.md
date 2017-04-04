@@ -5,6 +5,52 @@ possibly with some dependencies, such as logging or configuration). A
 lightweight framework that combines the most common components is also
 [available](#framework).
 
+# Getting Started
+
+## Build
+Werk uses [Waf](https://waf.io/) to build and automate other development
+workflows like unit tests. To make things simple, a copy of Waf is included in
+the distribution and may be run with `./waf`, which by default will execute an
+incremental build the project.
+
+If you try running that in a freshly cloned repository, you'll be told you need
+to configure: `./waf configure`. This sets settings such as debug/release. Run
+`./waf configure -d` to configure a debug build.
+
+To see help and additional options, run `./waf -h`.
+
+## Testing
+Unit tests may be run after building by running `./waf test`. Because `waf` can
+accept more than one action, you can build and test in one command:
+`./waf build test`.
+
+## Profiling
+Profiling code is included for critical components to help identify performance
+regressions. Run `./waf profile` to profile.
+
+## Valgrind
+To help identify memory errors, Valgrind is built into the build system.
+To run tests or profiling with `valgrind`, add the `--valgrind` option:
+`./waf test --valgrind` or `./waf profile --valgrind`.
+
+## Hello World
+The Hello World of Werk applications is included as an example of how to
+instantiate the [framework](#framework). To run it (and format the JSON logs for
+human consumption), run:
+
+    > build/bin/HelloWorld | scripts/FormatLog.py 
+    [00000] [1491267909.296769000]   CONFIG - <Config> [Application.ConfigPaths] = (null) [DEFAULT]
+    [00002] [1491267909.296769000]  SUCCESS - <Config> Initialized.
+    [00003] [1491267909.296769000]   CONFIG - <Config> [Application.LogPath] = (null) [DEFAULT]
+    [00000] [1491267909.296769000]  SUCCESS - <Log> Initialized.
+    ...
+
+## Continuous Integration (CI)
+Gitlab CI support is included via the `.gitlab-ci.yml` file in the root of the
+repository. If available, it will build, unit test, profile, and functional test
+(via the Hello World app) both debug and release after every push. All testing
+and profiling code is run twice: once without valgrind and once with valgrind.
+
 # Design
 Although Werk is not a framework and does not enforce a particular threading
 model, it does have several high level design rules in order to meet its

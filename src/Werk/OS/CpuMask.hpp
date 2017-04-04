@@ -35,7 +35,7 @@ public:
 protected:
 	const size_t _processorCount;
 	size_t _size;
-    cpu_set_t *_mask;
+	cpu_set_t *_mask;
 };
 
 }

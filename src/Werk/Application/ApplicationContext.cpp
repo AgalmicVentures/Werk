@@ -13,6 +13,7 @@
 #include "Werk/OS/OS.hpp"
 #include "Werk/OS/Signals.hpp"
 #include "Werk/Profiling/WriteProfilesAction.hpp"
+#include "Werk/Simulation/Simulator.hpp"
 #include "Werk/Threading/Watchdog.hpp"
 
 namespace werk
@@ -310,6 +311,16 @@ void ApplicationContext::run(Action *mainAction)
 			_log->logRaw(LogLevel::ERROR, "Watchdog interval is less than double background thread interval.");
 		}
 		_backgroundThread.addTask(watchdog);
+	}
+
+	//Setup simulator
+	Action *actionToRun = mainAction;
+	SimulatorAction *simulator = nullptr;
+	if (_simulation) {
+		simulator = new SimulatorAction("Simulator", _clock, _quitting, mainAction);
+		actionToRun = simulator;
+
+		//TODO: setup data sources
 	}
 
 	//Run the main loop

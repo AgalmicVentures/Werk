@@ -51,7 +51,7 @@ public:
 	}
 
 	//Sampling methods
-	void sample(T t, double dWeight) {
+	void sample(const T &t, double dWeight) {
 		_sampleCount += 1;
 		_weightSum += dWeight;
 		_weights[t] += dWeight;

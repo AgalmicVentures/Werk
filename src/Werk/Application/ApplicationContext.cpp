@@ -315,9 +315,9 @@ void ApplicationContext::run(Action *mainAction)
 
 	//Setup simulator
 	Action *actionToRun = mainAction;
-	SimulatorAction *simulator = nullptr;
+	Simulator *simulator = nullptr;
 	if (_simulation) {
-		simulator = new SimulatorAction("Simulator", _clock, _quitting, mainAction);
+		simulator = new Simulator("Simulator", _clock, _quitting, mainAction);
 		actionToRun = simulator;
 
 		//TODO: setup data sources

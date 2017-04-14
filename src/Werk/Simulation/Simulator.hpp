@@ -13,11 +13,13 @@ namespace werk
 class TimeSeries;
 
 //TODO: is directly passing the latch the best way to do this?
-class SimulatorAction : public Action
+class Simulator : public Action
 {
 public:
-	SimulatorAction(const std::string &name, Clock *simulatedClock, Latch<volatile bool> &complete, Action *mainAction) :
+	Simulator(const std::string &name, Clock *simulatedClock, Latch<volatile bool> &complete, Action *mainAction) :
 		Action(name), _simulatedClock(simulatedClock), _complete(complete), _mainAction(mainAction) { }
+
+	void addDataSource(TimeSeries *dataSource);
 
 	void execute() override;
 

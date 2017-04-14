@@ -11,7 +11,9 @@ SystemRandom::SystemRandom()
 	_file = std::fopen("/dev/urandom", "rb");
 	if (nullptr == _file) {
 		_file = std::fopen("/dev/random", "rb");
-		//TODO: error handling
+		if (nullptr == _file) {
+			//TODO: error handling
+		}
 	}
 }
 

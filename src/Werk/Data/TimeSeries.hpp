@@ -16,7 +16,7 @@ public:
 	/**
 	 * Return the current time.
 	 */
-	virtual uint64_t time() = 0;
+	virtual uint64_t time() const = 0;
 
 	/**
 	 * Moves to the next time, returning false when there is no more data available.

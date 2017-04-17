@@ -1,6 +1,8 @@
 
 #pragma once
 
+#include <cassert>
+
 #include "Werk/Data/Csv/CsvParser.hpp"
 #include "Werk/Data/TimeSeries.hpp"
 
@@ -16,10 +18,12 @@ class CsvTimeSeries : public TimeSeries
 {
 public:
 
-	CsvTimeSeries(CsvParser &parser, size_t timeColumn) :
-		_parser(parser), _timeColumn(timeColumn) { }
+	CsvTimeSeries(CsvParser &parser, size_t timeColumn=0, uint64_t scale=1, int64_t offset=0) :
+		_parser(parser), _timeColumn(timeColumn), _scale(scale), _offset(offset) {
+		assert(scale > 0);
+	}
 
-	virtual uint64_t time() override { return _time; }
+	virtual uint64_t time() const override { return _time; }
 	virtual bool moveNext() override {
 		_time = 0;
 		if (!_parser.moveNext()) {
@@ -30,7 +34,7 @@ public:
 			return false;
 		}
 
-		_time = std::stoull(_parser.values()[_timeColumn]);
+		_time = std::stoull(_parser.values()[_timeColumn]) * _scale + _offset;
 		return true;
 	}
 
@@ -39,6 +43,9 @@ public:
 protected:
 	CsvParser &_parser;
 	size_t _timeColumn;
+	uint64_t _scale;
+	int64_t _offset;
+
 	uint64_t _time = 0;
 };
 

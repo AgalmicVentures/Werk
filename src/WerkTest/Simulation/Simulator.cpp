@@ -24,7 +24,7 @@ BOOST_AUTO_TEST_CASE(testBasic)
 {
 	//Open and skip headers
 	werk::CsvParser csvParser;
-	werk::CsvTimeSeries csvTimeSeries(csvParser, 0);
+	werk::CsvTimeSeries csvTimeSeries(csvParser, 0, 1e9);
 	BOOST_REQUIRE(csvParser.open("src/WerkTest/Data/Csv/test.csv"));
 	BOOST_REQUIRE(csvParser.moveNext());
 
@@ -35,15 +35,15 @@ BOOST_AUTO_TEST_CASE(testBasic)
 
 	simulator.execute();
 	BOOST_CHECK(!complete.value());
-	BOOST_CHECK_EQUAL(clock.time(), 10);
+	BOOST_CHECK_EQUAL(clock.time(), 10e9);
 
 	simulator.execute();
 	BOOST_CHECK(!complete.value());
-	BOOST_CHECK_EQUAL(clock.time(), 20);
+	BOOST_CHECK_EQUAL(clock.time(), 20e9);
 
 	simulator.execute();
 	BOOST_CHECK(!complete.value());
-	BOOST_CHECK_EQUAL(clock.time(), 25);
+	BOOST_CHECK_EQUAL(clock.time(), 25e9);
 
 	simulator.execute();
 	BOOST_CHECK(complete.value());

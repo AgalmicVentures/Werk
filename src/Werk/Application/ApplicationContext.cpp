@@ -324,7 +324,7 @@ void ApplicationContext::run(Action *mainAction)
 	TimeSeriesReplayer *timeSeriesReplayer = nullptr;
 	if (!_realTime) {
 		_log->logRaw(LogLevel::INFO, "Initializing time series replayer...");
-		timeSeriesReplayer = new TimeSeriesReplayer("TimeSeriesReplayer", _clock, _quitting, mainAction);
+		timeSeriesReplayer = new TimeSeriesReplayer("TimeSeriesReplayer", _clock, _quitting, mainAction, _log);
 		actionToRun = timeSeriesReplayer;
 
 		//Setup data sources

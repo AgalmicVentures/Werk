@@ -212,6 +212,13 @@ Then a main loop is started which updates the curren time, runs a main `Action`,
 then executes any defered `Action`s in the foreground queue and resets the
 watchdog.
 
+### Historical Data Replay
+Runs without the real time flag set use a `TimeSeriesReplayer` to replay 1 or
+more data sources (CSV's, PCAP's, etc.) as events. This allows for simple
+testing against multiple sources of historical data.
+* `Application.HistoricalDataSources`: Comma-separated list of paths to
+historical data sources.
+
 ### Commands
 The application context adds additional default commands:
 * `app`: Logs information about the high level state of the application.
@@ -219,13 +226,6 @@ The application context adds additional default commands:
 * `logs`: Logs information about what logs are available.
 * `reload`: Reloads the configuration.
 * `quit`: Quits the application cleanly, running shutdown commands and actions.
-
-### Historical Data Replay
-Runs without the real time flag set use a `TimeSeriesReplayer` to replay 1 or
-more data sources (CSV's, PCAP's, etc.) as events. This allows for simple
-testing against multiple sources of historical data.
-* `Application.HistoricalDataSources`: Comma-separated list of paths to
-historical data sources.
 
 ## Shutdown
 On shutdown it runs shutdown commands (read from `Application.ShutdownCommands`),

@@ -220,8 +220,8 @@ The application context adds additional default commands:
 * `reload`: Reloads the configuration.
 * `quit`: Quits the application cleanly, running shutdown commands and actions.
 
-### Simulation
-Runs with the simulation flag set use a `TimeSeriesReplayer` to replay 1 or
+### Historical Data Replay
+Runs without the real time flag set use a `TimeSeriesReplayer` to replay 1 or
 more data sources (CSV's, PCAP's, etc.) as events. This allows for simple
 testing against multiple sources of historical data.
 

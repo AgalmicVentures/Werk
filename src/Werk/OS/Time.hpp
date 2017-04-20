@@ -18,14 +18,14 @@ inline uint64_t epochTime()
 	}
 
 	//Only microsecond resolution, unfortunately
-	return t.tv_sec * 1e9l + t.tv_usec * 1e3l;
+	return t.tv_sec * 1000000000llu + t.tv_usec * 1000llu;
 #else
 	timespec t;
 	if (0 != clock_gettime(CLOCK_MONOTONIC, &t)) {
 		return 0;
 	}
 
-	return t.tv_sec * 1e9l + t.tv_nsec;
+	return t.tv_sec * 1000000000llu + t.tv_nsec;
 #endif
 }
 

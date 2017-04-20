@@ -32,8 +32,8 @@ bool PcapParser::moveNext()
 	if (_recordHeader.length > 65535) {
 		return false;
 	}
-	_time = _recordHeader.timeSec * 1e9l +
-		(_isNanosecond ? _recordHeader.timeFrac : _recordHeader.timeFrac * 1e3l);
+	_time = _recordHeader.timeSec * 1000000000llu +
+		(_isNanosecond ? _recordHeader.timeFrac : _recordHeader.timeFrac * 1000llu);
 
 	//And the packet data
 	_file.read((char *) _buffer, _recordHeader.length);

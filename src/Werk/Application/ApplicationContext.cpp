@@ -391,7 +391,7 @@ void ApplicationContext::run(Action *mainAction)
 		_foregroundActionQueue.execute();
 
 		//Made it through another loop, update background objects -- update clock, reset the watchdog
-		_backgroundThread.setMainClockTime(_clock->time());
+		_backgroundThread.setMainClockTime(_realTimeClock.time());
 		watchdog->reset();
 	}
 	_log->log(LogLevel::JSON, "{\"type\":\"mainLoop.exit\",\"updates\":%" PRIu64 "}", _updateId);

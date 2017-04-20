@@ -69,7 +69,7 @@ ApplicationContext::ApplicationContext(const std::string &configPath)
 	_backgroundThread.addTask(_config);
 	_stdoutLog->logRaw(LogLevel::SUCCESS, "<Config> Initialized.");
 
-	/********** Main Log **********/
+	/********** Real Time Log **********/
 
 	const char *logPath = _config->getString("Application.LogPath");
 	FILE *file = nullptr == logPath ? stdout : std::fopen(logPath, "a");
@@ -78,11 +78,39 @@ ApplicationContext::ApplicationContext(const std::string &configPath)
 		file = stderr;
 	}
 
-	_log = new AsyncLog("Log", &_backgroundThread.backgroundClock(), file);
-	_logManager.add(_log);
-	_backgroundThread.addTask(_log);
-	_config->setLog(_log);
-	_log->logRaw(LogLevel::SUCCESS, "<Log> Initialized.");
+	_realTimeLog = new AsyncLog("RealTimeLog", &_backgroundThread.backgroundClock(), file);
+	_logManager.add(_realTimeLog);
+	_backgroundThread.addTask(_realTimeLog);
+	_config->setLog(_realTimeLog);
+	_realTimeLog->logRaw(LogLevel::SUCCESS, "<RealTimeLog> Initialized.");
+
+	/********** Determine If Real Time **********/
+
+	//Real time mode or not? In non-real time mode, a secondary clock is instantiated
+	_realTime = _config->getBool("Application.RealTime", true,
+		"Indicates whether the application is running in real time or from a different clock");
+	if (_realTime) {
+		_clock = &_realTimeClock;
+		_log = _realTimeLog;
+	} else {
+		_clock = new Clock();
+
+		/********** Main Log (Historical Time) **********/
+
+		const char *logPath = _config->getString("Application.HistoricalLogPath");
+		FILE *file = nullptr == logPath ? stdout : std::fopen(logPath, "a");
+		if (nullptr == file) {
+			_stdoutLog->logRaw(LogLevel::ERROR, "Could not open historical log file, redirecting to stderr.");
+			file = stderr;
+		}
+
+		_log = new AsyncLog("HistoricalLog", _clock, file);
+		_logManager.add(_log);
+		_backgroundThread.addTask(_log);
+		_config->setLog(_log);
+		_log->logRaw(LogLevel::SUCCESS, "<HistoricalLog> Initialized.");
+	}
+
 
 	/********** Detect System State Now That Log Is Setup **********/
 
@@ -104,8 +132,9 @@ ApplicationContext::ApplicationContext(const std::string &configPath)
 		strcpy(hostname, "Error getting hostname.");
 	}
 
-	_log->log(LogLevel::JSON, "{\"type\":\"startup.software\",\"os\":\"%s\",\"pid\":%ld,\"ppid\":%ld,\"cwd\":\"%s\",\"hostname\":\"%s\"}",
-		getOperatingSystemName(), pid, ppid, currentWorkingDirectory, hostname);
+	_log->log(LogLevel::JSON, "{\"type\":\"startup.software\",\"os\":\"%s\",\"cwd\":\"%s\",\"hostname\":\"%s\"}",
+		getOperatingSystemName(), currentWorkingDirectory, hostname);
+	_realTimeLog->log(LogLevel::JSON, "{\"type\":\"startup.pid\",\"pid\":%ld,\"ppid\":%ld}", pid, ppid);
 
 	/***** Hardware State *****/
 
@@ -130,15 +159,6 @@ ApplicationContext::ApplicationContext(const std::string &configPath)
 
 	_debug = _config->getBool("Application.Debug", false,
 		"Indicates whether the application should output additional debug information (even in release builds)");
-
-	//Real time mode or not? In non-real time mode, a secondary clock is instantiated
-	_realTime = _config->getBool("Application.RealTime", true,
-		"Indicates whether the application is running in real time or from a different clock");
-	if (_realTime) {
-		_clock = &_realTimeClock;
-	} else {
-		_clock = new Clock();
-	}
 
 	_simulation = _config->getBool("Application.Simulation", false,
 		"Indicates whether the application is running a simulation or not");

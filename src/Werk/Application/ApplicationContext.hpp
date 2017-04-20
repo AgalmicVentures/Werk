@@ -77,6 +77,8 @@ public:
 	const LogManager &logManager() const { return _logManager; }
 	AsyncLog *stdoutLog() { return _stdoutLog; }
 	const AsyncLog *stdoutLog() const { return _stdoutLog; }
+	AsyncLog *realTimeLog() { return _realTimeLog; }
+	const AsyncLog *realTimeLog() const { return _realTimeLog; }
 	AsyncLog *log() { return _log; }
 	const AsyncLog *log() const { return _log; }
 	Config *config() { return _config; }
@@ -114,6 +116,7 @@ private:
 	ActionQueue<> _backgroundActionQueue { "BackgroundActionQueue" };
 	LogManager _logManager;
 	AsyncLog *_stdoutLog;
+	AsyncLog *_realTimeLog;
 	AsyncLog *_log;
 	Config *_config;
 	CommandManager *_commandManager;

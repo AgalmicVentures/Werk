@@ -55,7 +55,7 @@ debug_valgrind_profile_job:
   only:
     - master
 
-debug_hello_world_job:
+debug_hello_world_real_time_job:
   stage: functional_test
   script:
     - build/bin/IpcConsoleCleanup console
@@ -63,6 +63,16 @@ debug_hello_world_job:
     - export HELLO_PID=$!
     - sleep 5
     - kill -INT $HELLO_PID
+    - cat profiles.json
+  dependencies:
+    - debug_build_job
+  only:
+    - master
+
+debug_hello_world_historical_job:
+  stage: functional_test
+  script:
+    - build/bin/HelloWorld src/HelloWorld/TestHistorical.ini
     - cat profiles.json
   dependencies:
     - debug_build_job

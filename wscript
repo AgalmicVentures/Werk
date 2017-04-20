@@ -72,6 +72,7 @@ def configure(ctx):
 		'-std=c++11',
 		'-Wall',
 		'-Wextra',
+		'-Wconversion',
 		'-pedantic',
 	]
 

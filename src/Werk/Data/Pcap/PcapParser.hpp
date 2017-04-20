@@ -56,8 +56,8 @@ public:
 	uint32_t network() const { return _fileHeader.network; }
 	bool isNanosecond() const { return _isNanosecond; }
 
-	uint16_t length() const { return _recordHeader.length; }
-	uint16_t originalLength() const { return _recordHeader.originalLength; }
+	uint32_t length() const { return _recordHeader.length; }
+	uint32_t originalLength() const { return _recordHeader.originalLength; }
 	const uint8_t *buffer() const { return _buffer; }
 
 	virtual uint64_t time() const override { return _time; }

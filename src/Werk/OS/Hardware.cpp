@@ -17,7 +17,7 @@ uint64_t getPageSize()
         return 0;
     }
 
-    return pageSize;
+    return static_cast<uint64_t>(pageSize);
 }
 
 uint64_t getPhysicalMemorySize()

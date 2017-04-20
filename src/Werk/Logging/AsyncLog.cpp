@@ -31,7 +31,7 @@ void AsyncLog::log(LogLevel level, const char *format, ...)
 		std::fprintf(stderr, "Truncated log message: %s\n", message.message);
 		message.length = LogMessage::maxLineLength;
 	} else {
-		message.length = n + 1;
+		message.length = static_cast<size_t>(n) + 1;
 	}
 	va_end(args);
 

@@ -18,7 +18,7 @@ inline uint64_t epochTime()
 	}
 
 	//Only microsecond resolution, unfortunately
-	return t.tv_sec * 1000000000llu + t.tv_usec * 1000llu;
+	return static_cast<uint64_t>(t.tv_sec) * 1000000000llu + static_cast<uint64_t>(t.tv_usec) * 1000llu;
 #else
 	timespec t;
 	if (0 != clock_gettime(CLOCK_MONOTONIC, &t)) {

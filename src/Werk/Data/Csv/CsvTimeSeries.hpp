@@ -18,7 +18,7 @@ class CsvTimeSeries : public TimeSeries
 {
 public:
 
-	CsvTimeSeries(CsvParser &parser, size_t timeColumn=0, uint64_t scale=1, int64_t offset=0) :
+	CsvTimeSeries(CsvParser &parser, size_t timeColumn=0, int64_t scale=1, int64_t offset=0) :
 		_parser(parser), _timeColumn(timeColumn), _scale(scale), _offset(offset) {
 		assert(scale > 0);
 	}
@@ -34,7 +34,7 @@ public:
 			return false;
 		}
 
-		_time = std::stoull(_parser.values()[_timeColumn]) * _scale + _offset;
+		_time = static_cast<uint64_t>(std::stoll(_parser.values()[_timeColumn]) * _scale + _offset);
 		return true;
 	}
 
@@ -43,7 +43,7 @@ public:
 protected:
 	CsvParser &_parser;
 	size_t _timeColumn;
-	uint64_t _scale;
+	int64_t _scale;
 	int64_t _offset;
 
 	uint64_t _time = 0;

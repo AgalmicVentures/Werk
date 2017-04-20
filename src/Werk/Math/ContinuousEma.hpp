@@ -31,8 +31,11 @@ public:
 		assert(_factor >= 0.0);
 	}
 
-	//TODO: consider an implementation that is less "laggy" where the new value is assumed to be the value for
-	//the entire time since the last sample
+	//Modifiers for the value, which allow interesting use cases such as exponentially decaying sums
+	//(by using the add() method and then sample(0.0) or whatever the set point is).
+	void add(double delta) { _value += delta; }
+	void setValue(double value) { _value = value; }
+
 	void sample(double index, double sample) {
 		if (std::isnan(_value)) {
 			_value = sample;

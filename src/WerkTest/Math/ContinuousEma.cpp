@@ -27,6 +27,9 @@ BOOST_AUTO_TEST_CASE(testConstant)
 	BOOST_CHECK_EQUAL(ema.value(), 10.0);
 	ema.sample(17.0, 10.0);
 	BOOST_CHECK_EQUAL(ema.value(), 10.0);
+
+	ema.add(-5.0);
+	BOOST_CHECK_EQUAL(ema.value(), 5.0);
 }
 
 BOOST_AUTO_TEST_CASE(testDecreasing)

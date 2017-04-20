@@ -97,14 +97,14 @@ ApplicationContext::ApplicationContext(const std::string &configPath)
 
 		/********** Main Log (Historical Time) **********/
 
-		const char *logPath = _config->getString("Application.HistoricalLogPath");
-		FILE *file = nullptr == logPath ? stdout : std::fopen(logPath, "a");
-		if (nullptr == file) {
+		const char *historicalLogPath = _config->getString("Application.HistoricalLogPath");
+		FILE *historicalFile = nullptr == historicalLogPath ? stdout : std::fopen(historicalLogPath, "a");
+		if (nullptr == historicalFile) {
 			_stdoutLog->logRaw(LogLevel::ERROR, "Could not open historical log file, redirecting to stderr.");
-			file = stderr;
+			historicalFile = stderr;
 		}
 
-		_log = new AsyncLog("HistoricalLog", _clock, file);
+		_log = new AsyncLog("HistoricalLog", _clock, historicalFile);
 		_logManager.add(_log);
 		_backgroundThread.addTask(_log);
 		_config->setLog(_log);

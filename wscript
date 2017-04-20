@@ -70,9 +70,17 @@ def configure(ctx):
 	ctx.env.INCLUDES += ['.', 'src']
 	ctx.env.CXXFLAGS = [
 		'-std=c++11',
+
 		'-Wall',
-		'-Wextra',
+		'-Wundef',
+		'-Wstrict-prototypes',
+		'-Wmissing-prototypes',
+		'-Wno-trigraphs',
+		'-Wuninitialized',
+		'-Wmissing-include-dirs',
+		'-Wshadow',
 		'-Wconversion',
+
 		'-pedantic',
 	]
 

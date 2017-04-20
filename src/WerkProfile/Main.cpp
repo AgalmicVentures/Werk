@@ -5,7 +5,7 @@
 #include "Werk/Profiling/ProfileManager.hpp"
 #include "Werk/Threading/BackgroundThread.hpp"
 
-void profileLog(werk::ProfileManager &profileManager)
+static void profileLog(werk::ProfileManager &profileManager)
 {
 	werk::BackgroundThread backgroundThread(nullptr, 1l * 1000 * 1000);
 

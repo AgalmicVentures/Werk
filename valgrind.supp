@@ -10,7 +10,6 @@
    Logger_MPMC_Queue_False_Positive_Linux1
    Memcheck:Cond
    fun:_ZN4werk8AsyncLog6logRawENS_8LogLevelEPKc
-   fun:_Z10profileLogRN4werk14ProfileManagerE
    fun:main
 }
 {

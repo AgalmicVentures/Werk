@@ -216,6 +216,11 @@ The application context adds additional default commands:
 * `reload`: Reloads the configuration.
 * `quit`: Quits the application cleanly, running shutdown commands and actions.
 
+### Simulation
+Runs with the simulation flag set use a `Simulator` to reply 1 or more data
+sources (CSV's, PCAP's, etc.) as events. This allows for simple testing against
+multiple sources of historical data.
+
 ## Shutdown
 On shutdown it runs shutdown commands (read from `Application.ShutdownCommands`),
 then shutdown actions which may be registered by any component, ensuring a clean

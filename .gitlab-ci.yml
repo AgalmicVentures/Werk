@@ -143,7 +143,7 @@ release_hello_world_real_time_job:
   only:
     - master
 
-debug_hello_world_historical_job:
+release_hello_world_historical_job:
   stage: functional_test
   script:
     - build/bin/HelloWorld src/HelloWorld/TestHistorical.ini

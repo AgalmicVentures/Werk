@@ -224,6 +224,8 @@ The application context adds additional default commands:
 Runs without the real time flag set use a `TimeSeriesReplayer` to replay 1 or
 more data sources (CSV's, PCAP's, etc.) as events. This allows for simple
 testing against multiple sources of historical data.
+* `Application.HistoricalDataSources`: Comma-separated list of paths to
+historical data sources.
 
 ## Shutdown
 On shutdown it runs shutdown commands (read from `Application.ShutdownCommands`),

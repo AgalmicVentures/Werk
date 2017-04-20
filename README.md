@@ -6,7 +6,7 @@ lightweight framework that combines the most common components is also
 [available](#framework).
 
 To facilitate development and testing, a simulator is provided which can
-replay historical data from a variety of formats (CSV, PCAP, etc.) as though it 
+replay historical data from a variety of formats (CSV, PCAP, etc.) as though it
 were happening live.
 
 # Getting Started
@@ -42,7 +42,7 @@ The Hello World of Werk applications is included as an example of how to
 instantiate the [framework](#framework). To run it (and format the JSON logs for
 human consumption), run:
 
-    > build/bin/HelloWorld | scripts/FormatLog.py 
+    > build/bin/HelloWorld | scripts/FormatLog.py
     [00000] [1491267909.296769000]   CONFIG - <Config> [Application.ConfigPaths] = (null) [DEFAULT]
     [00002] [1491267909.296769000]  SUCCESS - <Config> Initialized.
     [00003] [1491267909.296769000]   CONFIG - <Config> [Application.LogPath] = (null) [DEFAULT]
@@ -221,9 +221,9 @@ The application context adds additional default commands:
 * `quit`: Quits the application cleanly, running shutdown commands and actions.
 
 ### Simulation
-Runs with the simulation flag set use a `Simulator` to replay 1 or more data
-sources (CSV's, PCAP's, etc.) as events. This allows for simple testing against
-multiple sources of historical data.
+Runs with the simulation flag set use a `TimeSeriesReplayer` to replay 1 or
+more data sources (CSV's, PCAP's, etc.) as events. This allows for simple
+testing against multiple sources of historical data.
 
 ## Shutdown
 On shutdown it runs shutdown commands (read from `Application.ShutdownCommands`),

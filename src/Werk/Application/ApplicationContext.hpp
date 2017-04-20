@@ -60,6 +60,7 @@ public:
 	//Main thread
 	const Clock &realTimeClock() const { return _realTimeClock; }
 	const Clock *clock() const { return _clock; }
+	uint64_t upateId() const { return _updateId; }
 	ProfileManager &profileManager() { return _profileManager; }
 	const ProfileManager &profileManager() const { return _profileManager; }
 	ActionQueue<> &foregroundActionQueue() { return _backgroundActionQueue; }
@@ -100,6 +101,7 @@ private:
 	//Foreground thread state
 	Clock _realTimeClock;
 	Clock *_clock;
+	uint64_t _updateId = 0;
 	ProfileManager _profileManager;
 	ActionQueue<> _foregroundActionQueue { "ForegroundActionQueue" };
 	std::vector<Action *> _shutdownActions;

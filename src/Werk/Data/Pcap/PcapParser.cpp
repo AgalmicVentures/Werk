@@ -1,8 +1,6 @@
 
 #include "PcapParser.hpp"
 
-#include <boost/algorithm/string.hpp>
-
 namespace werk
 {
 
@@ -26,18 +24,16 @@ bool PcapParser::open(const std::string &path)
 
 bool PcapParser::moveNext()
 {
-	//Read the next packet header
+	//Read and validate the next packet header
 	_file.read((char *) &_recordHeader, sizeof(_recordHeader));
-	_time = _recordHeader.timeSec * 1e9l +
-		(_isNanosecond ? _recordHeader.timeFrac : _recordHeader.timeFrac * 1e3l);
-
-	//And the length
 	if (!_file.good()) {
 		return false;
 	}
 	if (_recordHeader.length > 65535) {
 		return false;
 	}
+	_time = _recordHeader.timeSec * 1e9l +
+		(_isNanosecond ? _recordHeader.timeFrac : _recordHeader.timeFrac * 1e3l);
 
 	//And the packet data
 	_file.read((char *) _buffer, _recordHeader.length);

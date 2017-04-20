@@ -26,14 +26,14 @@ levelColors = {
 
 jsonMessageTranslations = {
 	'mainLoop.enter': ('ALERT', '<ApplicationContext> Entering main loop...'),
-	'mainLoop.exit': ('ALERT', '<ApplicationContext> Exiting main loop...'),
+	'mainLoop.exit': ('ALERT', '<ApplicationContext> Exiting main loop after %(updates)s updates...'),
 
 	'shutdown.shutdownActions': ('INFO', '<ApplicationContext> Running shutdown actions...'),
 	'shutdown.shutdownActionsComplete': ('SUCCESS', '<ApplicationContext> Shutdown actions complete.'),
 	'shutdown.shuttingDown': ('INFO', '<ApplicationContext> Shutting down...'),
 
 	'startup.software': ('INFO', '<ApplicationContext> Detected... OS: %(os)s | Hostname: %(hostname)s | PID: %(pid)s | PPID: %(ppid)s | CWD: %(cwd)s.'),
-	'startup.hardware': ('INFO', '<ApplicationContext> Detected... %(processorCount)s CPU cores | %(physicalMemory) bytes of RAM [%(pageSize) per page].'),
+	'startup.hardware': ('INFO', '<ApplicationContext> Detected... %(processorCount)s CPU cores | %(physicalMemory)s bytes of RAM [%(pageSize)s per page].'),
 	'startup.initialized': ('SUCCESS', '<ApplicationContext> Initialized.'),
 }
 
@@ -89,7 +89,7 @@ def main():
 				quitting = True
 				continue
 		except Exception as e: # @suppress the general exception warning, it's important to let nothing through
-			print('Exception thrown: %s -- %s' % (type(e), e))
+			#print('Exception thrown: %s -- %s' % (type(e), e))
 			break
 
 	return 0

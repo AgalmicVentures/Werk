@@ -1,12 +1,12 @@
 
-#include "Simulator.hpp"
+#include "TimeSeriesReplayer.hpp"
 
 #include "Werk/Data/TimeSeries.hpp"
 
 namespace werk
 {
 
-void Simulator::addDataSource(TimeSeries *dataSource)
+void TimeSeriesReplayer::addDataSource(TimeSeries *dataSource)
 {
 	if (!dataSource->moveNext()) {
 		return;
@@ -18,7 +18,7 @@ void Simulator::addDataSource(TimeSeries *dataSource)
 	}
 }
 
-void Simulator::execute()
+void TimeSeriesReplayer::execute()
 {
 	//Get the next simulated event and update the simulated clock
 	auto i = _dataSources.begin();

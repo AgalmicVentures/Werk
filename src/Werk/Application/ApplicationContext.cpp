@@ -9,12 +9,14 @@
 #include "Werk/Commands/WriteCommandLogAction.hpp"
 #include "Werk/Console/ConsoleCommandReceiver.hpp"
 #include "Werk/Console/IpcConsoleServer.hpp"
+#include "Werk/Data/Csv/CsvTimeSeries.hpp"
+#include "Werk/Data/Pcap/PcapParser.hpp"
+#include "Werk/Data/TimeSeriesReplayer.hpp"
 #include "Werk/OS/CpuMask.hpp"
 #include "Werk/OS/Hardware.hpp"
 #include "Werk/OS/OS.hpp"
 #include "Werk/OS/Signals.hpp"
 #include "Werk/Profiling/WriteProfilesAction.hpp"
-#include "Werk/Simulation/Simulator.hpp"
 #include "Werk/Threading/Watchdog.hpp"
 
 namespace werk
@@ -114,7 +116,7 @@ ApplicationContext::ApplicationContext(const std::string &configPath)
 	_physicalMemorySize = getPhysicalMemorySize();
 	_pageSize = getPageSize();
 
-	_log->log(LogLevel::JSON, "{\"type\":\"startup.hardware\",\"processorCount\":%zu,\"physicalMemory\":%llu,\"pageSize\":%llu}",
+	_log->log(LogLevel::JSON, "{\"type\":\"startup.hardware\",\"processorCount\":%zu,\"physicalMemory\":%" PRIu64 ",\"pageSize\":%" PRIu64 "}",
 		_processorCount, _physicalMemorySize, _pageSize);
 
 	/********** Configure Existing Components Now That Log Is Setup **********/
@@ -317,21 +319,53 @@ void ApplicationContext::run(Action *mainAction)
 		_backgroundThread.addTask(watchdog);
 	}
 
-	//Setup simulator
+	//Setup time series replayer for historical data if not real time
 	Action *actionToRun = mainAction;
-	Simulator *simulator = nullptr;
-	if (_simulation) {
-		simulator = new Simulator("Simulator", _clock, _quitting, mainAction);
-		actionToRun = simulator;
+	TimeSeriesReplayer *timeSeriesReplayer = nullptr;
+	if (!_realTime) {
+		_log->logRaw(LogLevel::INFO, "Initializing time series replayer...");
+		timeSeriesReplayer = new TimeSeriesReplayer("TimeSeriesReplayer", _clock, _quitting, mainAction);
+		actionToRun = timeSeriesReplayer;
 
-		//TODO: setup data sources
+		//Setup data sources
+		std::vector<std::string> dataSourcePaths;
+		const char *dataSourcePathsStr = _config->getString("Application.HistoricalDataSources");
+		if (nullptr != dataSourcePathsStr) {
+			boost::split(dataSourcePaths, dataSourcePathsStr, boost::is_any_of(","));
+		}
+
+		for (const std::string &dataSourcePath : dataSourcePaths) {
+			if (boost::algorithm::ends_with(dataSourcePath, ".csv")) {
+				//TODO: this demands more configurability
+				CsvParser *csvParser = new CsvParser();
+				if (csvParser->open(dataSourcePath)) {
+					CsvTimeSeries *csvTimeSeries = new CsvTimeSeries(*csvParser);
+					timeSeriesReplayer->addDataSource(csvTimeSeries);
+					_log->log(LogLevel::SUCCESS, "Opened historical data source: %s.", dataSourcePath.c_str());
+				} else {
+					_log->log(LogLevel::ERROR, "Failed to open historical data source: %s.", dataSourcePath.c_str());
+				}
+			} else if (boost::algorithm::ends_with(dataSourcePath, ".pcap")) {
+				PcapParser *pcapParser = new PcapParser();
+				if (pcapParser->open(dataSourcePath)) {
+					timeSeriesReplayer->addDataSource(pcapParser);
+					_log->log(LogLevel::SUCCESS, "Opened historical data source: %s.", dataSourcePath.c_str());
+				} else {
+					_log->log(LogLevel::ERROR, "Failed to open historical data source: %s.", dataSourcePath.c_str());
+				}
+			} else {
+				_log->log(LogLevel::ERROR, "Unknown historical data source file type: %s.", dataSourcePath.c_str());
+			}
+		}
+		_log->logRaw(LogLevel::SUCCESS, "Simulator initialized.");
 	}
 
 	//Run the main loop
 	_log->logRaw(LogLevel::JSON, "{\"type\":\"mainLoop.enter\"}");
 	while (!_quitting.value()) {
 		_realTimeClock.setEpochTime();
-		mainAction->execute();
+		_updateId += 1;
+		actionToRun->execute();
 
 		//Run other queued actions after the main action
 		_foregroundActionQueue.execute();
@@ -340,7 +374,7 @@ void ApplicationContext::run(Action *mainAction)
 		_backgroundThread.setMainClockTime(_clock->time());
 		watchdog->reset();
 	}
-	_log->logRaw(LogLevel::JSON, "{\"type\":\"mainLoop.exit\"}");
+	_log->log(LogLevel::JSON, "{\"type\":\"mainLoop.exit\",\"updates\":%" PRIu64 "}", _updateId);
 
 	shutdown();
 }

@@ -4,19 +4,19 @@
 #include <boost/test/unit_test.hpp>
 
 #include "Werk/Data/Csv/CsvTimeSeries.hpp"
-#include "Werk/Simulation/Simulator.hpp"
+#include "Werk/Data/TimeSeriesReplayer.hpp"
 
-BOOST_AUTO_TEST_SUITE(SimulatorTest)
+BOOST_AUTO_TEST_SUITE(TimeSeriesReplayerTest)
 
 BOOST_AUTO_TEST_CASE(testEmpty)
 {
 	werk::Clock clock;
 	werk::Latch<volatile bool> complete;
-	werk::Simulator simulator("Simulator", &clock, complete, &werk::NULL_ACTION);
+	werk::TimeSeriesReplayer replayer("TimeSeriesReplayer", &clock, complete, &werk::NULL_ACTION);
 
 	//With no data sources, it will be immediately complete
 	BOOST_CHECK(!complete.value());
-	simulator.execute();
+	replayer.execute();
 	BOOST_CHECK(complete.value());
 }
 
@@ -30,22 +30,22 @@ BOOST_AUTO_TEST_CASE(testBasic)
 
 	werk::Clock clock;
 	werk::Latch<volatile bool> complete;
-	werk::Simulator simulator("Simulator", &clock, complete, &werk::NULL_ACTION);
-	simulator.addDataSource(&csvTimeSeries);
+	werk::TimeSeriesReplayer replayer("TimeSeriesReplayer", &clock, complete, &werk::NULL_ACTION);
+	replayer.addDataSource(&csvTimeSeries);
 
-	simulator.execute();
+	replayer.execute();
 	BOOST_CHECK(!complete.value());
 	BOOST_CHECK_EQUAL(clock.time(), 10e9);
 
-	simulator.execute();
+	replayer.execute();
 	BOOST_CHECK(!complete.value());
 	BOOST_CHECK_EQUAL(clock.time(), 20e9);
 
-	simulator.execute();
+	replayer.execute();
 	BOOST_CHECK(!complete.value());
 	BOOST_CHECK_EQUAL(clock.time(), 25e9);
 
-	simulator.execute();
+	replayer.execute();
 	BOOST_CHECK(complete.value());
 }
 

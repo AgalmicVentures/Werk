@@ -10,6 +10,7 @@
 #include "Werk/Console/ConsoleCommandReceiver.hpp"
 #include "Werk/Console/IpcConsoleServer.hpp"
 #include "Werk/OS/CpuMask.hpp"
+#include "Werk/OS/Hardware.hpp"
 #include "Werk/OS/OS.hpp"
 #include "Werk/OS/Signals.hpp"
 #include "Werk/Profiling/WriteProfilesAction.hpp"
@@ -106,12 +107,15 @@ ApplicationContext::ApplicationContext(const std::string &configPath)
 
 	/***** Hardware State *****/
 
-	//Process
+	//Processor
 	_processorCount = getProcessorCount();
 
-	//TODO: detect RAM for #84
+	//RAM
+	_physicalMemorySize = getPhysicalMemorySize();
+	_pageSize = getPageSize();
 
-	_log->log(LogLevel::JSON, "{\"type\":\"startup.hardware\",\"processorCount\":%zu}", _processorCount);
+	_log->log(LogLevel::JSON, "{\"type\":\"startup.hardware\",\"processorCount\":%zu,\"physicalMemory\":%llu,\"pageSize\":%llu}",
+		_processorCount, _physicalMemorySize, _pageSize);
 
 	/********** Configure Existing Components Now That Log Is Setup **********/
 

@@ -86,6 +86,8 @@ public:
 private:
 	//Configuration
 	size_t _processorCount;
+	uint64_t _physicalMemorySize;
+	uint64_t _pageSize;
 	std::string _instanceId;
 	bool _debug;
 	bool _realTime;

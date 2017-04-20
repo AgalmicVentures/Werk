@@ -12,11 +12,6 @@ namespace werk
 {
 
 /**
- * Returns the number of processors on this system.
- */
-long getProcessorCount();
-
-/**
  * Represents a CPU mask used to set processor affinity.
  */
 class CpuMask

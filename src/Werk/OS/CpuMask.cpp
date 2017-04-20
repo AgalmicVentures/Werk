@@ -6,11 +6,6 @@
 namespace werk
 {
 
-long getProcessorCount()
-{
-	return sysconf(_SC_NPROCESSORS_CONF);
-}
-
 CpuMask::CpuMask(size_t processorCount) : _processorCount(processorCount)
 {
 #ifndef __MACH__

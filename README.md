@@ -5,6 +5,10 @@ possibly with some dependencies, such as logging or configuration). A
 lightweight framework that combines the most common components is also
 [available](#framework).
 
+To facilitate development and testing, a simulator is provided which can
+replay historical data from a variety of formats (CSV, PCAP, etc.) as though it 
+were happening live.
+
 # Getting Started
 
 ## Build
@@ -217,7 +221,7 @@ The application context adds additional default commands:
 * `quit`: Quits the application cleanly, running shutdown commands and actions.
 
 ### Simulation
-Runs with the simulation flag set use a `Simulator` to reply 1 or more data
+Runs with the simulation flag set use a `Simulator` to replay 1 or more data
 sources (CSV's, PCAP's, etc.) as events. This allows for simple testing against
 multiple sources of historical data.
 

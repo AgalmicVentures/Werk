@@ -72,8 +72,16 @@ debug_hello_world_real_time_job:
 debug_hello_world_historical_job:
   stage: functional_test
   script:
-    - build/bin/HelloWorld src/HelloWorld/TestHistorical.ini
+    #First check that historical runs are repeatable
+    - build/bin/HelloWorld src/HelloWorld/HistoricalCI1.ini
+    - build/bin/HelloWorld src/HelloWorld/HistoricalCI2.ini
     - cat profiles.json
+    - diff historical1.log historical2.log
+    #Then test against valgrind
+    - rm -f historical2.log
+    - valgrind build/bin/HelloWorld src/HelloWorld/HistoricalCI2.ini
+    - cat profiles.json
+    - diff historical1.log historical2.log
   dependencies:
     - debug_build_job
   only:
@@ -146,8 +154,16 @@ release_hello_world_real_time_job:
 release_hello_world_historical_job:
   stage: functional_test
   script:
-    - build/bin/HelloWorld src/HelloWorld/TestHistorical.ini
+    #First check that historical runs are repeatable
+    - build/bin/HelloWorld src/HelloWorld/HistoricalCI1.ini
+    - build/bin/HelloWorld src/HelloWorld/HistoricalCI2.ini
     - cat profiles.json
+    - diff historical1.log historical2.log
+    #Then test against valgrind
+    - rm -f historical2.log
+    - valgrind build/bin/HelloWorld src/HelloWorld/HistoricalCI2.ini
+    - cat profiles.json
+    - diff historical1.log historical2.log
   dependencies:
     - release_build_job
   only:

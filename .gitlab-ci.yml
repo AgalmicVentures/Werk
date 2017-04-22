@@ -79,7 +79,7 @@ debug_hello_world_historical_job:
     - diff historical1.log historical2.log
     #Then test against valgrind
     - rm -f historical2.log
-    - valgrind build/bin/HelloWorld src/HelloWorld/HistoricalCI2.ini
+    - valgrind --gen-suppressions=all --suppressions=valgrind.supp build/bin/HelloWorld src/HelloWorld/HistoricalCI2.ini
     - cat profiles.json
     - diff historical1.log historical2.log
   dependencies:
@@ -161,7 +161,7 @@ release_hello_world_historical_job:
     - diff historical1.log historical2.log
     #Then test against valgrind
     - rm -f historical2.log
-    - valgrind build/bin/HelloWorld src/HelloWorld/HistoricalCI2.ini
+    - valgrind --gen-suppressions=all --suppressions=valgrind.supp build/bin/HelloWorld src/HelloWorld/HistoricalCI2.ini
     - cat profiles.json
     - diff historical1.log historical2.log
   dependencies:

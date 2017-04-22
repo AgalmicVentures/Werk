@@ -17,9 +17,9 @@ void BackgroundTask::execute()
 		return;
 	}
 
-	_profile.start(werk::epochTime());
+	PROFILE_START(_profile);
 	_action->execute();
-	_profile.stop(werk::epochTime());
+	PROFILE_STOP(_profile);
 }
 
 void BackgroundThread::logTo(Log *log) const

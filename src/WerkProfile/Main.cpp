@@ -19,18 +19,18 @@ static void profileLog(werk::ProfileManager &profileManager)
 	werk::Profile *asyncRawProfile = new werk::Profile("AsyncLogRaw", 1000, 1000);
 	profileManager.add(asyncRawProfile);
 	for (size_t i = 0; i < iterations; ++i) {
-		PROFILE_START(asyncRawProfile);
+		PROFILE_START(*asyncRawProfile);
 		log->logRaw(werk::LogLevel::INFO, "Testing raw log");
-		PROFILE_STOP(asyncRawProfile);
+		PROFILE_STOP(*asyncRawProfile);
 	}
 
 	//Formatted logging
 	werk::Profile *asyncProfile = new werk::Profile("AsyncLog", 1000, 1000);
 	profileManager.add(asyncProfile);
 	for (int i = 0; i < iterations; ++i) {
-		PROFILE_START(asyncProfile);
+		PROFILE_START(*asyncProfile);
 		log->log(werk::LogLevel::INFO, "Testing log with formatting %f %d", 3.14, i);
-		PROFILE_STOP(asyncProfile);
+		PROFILE_STOP(*asyncProfile);
 	}
 }
 

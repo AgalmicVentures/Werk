@@ -22,8 +22,8 @@ public:
 		//Check the time it takes to call the timing functions
 		add(&_baseProfile);
 		for (uint64_t i = 0; i < 101 * 1000; ++i) {
-			PROFILE_START(_baseProfile);
-			PROFILE_STOP(_baseProfile);
+			PROFILE_START(&_baseProfile);
+			PROFILE_STOP(&_baseProfile);
 		}
 	}
 

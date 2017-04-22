@@ -22,6 +22,8 @@ public:
 		Action(name), _simulatedClock(simulatedClock), _complete(complete),
 		_mainAction(mainAction), _log(log), _timeout(timeout) { }
 
+	const TimeSeries *currentDataSource() const { return _currentDataSource; }
+
 	void addDataSource(TimeSeries *dataSource);
 
 	void execute() override;
@@ -34,6 +36,7 @@ protected:
 	uint64_t _timeout;
 
 	std::multimap<uint64_t, TimeSeries *> _dataSources;
+	TimeSeries *_currentDataSource = nullptr;
 };
 
 }

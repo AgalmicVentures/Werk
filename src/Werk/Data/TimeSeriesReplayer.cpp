@@ -44,9 +44,11 @@ void TimeSeriesReplayer::execute()
 	uint64_t lastTime = _simulatedClock->time();
 	if (_timeout > 0 && lastTime > 0 && time > lastTime + _timeout) {
 		//Timed out
+		_currentDataSource = nullptr;
 		_simulatedClock->setTime(lastTime + _timeout);
 	} else {
 		//Didn't time out, so this is the event
+		_currentDataSource = dataSource;
 		_simulatedClock->setTime(time);
 
 		//Erase and reinsert at the next time

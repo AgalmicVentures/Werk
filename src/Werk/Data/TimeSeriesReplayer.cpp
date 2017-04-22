@@ -36,16 +36,25 @@ void TimeSeriesReplayer::execute()
 		return;
 	}
 
-	//Get the time and update the simulated clock
+	//Get the next event
 	TimeSeries *dataSource = i->second;
 	uint64_t time = dataSource->time();
-	_simulatedClock->setTime(time);
 
-	//Erase and reinsert at the next time
-	_dataSources.erase(i);
-	addDataSource(dataSource);
+	//Check if this would violate the timeout
+	uint64_t lastTime = _simulatedClock->time();
+	if (_timeout > 0 && lastTime > 0 && time > lastTime + _timeout) {
+		//Timed out
+		_simulatedClock->setTime(lastTime + _timeout);
+	} else {
+		//Didn't time out, so this is the event
+		_simulatedClock->setTime(time);
 
-	//Run the main action
+		//Erase and reinsert at the next time
+		_dataSources.erase(i);
+		addDataSource(dataSource);
+	}
+
+	//All state is updated and ready to go
 	_mainAction->execute();
 }
 

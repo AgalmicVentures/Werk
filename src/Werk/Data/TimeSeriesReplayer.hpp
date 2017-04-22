@@ -17,8 +17,10 @@ class TimeSeries;
 class TimeSeriesReplayer : public Action
 {
 public:
-	TimeSeriesReplayer(const std::string &name, Clock *simulatedClock, Latch<volatile bool> &complete, Action *mainAction, Log *log=nullptr) :
-		Action(name), _simulatedClock(simulatedClock), _complete(complete), _mainAction(mainAction), _log(log) { }
+	TimeSeriesReplayer(const std::string &name, Clock *simulatedClock, Latch<volatile bool> &complete,
+		Action *mainAction, Log *log=nullptr, uint64_t timeout=0) :
+		Action(name), _simulatedClock(simulatedClock), _complete(complete),
+		_mainAction(mainAction), _log(log), _timeout(timeout) { }
 
 	void addDataSource(TimeSeries *dataSource);
 
@@ -29,6 +31,7 @@ protected:
 	Latch<volatile bool> &_complete;
 	Action *_mainAction;
 	Log *_log;
+	uint64_t _timeout;
 
 	std::multimap<uint64_t, TimeSeries *> _dataSources;
 };

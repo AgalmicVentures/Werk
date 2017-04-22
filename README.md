@@ -218,6 +218,9 @@ more data sources (CSV's, PCAP's, etc.) as events. This allows for simple
 testing against multiple sources of historical data.
 * `Application.HistoricalDataSources`: Comma-separated list of paths to
 historical data sources.
+* `Application.HistoricalDataTimeout`: The maximum time between events (e.g.
+`1s` or `10us`) -- if there is a larger gap, additional events are generated at
+this interval.
 
 ### Commands
 The application context adds additional default commands:

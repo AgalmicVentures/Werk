@@ -344,7 +344,9 @@ void ApplicationContext::run(Action *mainAction)
 	TimeSeriesReplayer *timeSeriesReplayer = nullptr;
 	if (!_realTime) {
 		_log->logRaw(LogLevel::INFO, "Initializing time series replayer...");
-		timeSeriesReplayer = new TimeSeriesReplayer("TimeSeriesReplayer", _clock, _quitting, mainAction, _log);
+		uint64_t timeout = _config->getTimeAmount("Application.HistoricalDataTimeout", 0,
+			"Maximum time between events (allows updating at a higher frequency than the data)");
+		timeSeriesReplayer = new TimeSeriesReplayer("TimeSeriesReplayer", _clock, _quitting, mainAction, _log, timeout);
 		actionToRun = timeSeriesReplayer;
 
 		//Setup data sources
@@ -377,6 +379,7 @@ void ApplicationContext::run(Action *mainAction)
 				_log->log(LogLevel::ERROR, "Unknown historical data source file type: %s.", dataSourcePath.c_str());
 			}
 		}
+
 		_log->logRaw(LogLevel::SUCCESS, "Simulator initialized.");
 	}
 

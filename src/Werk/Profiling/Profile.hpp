@@ -5,6 +5,9 @@
 #include "Werk/Math/SummaryStatistics.hpp"
 #include "Werk/Utility/NamedObject.hpp"
 
+#define PROFILE_START(p) (p)->start(werk::epochTime())
+#define PROFILE_STOP(p) (p)->stop(werk::epochTime())
+
 namespace werk
 {
 

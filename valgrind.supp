@@ -11,6 +11,11 @@
 {
    Logger_MPMC_Queue_False_Positive_Linux2
    Memcheck:Cond
+   fun:_ZN4werk8AsyncLog3logENS_8LogLevelEPKcz
+}
+{
+   Logger_MPMC_Queue_False_Positive_Linux3
+   Memcheck:Cond
    fun:_ZNV5boost7atomics6detail11base_atomicINS_8lockfree6detail12tagged_indexEvLj4ELb0EE23compare_exchange_strongERS5_RKS5_NS_12memory_orderESA_
    fun:_ZNV5boost7atomics6detail11base_atomicINS_8lockfree6detail12tagged_indexEvLj4ELb0EE21compare_exchange_weakERS5_RKS5_NS_12memory_orderESA_
    fun:_ZNV5boost7atomics6detail11base_atomicINS_8lockfree6detail12tagged_indexEvLj4ELb0EE21compare_exchange_weakERS5_S5_NS_12memory_orderE
@@ -19,14 +24,19 @@
    fun:_ZN4werk8AsyncLog6logRawENS_8LogLevelEPKc
 }
 {
-   Logger_MPMC_Queue_False_Positive_Linux3
+   Logger_MPMC_Queue_False_Positive_Linux4
+   Memcheck:Cond
+   fun:_ZNV5boost7atomics6detail11base_atomicINS_8lockfree6detail12tagged_indexEvLj4ELb0EE23compare_exchange_strongERS5_RKS5_NS_12memory_orderESA_
+   fun:_ZNV5boost7atomics6detail11base_atomicINS_8lockfree6detail12tagged_indexEvLj4ELb0EE21compare_exchange_weakERS5_RKS5_NS_12memory_orderESA_
+   fun:_ZNV5boost7atomics6detail11base_atomicINS_8lockfree6detail12tagged_indexEvLj4ELb0EE21compare_exchange_weakERS5_S5_NS_12memory_orderE
+   fun:_ZN5boost8lockfree5queueIN4werk10LogMessageENS0_8capacityILm2048EEENS_9parameter5void_ES7_E7do_pushILb0EEEbRKS3_
+   fun:_ZN5boost8lockfree5queueIN4werk10LogMessageENS0_8capacityILm2048EEENS_9parameter5void_ES7_E4pushERKS3_
+   fun:_ZN4werk8AsyncLog3logENS_8LogLevelEPKcz
+}
+{
+   Logger_MPMC_Queue_False_Positive_Linux55
    Memcheck:Cond
    fun:_ZN5boost8lockfree5queueIN4werk10LogMessageENS0_8capacityILm2048EEENS_9parameter5void_ES7_E7do_pushILb0EEEbRKS3_
    fun:_ZN5boost8lockfree5queueIN4werk10LogMessageENS0_8capacityILm2048EEENS_9parameter5void_ES7_E4pushERKS3_
    fun:_ZN4werk8AsyncLog6logRawENS_8LogLevelEPKc
-}
-{
-   Logger_MPMC_Queue_False_Positive_Linux4
-   Memcheck:Cond
-   fun:_ZN4werk8AsyncLog3logENS_8LogLevelEPKcz
 }

@@ -14,7 +14,7 @@ BOOST_AUTO_TEST_CASE(TestBasic)
 	werk::BackgroundThread backgroundThread(nullptr, 1l * 1000 * 1000);
 
 	werk::Watchdog watchdog("Watchdog", &backgroundThread.backgroundClock(), &counterAction, 30l * 1000 * 1000, 0);
-	BOOST_REQUIRE_EQUAL(watchdog.interval(), 20l * 1000 * 1000);
+	BOOST_REQUIRE_EQUAL(watchdog.interval(), 30l * 1000 * 1000);
 	BOOST_REQUIRE_EQUAL(watchdog.allowedMisses(), 0);
 
 	//Start running

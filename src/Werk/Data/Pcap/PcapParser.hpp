@@ -6,6 +6,7 @@
 #include <vector>
 
 #include "Werk/Data/TimeSeries.hpp"
+#include "Werk/Utility/Attributes.hpp"
 
 namespace werk
 {
@@ -43,25 +44,25 @@ class PcapParser : public TimeSeries
 {
 public:
 
-	bool isOpen() const { return _file.is_open(); }
-	bool open(const std::string &path);
+	CHECKED bool isOpen() const { return _file.is_open(); }
+	CHECKED bool open(const std::string &path);
 	void close();
 
-	uint32_t magicNumber() const { return _fileHeader.magicNumber; }
-	uint16_t versionMajor() const { return _fileHeader.versionMajor; }
-	uint16_t versionMinor() const { return _fileHeader.versionMinor; }
-	int32_t tzOffset() const { return _fileHeader.tzOffset; }
-	uint32_t sigfigs() const { return _fileHeader.sigfigs; }
-	uint32_t snaplen() const { return _fileHeader.snaplen; }
-	uint32_t network() const { return _fileHeader.network; }
-	bool isNanosecond() const { return _isNanosecond; }
+	CHECKED uint32_t magicNumber() const { return _fileHeader.magicNumber; }
+	CHECKED uint16_t versionMajor() const { return _fileHeader.versionMajor; }
+	CHECKED uint16_t versionMinor() const { return _fileHeader.versionMinor; }
+	CHECKED int32_t tzOffset() const { return _fileHeader.tzOffset; }
+	CHECKED uint32_t sigfigs() const { return _fileHeader.sigfigs; }
+	CHECKED uint32_t snaplen() const { return _fileHeader.snaplen; }
+	CHECKED uint32_t network() const { return _fileHeader.network; }
+	CHECKED bool isNanosecond() const { return _isNanosecond; }
 
-	uint32_t length() const { return _recordHeader.length; }
-	uint32_t originalLength() const { return _recordHeader.originalLength; }
-	const uint8_t *buffer() const { return _buffer; }
+	CHECKED uint32_t length() const { return _recordHeader.length; }
+	CHECKED uint32_t originalLength() const { return _recordHeader.originalLength; }
+	CHECKED const uint8_t *buffer() const { return _buffer; }
 
-	virtual uint64_t time() const override { return _time; }
-	virtual bool moveNext() override;
+	CHECKED virtual uint64_t time() const override { return _time; }
+	CHECKED virtual bool moveNext() override;
 
 protected:
 	std::ifstream _file;

@@ -4,6 +4,8 @@
 #include <string>
 #include <vector>
 
+#include "Werk/Utility/Attributes.hpp"
+
 namespace werk
 {
 
@@ -21,6 +23,6 @@ void formatUnits(uint64_t value, const UnitsT &units, double &scaledValue, const
 /**
  * Parses a value with the given sort of units.
  */
-uint64_t parseUnits(const std::string &value, const UnitsT &units);
+CHECKED PURE uint64_t parseUnits(const std::string &value, const UnitsT &units);
 
 }

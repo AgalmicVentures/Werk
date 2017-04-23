@@ -1,12 +1,14 @@
 
 #pragma once
 
+#include "Werk/Utility/Attributes.hpp"
+
 namespace werk
 {
 
 /**
  * Returns the number of processors on this system.
  */
-const char *getOperatingSystemName();
+CHECKED const char *getOperatingSystemName();
 
 }

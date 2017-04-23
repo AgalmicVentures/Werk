@@ -29,7 +29,9 @@ ApplicationContext::ApplicationContext(const std::string &configPath)
 	/********** Pre-Initialization **********/
 
 	//Setup handlers for certain signals
-	setupSegfaultHandler();
+	if (!setupSegfaultHandler()) {
+		std::fprintf(stderr, "Failed to setup segfault handler -- may exit uncleanly\n");
+	}
 
 	_realTimeClock.setEpochTime();
 	_backgroundThread.addTask(&_backgroundActionQueue);

@@ -1,9 +1,11 @@
 
 #pragma once
 
+#include "Werk/Utility/Attributes.hpp"
+
 namespace werk
 {
 
-const char *getVersion();
+CHECKED const char *getVersion();
 
 }

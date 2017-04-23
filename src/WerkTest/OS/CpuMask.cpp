@@ -8,11 +8,14 @@ BOOST_AUTO_TEST_SUITE(CpuMaskTest)
 
 BOOST_AUTO_TEST_CASE(TestCpuMask)
 {
-	werk::CpuMask mask(werk::getProcessorCount());
-	mask.set(0);
-	mask.set(1);
+	size_t processorCount = werk::getProcessorCount();
+	werk::CpuMask mask(processorCount);
+	for (size_t i = 0; i < processorCount; ++i) {
+		mask.set(i);
+	}
 
-	mask.apply();
+	//Here, this may not work since some platforms are not supported
+	(void) mask.apply();
 }
 
 BOOST_AUTO_TEST_SUITE_END()

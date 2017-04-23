@@ -5,6 +5,8 @@
 #include <string>
 #include <vector>
 
+#include "Werk/Utility/Attributes.hpp"
+
 namespace werk
 {
 
@@ -12,12 +14,12 @@ class CsvParser
 {
 public:
 
-	bool isOpen() const { return _file.is_open(); }
-	const std::string &line() const { return _line; }
-	const std::vector<std::string> &values() const { return _values; }
+	CHECKED bool isOpen() const { return _file.is_open(); }
+	CHECKED const std::string &line() const { return _line; }
+	CHECKED const std::vector<std::string> &values() const { return _values; }
 
-	bool open(const std::string &path);
-	bool moveNext();
+	CHECKED bool open(const std::string &path);
+	CHECKED bool moveNext();
 	void close();
 
 protected:

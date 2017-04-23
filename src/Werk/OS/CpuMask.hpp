@@ -4,6 +4,8 @@
 #include <cstddef>
 #include <sched.h>
 
+#include "Werk/Utility/Attributes.hpp"
+
 #ifdef __MACH__
 	struct cpu_set_t;
 #endif
@@ -25,7 +27,7 @@ public:
 	void set(size_t core);
 
 	//Applies the mask to this thread, returning true on success
-	bool apply();
+	CHECKED bool apply();
 
 protected:
 	const size_t _processorCount;

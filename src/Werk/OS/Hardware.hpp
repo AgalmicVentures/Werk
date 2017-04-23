@@ -4,22 +4,24 @@
 #include <cstddef>
 #include <cstdint>
 
+#include "Werk/Utility/Attributes.hpp"
+
 namespace werk
 {
 
 /**
  * Returns the size of a page in bytes.
  */
-uint64_t getPageSize();
+CHECKED uint64_t getPageSize();
 
 /**
  * Returns the size of the physical memory in bytes.
  */
-uint64_t getPhysicalMemorySize();
+CHECKED uint64_t getPhysicalMemorySize();
 
 /**
  * Returns the number of processors on this system.
  */
-size_t getProcessorCount();
+CHECKED size_t getProcessorCount();
 
 }

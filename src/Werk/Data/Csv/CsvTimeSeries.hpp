@@ -5,6 +5,7 @@
 
 #include "Werk/Data/Csv/CsvParser.hpp"
 #include "Werk/Data/TimeSeries.hpp"
+#include "Werk/Utility/Attributes.hpp"
 
 namespace werk
 {
@@ -23,8 +24,8 @@ public:
 		assert(scale > 0);
 	}
 
-	virtual uint64_t time() const override { return _time; }
-	virtual bool moveNext() override {
+	CHECKED virtual uint64_t time() const override { return _time; }
+	CHECKED virtual bool moveNext() override {
 		_time = 0;
 		if (!_parser.moveNext()) {
 			return false;
@@ -38,7 +39,7 @@ public:
 		return true;
 	}
 
-	const std::vector<std::string> values() const { return _parser.values(); }
+	CHECKED const std::vector<std::string> values() const { return _parser.values(); }
 
 protected:
 	CsvParser &_parser;

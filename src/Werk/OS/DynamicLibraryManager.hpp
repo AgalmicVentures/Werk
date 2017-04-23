@@ -5,6 +5,8 @@
 #include <map>
 #include <string>
 
+#include "Werk/Utility/Attributes.hpp"
+
 namespace werk
 {
 
@@ -19,7 +21,7 @@ public:
 	}
 	~DynamicLibrary();
 
-	void *getSymbol(const char *name);
+	CHECKED void *getSymbol(const char *name);
 
 protected:
 	void *_handle;
@@ -35,7 +37,7 @@ public:
 
 	~DynamicLibraryManager();
 
-	DynamicLibrary *load(const std::string &path);
+	CHECKED DynamicLibrary *load(const std::string &path);
 	void unload(const std::string &path);
 
 protected:

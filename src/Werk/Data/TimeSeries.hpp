@@ -3,6 +3,8 @@
 
 #include <cinttypes>
 
+#include "Werk/Utility/Attributes.hpp"
+
 namespace werk
 {
 
@@ -16,12 +18,12 @@ public:
 	/**
 	 * Return the current time.
 	 */
-	virtual uint64_t time() const = 0;
+	CHECKED virtual uint64_t time() const = 0;
 
 	/**
 	 * Moves to the next time, returning false when there is no more data available.
 	 */
-	virtual bool moveNext() = 0;
+	CHECKED virtual bool moveNext() = 0;
 };
 
 }

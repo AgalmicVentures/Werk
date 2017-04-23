@@ -1,6 +1,11 @@
 
 #pragma once
 
+//Work around GCC's lack of a __has_attribute macro
+#ifdef __GNUC__
+	#define __has_attribute(X) 1
+#endif
+
 #if __has_attribute(always_inline)
 	#define ALWAYS_INLINE __attribute__((always_inline))
 #else

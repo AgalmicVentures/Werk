@@ -15,7 +15,7 @@ BOOST_AUTO_TEST_CASE(TestCpuMask)
 	}
 
 	//Here, this may not work since some platforms are not supported
-	(void) mask.apply();
+	UNUSED bool unused = mask.apply();
 }
 
 BOOST_AUTO_TEST_SUITE_END()

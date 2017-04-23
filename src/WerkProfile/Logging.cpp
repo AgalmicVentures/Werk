@@ -42,8 +42,8 @@ BOOST_AUTO_TEST_CASE(TestAsyncLog)
 	std::fclose(file);
 
 	if (!disableTests) {
-		//50th percentiles better be <= 250ns
-		BOOST_CHECK_LE(asyncRawProfile->f50Statistics().average(), 250.0);
+		//50th percentiles better be <= 500ns
+		BOOST_CHECK_LE(asyncRawProfile->f50Statistics().average(), 500.0);
 
 		//75th percentiles better be <= 750ns
 		BOOST_CHECK_LE(asyncRawProfile->f75Statistics().average(), 750.0);

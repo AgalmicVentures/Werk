@@ -5,6 +5,62 @@
 #include "Werk/Profiling/ProfileManager.hpp"
 #include "Werk/Threading/BackgroundThread.hpp"
 
+static void profileAllocations(werk::ProfileManager &profileManager)
+{
+	//N-byte new + delete
+	const int iterations = 100000;
+	const int sizes[] = {1, 16, 256, 2048, 65536, 1024 * 1024};
+	for (const int size : sizes) {
+		werk::Profile *newDeleteProfile = new werk::Profile(std::string("NewDelete") + std::to_string(size), 1000, 1000);
+
+		profileManager.add(newDeleteProfile);
+		for (size_t i = 0; i < iterations; ++i) {
+			PROFILE_START(*newDeleteProfile);
+			uint8_t *buffer = new uint8_t[size];
+			delete [] buffer;
+			PROFILE_STOP(*newDeleteProfile);
+		}
+	}
+
+	//K N-byte news then deletes
+	const int allcoations = 1000;
+	const uint8_t *buffers[allcoations];
+	for (const int size : sizes) {
+		werk::Profile *newProfile = new werk::Profile(std::string("NewDelete_New") + std::to_string(size), 1000, 1000);
+		werk::Profile *deleteProfile = new werk::Profile(std::string("NewDelete_Delete") + std::to_string(size), 1000, 1000);
+
+		profileManager.add(newProfile);
+		for (size_t i = 0; i < allcoations; ++i) {
+			PROFILE_START(*newProfile);
+			buffers[i] = new uint8_t[size];
+			PROFILE_STOP(*newProfile);
+		}
+
+		profileManager.add(deleteProfile);
+		for (size_t i = 0; i < allcoations; ++i) {
+			PROFILE_START(*deleteProfile);
+			buffers[i] = new uint8_t[size];
+			PROFILE_STOP(*deleteProfile);
+		}
+	}
+}
+
+static void profileIO(werk::ProfileManager &profileManager)
+{
+	const int iterations = 25000;
+
+	//Raw logging
+	FILE *devNull = std::fopen("/dev/null", "a");
+	werk::Profile *devNullProfile = new werk::Profile("WriteDevNull", 1000, 1000);
+	profileManager.add(devNullProfile);
+	for (size_t i = 0; i < iterations; ++i) {
+		PROFILE_START(*devNullProfile);
+		std::fprintf(devNull, "01234567890 123456789\n");
+		PROFILE_STOP(*devNullProfile);
+	}
+	std::fclose(devNull);
+}
+
 static void profileLog(werk::ProfileManager &profileManager)
 {
 	werk::BackgroundThread backgroundThread(nullptr, 1l * 1000 * 1000);
@@ -32,11 +88,15 @@ static void profileLog(werk::ProfileManager &profileManager)
 		log->log(werk::LogLevel::INFO, "Testing log with formatting %f %d", 3.14, i);
 		PROFILE_STOP(*asyncProfile);
 	}
+
+	std::fclose(file);
 }
 
 int main() {
 	werk::ProfileManager profileManager;
 
+	profileAllocations(profileManager);
+	profileIO(profileManager);
 	profileLog(profileManager);
 
 	profileManager.writeJson(stdout);

@@ -43,7 +43,7 @@ static void profileAllocations(werk::ProfileManager &profileManager)
 			PROFILE_STOP(*deleteProfile);
 		}
 	}
-	delete buffers;
+	delete [] buffers;
 }
 
 static void profileIO(werk::ProfileManager &profileManager)

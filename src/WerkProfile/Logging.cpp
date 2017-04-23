@@ -13,7 +13,7 @@ BOOST_AUTO_TEST_SUITE(LoggingTest)
 
 BOOST_AUTO_TEST_CASE(TestAsyncLog)
 {
-	const int iterations = 25000;
+	const int iterations = 50000;
 
 	werk::BackgroundThread backgroundThread(nullptr, 1l * 1000 * 1000);
 	FILE *file = std::fopen("/dev/null", "a");
@@ -42,14 +42,23 @@ BOOST_AUTO_TEST_CASE(TestAsyncLog)
 	std::fclose(file);
 
 	if (!disableTests) {
-		//75th percentiles better be <= 500ns
-		BOOST_CHECK_LE(asyncRawProfile->f75Statistics().average(), 500.0);
+		//50th percentiles better be <= 250ns
+		BOOST_CHECK_LE(asyncRawProfile->f50Statistics().average(), 250.0);
 
-		//99th percentiles better be <= 1us
-		BOOST_CHECK_LE(asyncRawProfile->f99Statistics().average(), 1000.0);
+		//75th percentiles better be <= 750ns
+		BOOST_CHECK_LE(asyncRawProfile->f75Statistics().average(), 750.0);
 
-		//99th percentiles better be <= 2us (more time is given for the formatting)
-		BOOST_CHECK_LE(asyncProfile->f99Statistics().average(), 2000.0);
+		//95th percentiles better be <= 1us max
+		BOOST_CHECK_LE(asyncRawProfile->f95Statistics().max(), 1000.0);
+
+		//99th percentiles better be <= 1.5us
+		BOOST_CHECK_LE(asyncRawProfile->f99Statistics().average(), 1500.0);
+
+		//99th percentiles better be <= 2.5us max
+		BOOST_CHECK_LE(asyncRawProfile->f99Statistics().average(), 2500.0);
+
+		//99th percentiles better be <= 4us (more time is given for the formatting)
+		BOOST_CHECK_LE(asyncProfile->f99Statistics().average(), 4000.0);
 	}
 }
 

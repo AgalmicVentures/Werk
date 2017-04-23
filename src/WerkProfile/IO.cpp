@@ -24,9 +24,9 @@ BOOST_AUTO_TEST_CASE(TestDevNull)
 	std::fclose(devNull);
 
 	if (!disableTests) {
-		//99th percentiles better be <= 20us, max <= 100us
+		//99th percentiles better be <= 20us, average max <= 100us
 		BOOST_CHECK_LE(devNullProfile->f99Statistics().max(), 20000.0);
-		BOOST_CHECK_LE(devNullProfile->maxStatistics().max(), 100000.0);
+		BOOST_CHECK_LE(devNullProfile->maxStatistics().average(), 100000.0);
 	}
 }
 

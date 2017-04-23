@@ -23,26 +23,27 @@ static void profileAllocations(werk::ProfileManager &profileManager)
 	}
 
 	//K N-byte news then deletes
-	const int allcoations = 1000;
-	const uint8_t *buffers[allcoations];
+	const int allocations = 1000;
+	uint8_t **buffers = new uint8_t*[allocations];
 	for (const int size : sizes) {
 		werk::Profile *newProfile = new werk::Profile(std::string("NewDelete_New") + std::to_string(size), 1000, 1000);
 		werk::Profile *deleteProfile = new werk::Profile(std::string("NewDelete_Delete") + std::to_string(size), 1000, 1000);
 
 		profileManager.add(newProfile);
-		for (size_t i = 0; i < allcoations; ++i) {
+		for (size_t i = 0; i < allocations; ++i) {
 			PROFILE_START(*newProfile);
 			buffers[i] = new uint8_t[size];
 			PROFILE_STOP(*newProfile);
 		}
 
 		profileManager.add(deleteProfile);
-		for (size_t i = 0; i < allcoations; ++i) {
+		for (size_t i = 0; i < allocations; ++i) {
 			PROFILE_START(*deleteProfile);
-			buffers[i] = new uint8_t[size];
+			delete [] buffers[i];
 			PROFILE_STOP(*deleteProfile);
 		}
 	}
+	delete buffers;
 }
 
 static void profileIO(werk::ProfileManager &profileManager)
@@ -89,6 +90,7 @@ static void profileLog(werk::ProfileManager &profileManager)
 		PROFILE_STOP(*asyncProfile);
 	}
 
+	backgroundThread.stop();
 	std::fclose(file);
 }
 

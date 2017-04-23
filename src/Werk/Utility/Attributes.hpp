@@ -2,7 +2,7 @@
 #pragma once
 
 //Work around GCC's lack of a __has_attribute macro
-#ifdef __GNUC__
+#if defined(__GNUC__) && !defined(__has_attribute)
 	#define __has_attribute(X) 1
 #endif
 

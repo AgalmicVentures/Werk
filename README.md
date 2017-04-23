@@ -35,7 +35,9 @@ regressions. Run `./waf profile` to profile.
 ## Valgrind
 To help identify memory errors, Valgrind is built into the build system.
 To run tests or profiling with `valgrind`, add the `--valgrind` option:
-`./waf test --valgrind` or `./waf profile --valgrind`.
+`./waf test --valgrind` or `./waf profile --valgrind`. When running outside of
+valgrind, profiling also acts as a test that may fail if times are too high,
+automatically identifying performance regressions.
 
 ## Hello World
 The Hello World of Werk applications is included as an example of how to

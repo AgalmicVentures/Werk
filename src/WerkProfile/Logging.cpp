@@ -42,7 +42,6 @@ BOOST_AUTO_TEST_CASE(TestAsyncLog)
 	std::fclose(file);
 
 	if (!disableTests) {
-		BOOST_CHECK_LE(asyncRawProfile->f50Statistics().average(), 600.0);
 		BOOST_CHECK_LE(asyncRawProfile->f75Statistics().average(), 750.0);
 		BOOST_CHECK_LE(asyncRawProfile->f95Statistics().average(), 1000.0);
 		BOOST_CHECK_LE(asyncRawProfile->f99Statistics().average(), 1500.0);

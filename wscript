@@ -73,12 +73,10 @@ def configure(ctx):
 
 		'-Wall',
 		'-Wundef',
-		'-Wstrict-prototypes',
-		'-Wmissing-prototypes',
 		'-Wno-trigraphs',
 		'-Wuninitialized',
 		'-Wmissing-include-dirs',
-		'-Wshadow',
+		#TODO: '-Wshadow',
 		'-Wconversion',
 
 		'-pedantic',

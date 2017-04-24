@@ -12,6 +12,7 @@ bool disableTests = false;
 struct GlobalFixture
 {
 	GlobalFixture() {
+		//Optionally disable testing (e.g. for valgrind)
 		if (boost::unit_test::framework::master_test_suite().argc > 1) {
 			const std::string flag(boost::unit_test::framework::master_test_suite().argv[1]);
 			if (flag == "--disable-tests") {

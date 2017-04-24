@@ -10,7 +10,7 @@ BOOST_AUTO_TEST_SUITE(AllocationTest)
 BOOST_AUTO_TEST_CASE(TestNewDelete)
 {
 	//N-byte new + delete
-	const int iterations = 100000;
+	const int iterations = 200000;
 	const int sizes[] = {1, 16, 256, 2048, 65536, 1024 * 1024};
 	for (const int size : sizes) {
 		werk::Profile *newDeleteProfile = new werk::Profile(std::string("NewDelete") + std::to_string(size), 1000, 1000);
@@ -28,7 +28,7 @@ BOOST_AUTO_TEST_CASE(TestNewDelete)
 BOOST_AUTO_TEST_CASE(TestNewThenDelete)
 {
 	//K N-byte news then deletes
-	const int allocations = 1000;
+	const int allocations = 2000;
 	const int sizes[] = {1, 16, 256, 2048, 65536, 1024 * 1024};
 	uint8_t **buffers = new uint8_t*[allocations];
 	for (const int size : sizes) {

@@ -10,7 +10,7 @@ BOOST_AUTO_TEST_SUITE(IoTest)
 
 BOOST_AUTO_TEST_CASE(TestDevNull)
 {
-	const int iterations = 25000;
+	const int iterations = 200000;
 
 	//Raw logging
 	FILE *devNull = std::fopen("/dev/null", "a");

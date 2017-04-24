@@ -13,7 +13,7 @@ BOOST_AUTO_TEST_SUITE(LoggingTest)
 
 BOOST_AUTO_TEST_CASE(TestAsyncLog)
 {
-	const int iterations = 50000;
+	const int iterations = 200000;
 
 	werk::BackgroundThread backgroundThread(nullptr, 1l * 1000 * 1000);
 	FILE *file = std::fopen("/dev/null", "a");

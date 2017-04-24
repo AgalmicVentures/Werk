@@ -42,22 +42,11 @@ BOOST_AUTO_TEST_CASE(TestAsyncLog)
 	std::fclose(file);
 
 	if (!disableTests) {
-		//50th percentiles better be <= 500ns
-		BOOST_CHECK_LE(asyncRawProfile->f50Statistics().average(), 500.0);
-
-		//75th percentiles better be <= 750ns
+		BOOST_CHECK_LE(asyncRawProfile->f50Statistics().average(), 600.0);
 		BOOST_CHECK_LE(asyncRawProfile->f75Statistics().average(), 750.0);
-
-		//95th percentiles better be <= 1us max
-		BOOST_CHECK_LE(asyncRawProfile->f95Statistics().max(), 1000.0);
-
-		//99th percentiles better be <= 1.5us
+		BOOST_CHECK_LE(asyncRawProfile->f95Statistics().average(), 1000.0);
 		BOOST_CHECK_LE(asyncRawProfile->f99Statistics().average(), 1500.0);
 
-		//99th percentiles better be <= 2.5us max
-		BOOST_CHECK_LE(asyncRawProfile->f99Statistics().average(), 2500.0);
-
-		//99th percentiles better be <= 4us (more time is given for the formatting)
 		BOOST_CHECK_LE(asyncProfile->f99Statistics().average(), 4000.0);
 	}
 }

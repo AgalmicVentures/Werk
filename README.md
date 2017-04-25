@@ -173,8 +173,8 @@ subsystems like commands and profiling, then runs some startup commands. An
 optional main loop may then be run.
 
 ## Startup
-On startup, default signal handlers are register for segfaults and bus errors,
-the background thread is started, then logging and configuration ar
+On startup, default signal handlers are register for segfaults and bus errors.
+The background thread is started, then logging and configuration are
 bootstrapped:
 * `Application.ConfigPaths`: Only available in the primary config, this is a
 comma-separated list of other configs to load. Default none.
@@ -210,8 +210,8 @@ some configurations are read:
 * `Application.WatchdogAllowedMisses`: The number of times the foreground thread
 can miss resetting the application watchdog.
 
-Then a main loop is started which updates the curren time, runs a main `Action`,
-then executes any defered `Action`s in the foreground queue and resets the
+Then a main loop is started which updates the current time, runs a main `Action`,
+then executes any deferred `Action`s in the foreground queue and resets the
 watchdog.
 
 ### Historical Data Replay

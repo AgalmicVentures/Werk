@@ -15,7 +15,7 @@ were happening live.
 Werk uses [Waf](https://waf.io/) to build and automate other development
 workflows like unit tests. To make things simple, a copy of Waf is included in
 the distribution and may be run with `./waf`, which by default will execute an
-incremental build the project.
+incremental build of the project.
 
 If you try running that in a freshly cloned repository, you'll be told you need
 to configure: `./waf configure`. This sets settings such as debug/release. Run
@@ -187,8 +187,8 @@ components initialized:
 trail purposes.
 * `Application.ProfilesPath`: Path to profiling information JSON, written on
 shutdown. Default none.
-* `Application.BackgroundThreadInterval`:  The interval of the background thread,
-in nanoseconds. Default 10ms.
+* `Application.BackgroundThreadInterval`:  The interval of the background
+thread, in nanoseconds. Default 10ms.
 * `Application.Debug`: Boolean indicating whether the application is in debug
 mode (causing it to output additional information). Default false.
 * `Application.Simulation`: Boolean indicating whether the application is a
@@ -233,6 +233,11 @@ The application context adds additional default commands:
 * `quit`: Quits the application cleanly, running shutdown commands and actions.
 
 ## Shutdown
-On shutdown it runs shutdown commands (read from `Application.ShutdownCommands`),
-then shutdown actions which may be registered by any component, ensuring a clean
-shutdown.
+The application may be shut down cleanly at any time by running the `quit`
+command. Sending it a `SIGINT` (e.g. by pressing Ctrl+C) will also cause a
+clean shutdown.
+
+On shutdown:
+* Shutdown commands are run (read from `Application.ShutdownCommands`)
+* Shutdown actions, which may be registered by any component, are run
+* The application exit with exit code 0.

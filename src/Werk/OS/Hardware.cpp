@@ -60,7 +60,7 @@ uint64_t getPhysicalMemorySize()
         return 0;
     }
 
-    uint64_t pageSize = getPageSize();
+    const uint64_t pageSize = getPageSize();
     return pages * pageSize;
 #endif
 }

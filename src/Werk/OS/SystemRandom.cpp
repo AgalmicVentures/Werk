@@ -48,7 +48,7 @@ SystemRandom::~SystemRandom()
 
 bool SystemRandom::getBytes(uint8_t *bytes, size_t size)
 {
-	size_t n = std::fread(bytes, 1, size, _file);
+	const size_t n = std::fread(bytes, 1, size, _file);
 	return size == n;
 }
 

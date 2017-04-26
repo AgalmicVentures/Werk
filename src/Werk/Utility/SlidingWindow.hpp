@@ -68,7 +68,7 @@ public:
 			forceSlideOne();
 		}
 
-		size_t back = backLocation();
+		const size_t back = backLocation();
 		_indexes[back] = index;
 		_values[back] = value;
 		_count += 1;
@@ -82,11 +82,8 @@ public:
 
 protected:
 	size_t backLocation() const {
-		size_t back = _front + _count;
-		if (back >= size) {
-			back -= size;
-		}
-		return back;
+		const size_t back = _front + _count;
+		return back >= size ? back - size : back;
 	}
 
 	//NOTE: This method assume that there is one to slide, so don't call it

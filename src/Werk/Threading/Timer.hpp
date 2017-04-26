@@ -53,7 +53,7 @@ public:
 			return;
 		}
 
-		uint64_t time = _clock->time();
+		const uint64_t time = _clock->time();
 		if (_lastTime == 0) {
 			//On the first time given, start waiting
 			_lastTime = time;

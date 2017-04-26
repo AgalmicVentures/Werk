@@ -64,7 +64,7 @@ public:
 		}
 
 		//Warmup?
-		uint64_t delta = time - _startTime;
+		const uint64_t delta = time - _startTime;
 		_count += 1;
 		if (_count <= _warmupSize) {
 			_warmupStatistics.sample(delta);

@@ -31,9 +31,9 @@ namespace werk
 
 void TimeSeriesReplayer::addDataSource(TimeSeries *dataSource)
 {
-	uint64_t time = dataSource->time();
-	bool finished = !dataSource->moveNext();
-	uint64_t nextTime = dataSource->time();
+	const uint64_t time = dataSource->time();
+	const bool finished = !dataSource->moveNext();
+	const uint64_t nextTime = dataSource->time();
 
 	if (finished || 0 == nextTime) {
 		if (nullptr != _log) {
@@ -60,10 +60,10 @@ void TimeSeriesReplayer::execute()
 
 	//Get the next event
 	TimeSeries *dataSource = i->second;
-	uint64_t time = dataSource->time();
+	const uint64_t time = dataSource->time();
 
 	//Check if this would violate the timeout
-	uint64_t lastTime = _simulatedClock->time();
+	const uint64_t lastTime = _simulatedClock->time();
 	if (_timeout > 0 && lastTime > 0 && time > lastTime + _timeout) {
 		//Timed out
 		_currentDataSource = nullptr;

@@ -47,13 +47,13 @@ public:
 
 	uint64_t interval() const { return _interval; }
 	uint64_t allowedMisses() const { return _allowedMisses; }
-	Action *action() { return _action; }
+	Action *action() const { return _action; }
 
 	bool latch() const { return _latch.value(); }
 	void reset() { _latch.reset(); }
 
 	void execute() override {
-		uint64_t time = _clock->time();
+		const uint64_t time = _clock->time();
 
 		//If the flag is set, everything is fine
 		if (!_latch.value()) {
@@ -78,7 +78,7 @@ private:
 	const Clock *_clock;
 	uint64_t _interval;
 	uint64_t _allowedMisses;
-	Action *_action;
+	Action * const _action;
 
 	uint64_t _lastTime = 0;
 	uint64_t _misses = 0;

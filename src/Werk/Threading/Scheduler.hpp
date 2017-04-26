@@ -71,10 +71,10 @@ public:
 	}
 
 	void execute() override {
-		uint64_t time = _clock->time();
+		const uint64_t time = _clock->time();
 		for (auto i = _tasks.begin(); i != _tasks.end(); i = _tasks.begin()) {
 			//Get the next task
-			uint64_t nextTime = i->first;
+			const uint64_t nextTime = i->first;
 			ScheduledTask *task = i->second;
 
 			//Is it ready?

@@ -24,6 +24,7 @@
 #pragma once
 
 #include <algorithm>
+#include <cassert>
 #include <cmath>
 #include <cstdint>
 #include <vector>
@@ -58,6 +59,8 @@ public:
 		}
 	}
 	T fractile(double f) const {
+		assert(0.0 <= f);
+		assert(f <= 1.0);
 		if (count() == 0) {
 			return 0;
 		} else {

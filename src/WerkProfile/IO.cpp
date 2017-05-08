@@ -36,7 +36,7 @@ BOOST_AUTO_TEST_CASE(TestDevNull)
 
 	//Raw logging
 	FILE *devNull = std::fopen("/dev/null", "a");
-	werk::Profile *devNullProfile = new werk::Profile("WriteDevNull", 1000, 1000);
+	werk::Profile *devNullProfile = new werk::Profile("WriteDevNull", 10000, 10000);
 	profileManager.add(devNullProfile);
 	for (size_t i = 0; i < iterations; ++i) {
 		PROFILE_START(*devNullProfile);

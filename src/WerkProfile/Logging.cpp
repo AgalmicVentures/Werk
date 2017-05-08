@@ -43,7 +43,7 @@ BOOST_AUTO_TEST_CASE(TestAsyncLog)
 	backgroundThread.addTask(log);
 
 	//Raw logging
-	werk::Profile *asyncRawProfile = new werk::Profile("AsyncLogRaw", 1000, 1000);
+	werk::Profile *asyncRawProfile = new werk::Profile("AsyncLogRaw", 10000, 10000);
 	profileManager.add(asyncRawProfile);
 	for (size_t i = 0; i < iterations; ++i) {
 		PROFILE_START(*asyncRawProfile);
@@ -52,7 +52,7 @@ BOOST_AUTO_TEST_CASE(TestAsyncLog)
 	}
 
 	//Formatted logging
-	werk::Profile *asyncProfile = new werk::Profile("AsyncLog", 1000, 1000);
+	werk::Profile *asyncProfile = new werk::Profile("AsyncLog", 10000, 10000);
 	profileManager.add(asyncProfile);
 	for (int i = 0; i < iterations; ++i) {
 		PROFILE_START(*asyncProfile);

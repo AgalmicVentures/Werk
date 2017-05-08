@@ -35,7 +35,7 @@ BOOST_AUTO_TEST_CASE(TestNewDelete)
 	const int iterations = 200000;
 	const int sizes[] = {1, 16, 256, 2048, 65536, 1024 * 1024};
 	for (const int size : sizes) {
-		werk::Profile *newDeleteProfile = new werk::Profile(std::string("NewDelete") + std::to_string(size), 1000, 1000);
+		werk::Profile *newDeleteProfile = new werk::Profile(std::string("NewDelete") + std::to_string(size), 10000, 10000);
 
 		profileManager.add(newDeleteProfile);
 		for (size_t i = 0; i < iterations; ++i) {

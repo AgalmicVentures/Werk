@@ -95,9 +95,11 @@ def configure(ctx):
 		'-Wundef',
 		'-Wno-trigraphs',
 		'-Wuninitialized',
+		'-Wtype-limits',
 		'-Wmissing-include-dirs',
-		#TODO: '-Wshadow',
+		'-Wshadow',
 		'-Wconversion',
+		'-Wnull-dereference',
 
 		'-pedantic',
 	]

@@ -88,7 +88,7 @@ uint64_t parseUnits(const std::string &value, const UnitsT &units)
 
 	//Find the units, default multiplier of 1
 	uint64_t multiplier = 1;
-	std::string unitStr = value.substr(n);
+	const std::string unitStr = value.substr(n);
 	for (const auto &unit : units) {
 		if (unit.first == unitStr) {
 			multiplier = unit.second;
@@ -97,7 +97,7 @@ uint64_t parseUnits(const std::string &value, const UnitsT &units)
 	}
 
 	//Load it as a double so decimals will work
-	double baseValue = std::stod(value.substr(0, n));
+	const double baseValue = std::stod(value.substr(0, n));
 	return static_cast<uint64_t>(baseValue * multiplier);
 }
 

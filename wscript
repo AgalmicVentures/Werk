@@ -99,7 +99,6 @@ def configure(ctx):
 		'-Wmissing-include-dirs',
 		'-Wshadow',
 		'-Wconversion',
-		'-Wnull-dereference',
 
 		'-pedantic',
 	]

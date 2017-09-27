@@ -34,7 +34,7 @@ namespace werk
 
 uint64_t getPageSize()
 {
-    long pageSize = sysconf(_SC_PAGE_SIZE);
+    const long pageSize = sysconf(_SC_PAGE_SIZE);
     if (pageSize < 0) {
         return 0;
     }
@@ -55,7 +55,7 @@ uint64_t getPhysicalMemorySize()
 
 	return size;
 #else
-    long pages = sysconf(_SC_PHYS_PAGES);
+    const long pages = sysconf(_SC_PHYS_PAGES);
     if (pages < 0) {
         return 0;
     }

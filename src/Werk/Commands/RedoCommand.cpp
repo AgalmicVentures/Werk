@@ -31,7 +31,7 @@ namespace werk
 bool RedoCommand::execute(const std::vector<std::string> &)
 {
 	//Since the redo command was already added, there must be at least one other thing
-	size_t size =_commandManager.commandHistory().size();
+	const size_t size =_commandManager.commandHistory().size();
 	if (size < 2) {
 		return false;
 	}

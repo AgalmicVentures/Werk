@@ -33,6 +33,7 @@
 #include "Werk/Logging/AsyncLog.hpp"
 #include "Werk/Logging/LogManager.hpp"
 #include "Werk/Logging/Loggable.hpp"
+#include "Werk/Math/Random.hpp"
 #include "Werk/OS/DynamicLibraryManager.hpp"
 #include "Werk/Profiling/ProfileManager.hpp"
 #include "Werk/Threading/ActionQueue.hpp"
@@ -83,6 +84,8 @@ public:
 	const Clock &realTimeClock() const { return _realTimeClock; }
 	const Clock *clock() const { return _clock; }
 	uint64_t upateId() const { return _updateId; }
+	Random &random() { return _random; }
+	const Random &random() const { return _random; }
 	ProfileManager &profileManager() { return _profileManager; }
 	const ProfileManager &profileManager() const { return _profileManager; }
 	ActionQueue<> &foregroundActionQueue() { return _backgroundActionQueue; }
@@ -126,6 +129,7 @@ private:
 	Clock _realTimeClock;
 	Clock *_clock;
 	uint64_t _updateId = 0;
+	Random _random;
 	ProfileManager _profileManager;
 	ActionQueue<> _foregroundActionQueue { "ForegroundActionQueue" };
 	std::vector<Action *> _shutdownActions;

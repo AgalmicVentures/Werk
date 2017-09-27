@@ -33,6 +33,7 @@
 #include "Werk/Console/IpcConsoleServer.hpp"
 #include "Werk/Data/Csv/CsvTimeSeries.hpp"
 #include "Werk/Data/Pcap/PcapParser.hpp"
+#include "Werk/Data/JitterTimeSeries.hpp"
 #include "Werk/Data/TimeSeriesReplayer.hpp"
 #include "Werk/OS/CpuMask.hpp"
 #include "Werk/OS/Hardware.hpp"
@@ -373,6 +374,17 @@ void ApplicationContext::run(Action *mainAction)
 		timeSeriesReplayer = new TimeSeriesReplayer("TimeSeriesReplayer", _clock, _quitting, mainAction, _log, timeout);
 		actionToRun = timeSeriesReplayer;
 
+		//TODO: consider a per source value for this
+		uint64_t jitterMin = _config->getTimeAmount("Application.HistoricalDataJitterMin", 0,
+			"Minimum jitter to add to event times.");
+		uint64_t jitterMax = _config->getTimeAmount("Application.HistoricalDataJitterMax", 0,
+			"Maximum jitter to add to event times.");
+		if (jitterMin > jitterMax) {
+			_log->log(LogLevel::WARNING, "Jitter min is more than max, swapping");
+			std::swap(jitterMin, jitterMax);
+		}
+		bool useJitter = jitterMax > 0;
+
 		//Setup data sources
 		std::vector<std::string> dataSourcePaths;
 		const char *dataSourcePathsStr = _config->getString("Application.HistoricalDataSources");
@@ -381,27 +393,43 @@ void ApplicationContext::run(Action *mainAction)
 		}
 
 		for (const std::string &dataSourcePath : dataSourcePaths) {
+			TimeSeries *timeSeries = nullptr;
 			if (boost::algorithm::ends_with(dataSourcePath, ".csv")) {
 				//TODO: this demands more configurability
 				CsvParser *csvParser = new CsvParser();
 				if (csvParser->open(dataSourcePath)) {
 					CsvTimeSeries *csvTimeSeries = new CsvTimeSeries(*csvParser);
-					timeSeriesReplayer->addDataSource(csvTimeSeries);
-					_log->log(LogLevel::SUCCESS, "Opened historical data source: %s.", dataSourcePath.c_str());
+					timeSeries = csvTimeSeries;
 				} else {
 					_log->log(LogLevel::ERROR, "Failed to open historical data source: %s.", dataSourcePath.c_str());
+					delete csvParser;
 				}
 			} else if (boost::algorithm::ends_with(dataSourcePath, ".pcap")) {
 				PcapParser *pcapParser = new PcapParser();
 				if (pcapParser->open(dataSourcePath)) {
-					timeSeriesReplayer->addDataSource(pcapParser);
-					_log->log(LogLevel::SUCCESS, "Opened historical data source: %s.", dataSourcePath.c_str());
+					timeSeries = pcapParser;
 				} else {
 					_log->log(LogLevel::ERROR, "Failed to open historical data source: %s.", dataSourcePath.c_str());
+					delete pcapParser;
 				}
 			} else {
 				_log->log(LogLevel::ERROR, "Unknown historical data source file type: %s.", dataSourcePath.c_str());
 			}
+
+			//Skip things that fail to load
+			if (nullptr == timeSeries) {
+				continue;
+			}
+
+			//Optionally add jitter
+			if (useJitter) {
+				JitterTimeSeries *jitterTimeSeries = new JitterTimeSeries(_random, timeSeries, jitterMin, jitterMax);
+				timeSeries = jitterTimeSeries;
+			}
+
+			//Add it to the replayer
+			timeSeriesReplayer->addDataSource(timeSeries);
+			_log->log(LogLevel::SUCCESS, "Opened historical data source: %s.", dataSourcePath.c_str());
 		}
 
 		_log->logRaw(LogLevel::SUCCESS, "Simulator initialized.");

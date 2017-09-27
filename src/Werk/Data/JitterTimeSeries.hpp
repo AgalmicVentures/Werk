@@ -25,6 +25,8 @@
 
 #include <cinttypes>
 
+#include "Werk/Data/TimeSeries.hpp"
+#include "Werk/Math/Random.hpp"
 #include "Werk/Utility/Attributes.hpp"
 
 namespace werk
@@ -33,21 +35,45 @@ namespace werk
 /**
  * Represents a time series iterator.
  */
-class TimeSeries
+class JitterTimeSeries : public TimeSeries
 {
 public:
 
-	virtual ~TimeSeries() { }
+	JitterTimeSeries(Random &random, TimeSeries *underlying, uint64_t min, uint64_t max)
+		: _random(random), _underlying(underlying), _min(min), _max(max) {
+		updateJitter();
+	}
 
-	/**
-	 * Return the current time.
-	 */
-	CHECKED virtual uint64_t time() const = 0;
+	//Return the current time plus some jitter.
+	CHECKED virtual uint64_t time() const {
+		return _underlying->time() + _jitter;
+	}
 
-	/**
-	 * Moves to the next time, returning false when there is no more data available.
-	 */
-	CHECKED virtual bool moveNext() = 0;
+	//Moves to the next time, updating the jitter as it goes.
+	CHECKED virtual bool moveNext() {
+		if (_underlying->moveNext()) {
+			updateJitter();
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+protected:
+
+	//Updates the jitter for a new event.
+	void updateJitter() {
+		_jitter = _random.getUint64(_min, _max);
+	}
+
+	Random &_random;
+	TimeSeries *_underlying;
+	uint64_t _min;
+	uint64_t _max;
+
+	//The jitter applied to the current event.
+	uint64_t _jitter;
+
 };
 
 }

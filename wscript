@@ -61,7 +61,11 @@ def _preBuild(ctx):
 def _postBuild(ctx):
 	Logs.info('Post-build...')
 
-	#Nothing to do at the moment
+	environment = ctx.env.ENVIRONMENT
+	if environment == 'debug':
+		Logs.error('Finished building: %s DEBUG [%s] %s' % (stars, ctx.env.VERSION, stars))
+	else:
+		Logs.info('Finished building: %s RELEASE [%s] %s' % (stars, ctx.env.VERSION, stars))
 
 	Logs.info('Post-build complete.')
 

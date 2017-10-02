@@ -54,14 +54,14 @@ def _loadTools(ctx):
 def _preBuild(ctx):
 	Logs.info('Pre-build...')
 
-	#TODO
+	#Nothing to do at the moment
 
 	Logs.info('Pre-build complete.')
 
 def _postBuild(ctx):
 	Logs.info('Post-build...')
 
-	#TODO
+	#Nothing to do at the moment
 
 	Logs.info('Post-build complete.')
 
@@ -72,9 +72,12 @@ def options(ctx):
 
 	_loadTools(ctx)
 
-	ctx.add_option('-d', '--debug', dest='debug', default=False, action='store_true', help='Debug mode')
-	ctx.add_option('-s', '--symbols', dest='symbols', default=False, action='store_true', help='Debug symbols (on by default in debug mode)')
-	ctx.add_option('--valgrind', action='store_true', help='Enable valgrind for the action if applicable')
+	ctx.add_option('-d', '--debug', dest='debug', action='store_true',
+		help='Debug mode')
+	ctx.add_option('-s', '--symbols', dest='symbols', action='store_true',
+		help='Debug symbols (on by default in debug mode)')
+	ctx.add_option('--valgrind', action='store_true',
+		help='Enable valgrind for the action if applicable')
 
 	Logs.info('Options loaded.')
 

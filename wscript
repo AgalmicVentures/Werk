@@ -106,10 +106,18 @@ def configure(ctx):
 		'-Wmissing-include-dirs',
 		'-Wshadow',
 		'-Wconversion',
-		'-Wnull-dereference',
 
 		'-pedantic',
 	]
+	if isMac:
+		ctx.env.CXXFLAGS += [
+			'-Wnull-dereference',
+		]
+	else:
+		ctx.env.CXXFLAGS += [
+			'-Wuseless-cast',
+		]
+
 
 	#Include symbols for debugging, or when explicitly requested
 	if ctx.options.debug or ctx.options.symbols:

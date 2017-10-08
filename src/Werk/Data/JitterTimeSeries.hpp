@@ -40,19 +40,18 @@ class JitterTimeSeries : public TimeSeries
 public:
 
 	JitterTimeSeries(Random &random, TimeSeries *underlying, uint64_t min, uint64_t max)
-		: _random(random), _underlying(underlying), _min(min), _max(max) {
-		updateJitter();
-	}
+		: _random(random), _underlying(underlying), _min(min), _max(max) { }
 
 	//Return the current time plus some jitter.
-	CHECKED virtual uint64_t time() const {
-		return _underlying->time() + _jitter;
-	}
+	CHECKED virtual uint64_t time() const { return _time; }
 
 	//Moves to the next time, updating the jitter as it goes.
 	CHECKED virtual bool moveNext() {
 		if (_underlying->moveNext()) {
-			updateJitter();
+			uint64_t jitter = _random.getUint64(_min, _max);
+
+			//Only allow time to move forward
+			_time = std::max(_time, _underlying->time() + jitter);
 			return true;
 		} else {
 			return false;
@@ -61,18 +60,15 @@ public:
 
 protected:
 
-	//Updates the jitter for a new event.
-	void updateJitter() {
-		_jitter = _random.getUint64(_min, _max);
-	}
-
 	Random &_random;
 	TimeSeries *_underlying;
 	uint64_t _min;
 	uint64_t _max;
 
-	//The jitter applied to the current event.
-	uint64_t _jitter;
+	//The time of the current event, adjusted by jitter.
+	//This is stored as state, rather than just the jitter, in order to ensure
+	//that the times generated are monotonic.
+	uint64_t _time = 0;
 
 };
 

@@ -35,6 +35,10 @@ namespace werk
 
 /**
  * Manages a set of named `Profile`s, including a default baseline profile.
+ *
+ * Does not, however, manage memory, so that `Profile`s may be embedded in
+ * the objects they are timing. Since `Profile`s may not be removed, and thus
+ * live for the lifetime of the application, this is not much of a limitation
  */
 class ProfileManager
 {
@@ -57,6 +61,7 @@ public:
 
 	void writeJson(FILE *file) const {
 		for (auto i = _profiles.begin(); i != _profiles.end(); ++i) {
+			i->second->sampleFractiles(); //Leave no data out
 			i->second->writeJson(file);
 		}
 	}

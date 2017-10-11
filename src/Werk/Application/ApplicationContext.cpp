@@ -46,7 +46,8 @@ namespace werk
 {
 
 ApplicationContext::ApplicationContext(const std::string &configPath) :
-	_interUpdateProfile("InterEvent", 1000, 1000000)
+	_interUpdateProfile("InterUpdate", 1000, 1000000),
+	_updateProfile("Update", 1000, 1000000)
 {
 	//And let's pull ourselves up by our bootstraps...
 
@@ -60,6 +61,7 @@ ApplicationContext::ApplicationContext(const std::string &configPath) :
 	_realTimeClock.setEpochTime();
 	_backgroundThread.addTask(&_backgroundActionQueue);
 	_profileManager.add(&_interUpdateProfile);
+	_profileManager.add(&_updateProfile);
 
 	/********** Stdout Log **********/
 
@@ -448,7 +450,8 @@ void ApplicationContext::run(Action *mainAction)
 		_foregroundActionQueue.execute();
 
 		//Update stats
-		_interUpdateProfile.restart(_realTimeClock.time());
+		_interUpdateProfile.restart(_clock->time());
+		_updateProfile.restart(_realTimeClock.time());
 
 		//Made it through another loop, update background objects -- update clock, reset the watchdog
 		_backgroundThread.setMainClockTime(_realTimeClock.time());

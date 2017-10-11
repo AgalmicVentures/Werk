@@ -94,6 +94,8 @@ public:
 	const std::vector<Action *> &shutdownActions() const { return _shutdownActions; }
 	Profile &interUpdateProfile() { return _interUpdateProfile; }
 	const Profile &interUpdateProfile() const { return _interUpdateProfile; }
+	Profile &updateProfile() { return _updateProfile; }
+	const Profile &updateProfile() const { return _updateProfile; }
 
 	//Background thread and tasks
 	BackgroundThread &backgroundThread() { return _backgroundThread; }
@@ -136,6 +138,7 @@ private:
 	ActionQueue<> _foregroundActionQueue { "ForegroundActionQueue" };
 	std::vector<Action *> _shutdownActions;
 	Profile _interUpdateProfile;
+	Profile _updateProfile;
 
 	//Shared state
 	Latch<volatile bool> _quitting;

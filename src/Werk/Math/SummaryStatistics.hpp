@@ -56,9 +56,10 @@ public:
 		_count += 1;
 		_sum += t;
 
-		const double delta = t - _average;
+		const double t_double = static_cast<double>(t);
+		const double delta = t_double - _average;
 		_average += delta / static_cast<double>(_count);
-		_m2 += delta * (t - _average);
+		_m2 += delta * (t_double - _average);
 	}
 	void reset() {
 		_count = 0;

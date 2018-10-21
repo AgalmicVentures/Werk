@@ -54,7 +54,7 @@ void formatUnits(uint64_t value, const UnitsT &units, double &scaledValue, const
 	//Otherwise, find an appropriate scaling factor
 	for (auto &unit : units) {
 		if (value >= unit.second) {
-			scaledValue /= unit.second;
+			scaledValue /= static_cast<double>(unit.second);
 			unitStr = unit.first.c_str();
 			break;
 		}
@@ -98,7 +98,7 @@ uint64_t parseUnits(const std::string &value, const UnitsT &units)
 
 	//Load it as a double so decimals will work
 	const double baseValue = std::stod(value.substr(0, n));
-	return static_cast<uint64_t>(baseValue * multiplier);
+	return static_cast<uint64_t>(baseValue * static_cast<double>(multiplier));
 }
 
 }

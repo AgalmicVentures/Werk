@@ -207,7 +207,7 @@ def profile(ctx):
 		raise RuntimeError('Missing binary: %s' % binary)
 
 	if ctx.options.valgrind:
-		binary = valgrindStr + binary + ' --disable-tests'
+		binary = valgrindStr + binary + ' -- --disable-tests'
 
 	exitCode = os.system(binary)
 	if exitCode != 0:

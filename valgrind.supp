@@ -72,3 +72,19 @@
    fun:_ZN5boost6detail9do_invokeINS_10shared_ptrINS0_22translator_holder_baseEEENS_8functionIFivEEEEEiRKT_RKT0_
    fun:_ZN5boost17execution_monitor13catch_signalsERKNS_8functionIFivEEE
 }
+{
+   Logger_MPMC_Queue_False_Positive_Linux8
+   Memcheck:Cond
+   fun:_ZN5boost8lockfree5queueIN4werk10LogMessageEJNS0_8capacityILm2048EEEEE7do_pushILb0EEEbRKS3_
+   fun:_ZN5boost8lockfree5queueIN4werk10LogMessageEJNS0_8capacityILm2048EEEEE4pushERKS3_
+   fun:_ZN4werk8AsyncLog3logENS_8LogLevelEPKcz
+   fun:_ZN11LoggingTest12TestAsyncLog11test_methodEv
+   fun:_ZN11LoggingTestL20TestAsyncLog_invokerEv
+   fun:_ZN5boost6detail8function22void_function_invoker0IPFvvEvE6invokeERNS1_15function_bufferE
+   fun:_ZNK5boost9function0IvEclEv
+   fun:_ZN5boost6detail7forwardclEv
+   fun:_ZN5boost6detail8function21function_obj_invoker0INS0_7forwardEiE6invokeERNS1_15function_bufferE
+   fun:_ZNK5boost9function0IiEclEv
+   fun:_ZN5boost6detail9do_invokeINS_10shared_ptrINS0_22translator_holder_baseEEENS_8functionIFivEEEEEiRKT_RKT0_
+   fun:_ZN5boost17execution_monitor13catch_signalsERKNS_8functionIFivEEE
+}

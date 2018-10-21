@@ -99,13 +99,11 @@ def configure(ctx):
 		'-std=c++11',
 
 		'-Wall',
-		'-Wundef',
 		'-Wno-trigraphs',
 		'-Wuninitialized',
 		'-Wtype-limits',
 		'-Wmissing-include-dirs',
 		'-Wshadow',
-		'-Wconversion',
 
 		'-pedantic',
 	]
@@ -115,6 +113,8 @@ def configure(ctx):
 		]
 	else:
 		ctx.env.CXXFLAGS += [
+			'-Wconversion',
+			'-Wundef',
 			'-Wuseless-cast',
 		]
 

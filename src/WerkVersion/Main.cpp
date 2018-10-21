@@ -23,10 +23,17 @@
 
 #include <iostream>
 
+#include "Werk/OS/OS.hpp"
 #include "Werk/Version.hpp"
 
-int main(int, char **)
+int main(int argc, char **argv)
 {
-	std::cout << werk::getVersion() << std::endl;
+	std::cout << werk::getVersion();
+
+	if (argc > 1 && std::string(argv[1]) == "-v") {
+		std::cout << " (" << werk::getOperatingSystemName() << ")";
+	}
+
+	std::cout << std::endl;
 	return 0;
 }

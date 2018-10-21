@@ -28,6 +28,7 @@
 #include <cstdint>
 #include <cstdio>
 #include <limits>
+#include <type_traits>
 
 namespace werk
 {
@@ -103,8 +104,13 @@ public:
 	}
 
 	void writeJson(FILE *file) const {
-		std::fprintf(file, "{\"count\": %" PRIu64 ", \"average\": %.12f, \"stddev\": %.12f, \"min\": %.12f, \"max\": %.12f}",
-			this->count(), this->average(), this->stddev(), static_cast<double>(_min), static_cast<double>(_max));
+		const int precision = std::is_floating_point<T>() ? 12 : 0;
+		std::fprintf(file, "{\"count\": %" PRIu64 ", \"min\": %.*f, \"max\": %.*f, \"average\": %.12f, \"stddev\": %.12f}",
+			this->count(),
+			precision, static_cast<double>(_min),
+			precision, static_cast<double>(_max),
+			this->average(), this->stddev()
+		);
 	}
 
 private:

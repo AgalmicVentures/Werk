@@ -147,13 +147,14 @@ def configure(ctx):
 		#Find a version of boost installed by brew
 		boostRootPath = '/usr/local/Cellar/boost'
 		try:
-			boostVersion = os.listdir(boostRootPath)[-1]
+			boostVersion = sorted(os.listdir(boostRootPath))[-1]
 		except OSError:
 			Logs.error('Missing boost -- try installing with `brew install boost`')
 			raise
 
 		boostPath = os.path.join(boostRootPath, boostVersion)
 		boostLibPath = os.path.join(boostPath, 'lib')
+		Logs.info('Boost path: %s' % boostPath)
 		ctx.env.LIBPATH.append(boostLibPath)
 	else:
 		ctx.env.LIB += [

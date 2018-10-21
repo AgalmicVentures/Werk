@@ -24,6 +24,7 @@
 #define BOOST_TEST_MODULE WerkProfile
 #include <boost/test/included/unit_test.hpp>
 
+#include <iostream>
 #include <string>
 
 #include "Werk/Profiling/ProfileManager.hpp"
@@ -38,6 +39,7 @@ struct GlobalFixture
 		if (boost::unit_test::framework::master_test_suite().argc > 1) {
 			const std::string flag(boost::unit_test::framework::master_test_suite().argv[1]);
 			if (flag == "--disable-tests") {
+				std::cout << "Disabling test pass/fail..." << std::endl;
 				disableTests = true;
 			}
 		}

@@ -94,7 +94,7 @@ def configure(ctx):
 	isMac = os.uname()[0] == 'Darwin'
 
 	#Setup the environment
-	ctx.env.INCLUDES += ['.', 'src']
+	ctx.env.INCLUDES += ['.'] #, 'src']
 	ctx.env.CXXFLAGS = [
 		'-std=c++11',
 

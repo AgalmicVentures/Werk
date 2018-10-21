@@ -25,6 +25,20 @@
 
 #include "Werk/Utility/Attributes.hpp"
 
+#if defined(__APPLE__) || defined(__MACH__)
+	#define OS_NAME "Mac OS X";
+#elif defined(_WIN32)
+	#define OS_NAME "Windows (32-bit)"
+#elif defined(_WIN64)
+	#define OS_NAME "Windows (64-bit)"
+#elif defined(__linux__)
+	#define OS_NAME "Linux"
+#elif defined(__FreeBSD__)
+	#define OS_NAME "FreeBSD"
+#else
+	#define OS_NAME "Unknown OS";
+#endif
+
 namespace werk
 {
 

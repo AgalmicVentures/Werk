@@ -30,12 +30,7 @@ namespace werk
 
 const char *getOperatingSystemName()
 {
-//TODO: more clever implementation
-#ifdef __MACH__
-	return "Mac";
-#else
-	return "Linux";
-#endif
+	return OS_NAME;
 }
 
 }

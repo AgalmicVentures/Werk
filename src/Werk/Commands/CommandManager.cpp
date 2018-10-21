@@ -80,8 +80,8 @@ CommandAction *CommandManager::newCommandAction(const std::string &name, const s
 void CommandManager::logTo(Log *log) const
 {
 	log->log(LogLevel::INFO, "<CommandManager> Commands (%zu):", _commands.size());
-	for (auto i = _commands.begin(); i != _commands.end(); ++i) {
-		_log->log(LogLevel::INFO, "  %16s   %s", i->first.c_str(), i->second->help().c_str());
+	for (const auto &i : _commands) {
+		_log->log(LogLevel::INFO, "  %16s   %s", i.first.c_str(), i.second->help().c_str());
 	}
 }
 

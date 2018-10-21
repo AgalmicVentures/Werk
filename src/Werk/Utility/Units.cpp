@@ -52,7 +52,7 @@ void formatUnits(uint64_t value, const UnitsT &units, double &scaledValue, const
 	unitStr = NO_UNIT.c_str();
 
 	//Otherwise, find an appropriate scaling factor
-	for (auto &unit : units) {
+	for (const auto &unit : units) {
 		if (value >= unit.second) {
 			scaledValue /= static_cast<double>(unit.second);
 			unitStr = unit.first.c_str();

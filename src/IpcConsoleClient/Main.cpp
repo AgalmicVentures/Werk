@@ -62,7 +62,7 @@ int main(int argc, char **argv)
 			//Parse the input into messages, splitting on ;
 			messages.clear();
 			boost::split(messages, input, boost::is_any_of(";"));
-			for (auto &message : messages) {
+			for (const auto &message : messages) {
 				if (client->send(message)) {
 					std::cout << "Sent '" << message << "'" << std::endl;
 

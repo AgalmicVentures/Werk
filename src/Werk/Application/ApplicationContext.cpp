@@ -84,7 +84,7 @@ ApplicationContext::ApplicationContext(const std::string &configPath) :
 		//Add all the new configs
 		std::vector<std::string> configPaths;
 		boost::split(configPaths, configPathsStr, boost::is_any_of(","));
-		for (auto &path : configPaths) {
+		for (const auto &path : configPaths) {
 			_config->addConfigSource(new IniConfigSource(path));
 		}
 	}
@@ -263,7 +263,7 @@ ApplicationContext::ApplicationContext(const std::string &configPath) :
 		//Split and add each command
 		std::vector<std::string> scheduledCommands;
 		boost::split(scheduledCommands, scheduledCommandsStr, boost::is_any_of(";"));
-		for (auto &command : scheduledCommands) {
+		for (const auto &command : scheduledCommands) {
 			(void) command;
 			//TODO: parse the time
 			//TODO: get the command action
@@ -289,7 +289,7 @@ ApplicationContext::ApplicationContext(const std::string &configPath) :
 	if (nullptr != startupCommandsStr) {
 		//Split and run each command
 		boost::split(_startupCommands, startupCommandsStr, boost::is_any_of(";"));
-		for (auto &command : _startupCommands) {
+		for (const auto &command : _startupCommands) {
 			_commandManager->execute(command);
 		}
 	}
@@ -330,7 +330,7 @@ void ApplicationContext::shutdown()
 	if (nullptr != shutdownCommandsStr) {
 		//Split on ; and run each command
 		boost::split(_shutdownCommands, shutdownCommandsStr, boost::is_any_of(";"));
-		for (auto &command : _startupCommands) {
+		for (const auto &command : _startupCommands) {
 			_commandManager->execute(command);
 		}
 	}

@@ -52,12 +52,11 @@ public:
 	}
 	double cumulativeWeight(const T &t) const {
 		double sum = 0.0;
-		for (auto i = _weights.begin(); i != _weights.end(); ++i)
-		{
-			if (i->first > t) {
+		for (const auto &i : _weights) {
+			if (i.first > t) {
 				break;
 			}
-			sum += i->second;
+			sum += i.second;
 		}
 
 		return sum;

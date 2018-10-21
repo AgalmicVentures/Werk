@@ -41,8 +41,8 @@ public:
 	const std::map<std::string, std::string> &values() const { return _values; }
 
 	bool reloadConfig(std::map<std::string, std::string> &values) override {
-		for (auto i = _values.begin(); i != _values.end(); ++i) {
-			values[i->first] = i->second;
+		for (const auto &i : _values) {
+			values[i.first] = i.second;
 		}
 		return true;
 	}

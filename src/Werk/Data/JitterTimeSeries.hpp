@@ -59,7 +59,6 @@ public:
 	}
 
 protected:
-
 	Random &_random;
 	TimeSeries *_underlying;
 	uint64_t _min;
@@ -69,7 +68,6 @@ protected:
 	//This is stored as state, rather than just the jitter, in order to ensure
 	//that the times generated are monotonic.
 	uint64_t _time = 0;
-
 };
 
 }

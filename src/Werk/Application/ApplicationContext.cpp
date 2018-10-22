@@ -32,8 +32,8 @@
 #include "Werk/Console/ConsoleCommandReceiver.hpp"
 #include "Werk/Console/IpcConsoleServer.hpp"
 #include "Werk/Data/Csv/CsvTimeSeries.hpp"
-#include "Werk/Data/Pcap/PcapParser.hpp"
 #include "Werk/Data/JitterTimeSeries.hpp"
+#include "Werk/Data/Pcap/PcapParser.hpp"
 #include "Werk/Data/TimeSeriesReplayer.hpp"
 #include "Werk/OS/CpuMask.hpp"
 #include "Werk/OS/Hardware.hpp"
@@ -140,25 +140,24 @@ ApplicationContext::ApplicationContext(const std::string &configPath) :
 		_log->logRaw(LogLevel::SUCCESS, "<HistoricalLog> Initialized.");
 	}
 
-
 	/********** Detect System State Now That Log Is Setup **********/
 
 	/***** Software State *****/
 
 	//PID's
-	pid_t pid = getpid();
-	pid_t ppid = getppid();
+	const pid_t pid = getpid();
+	const pid_t ppid = getppid();
 
 	//Current working directory
 	char currentWorkingDirectory[1024];
 	if (nullptr == getcwd(currentWorkingDirectory, sizeof(currentWorkingDirectory))) {
-		strcpy(currentWorkingDirectory, "Error getting current working directory.");
+		std::strcpy(currentWorkingDirectory, "Error getting current working directory.");
 	}
 
 	//Hostname
 	char hostname[1024];
 	if (0 != gethostname(hostname, sizeof(hostname))) {
-		strcpy(hostname, "Error getting hostname.");
+		std::strcpy(hostname, "Error getting hostname.");
 	}
 
 	_log->log(LogLevel::JSON, "{\"type\":\"startup.software\",\"os\":\"%s\",\"cwd\":\"%s\",\"hostname\":\"%s\"}",

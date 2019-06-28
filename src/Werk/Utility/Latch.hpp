@@ -31,7 +31,7 @@ namespace werk
 /**
  * A set-reset latch.
  *
- * Templated on type so that the boolean can be made volatile if necessary.
+ * Templated on type so that the boolean can be made atomic if necessary.
  */
 template <typename T=bool>
 class Latch

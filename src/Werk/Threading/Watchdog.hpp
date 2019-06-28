@@ -83,7 +83,7 @@ private:
 	uint64_t _lastTime = 0;
 	uint64_t _misses = 0;
 
-	Latch<volatile bool> _latch;
+	Latch<std::atomic<bool> > _latch;
 };
 
 }

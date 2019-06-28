@@ -222,7 +222,7 @@ ApplicationContext::ApplicationContext(const std::string &configPath) :
 		_config->getReloadConfigAction(),
 		"Reloads the configuration."));
 
-	Action *quitAction = new SetLatchAction<volatile bool>("Quit", _quitting);
+	Action *quitAction = new SetLatchAction<std::atomic<bool> >("Quit", _quitting);
 	_commandManager->add("quit", new ActionCommand(
 		quitAction,
 		"Quits the application cleanly."));

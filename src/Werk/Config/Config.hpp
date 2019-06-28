@@ -118,11 +118,11 @@ protected:
 	std::vector<Configurable *> _configurables;
 
 	//Helpers
-	SetLatchAction<volatile bool> _reloadConfigAction;
+	SetLatchAction<std::atomic<bool> > _reloadConfigAction;
 
 	//State
-	Latch<volatile bool> _reloadConfig;
-	Latch<volatile bool> _changed;
+	Latch<std::atomic<bool> > _reloadConfig;
+	Latch<std::atomic<bool> > _changed;
 	std::atomic<ConfigValuesT *> _values;
 	ConfigValuesT _values1;
 	ConfigValuesT _values2;

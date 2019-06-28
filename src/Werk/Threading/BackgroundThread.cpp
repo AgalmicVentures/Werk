@@ -46,7 +46,7 @@ void BackgroundTask::execute()
 
 void BackgroundThread::logTo(Log *log) const
 {
-	log->log(LogLevel::INFO, "<BackgroundThread> Frequency (ns): %" PRIu64, _intervalNs);
+	log->log(LogLevel::INFO, "<BackgroundThread> Frequency (ns): %" PRIu64, _intervalNs.load());
 	log->log(LogLevel::INFO, "<BackgroundThread> Tasks (%zu):", _tasks.size());
 	for (BackgroundTask *task : _tasks) {
 		log->log(LogLevel::INFO, "  %24s    %8s    Count=%" PRIu64,

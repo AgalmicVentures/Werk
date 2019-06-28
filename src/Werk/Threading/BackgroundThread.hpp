@@ -52,15 +52,15 @@ public:
 	Profile &profile() { return _profile; }
 	const Profile &profile() const { return _profile; }
 
-	Latch<volatile bool> &active() { return _active; }
-	const Latch<volatile bool> &active() const { return _active; }
+	Latch<std::atomic<bool> > &active() { return _active; }
+	const Latch<std::atomic<bool> > &active() const { return _active; }
 
 	void execute();
 
 private:
 	Action *_action;
 	Profile _profile;
-	Latch<volatile bool> _active { true };
+	Latch<std::atomic<bool> > _active { true };
 };
 
 /**
@@ -122,9 +122,9 @@ private:
 	bool _stopped = false;
 
 	//Shared state
-	volatile uint64_t _intervalNs;
-	volatile bool _running = true;
-	volatile uint64_t _mainClockTime = 0;
+	std::atomic<uint64_t> _intervalNs;
+	std::atomic<bool> _running = true;
+	std::atomic<uint64_t> _mainClockTime = 0;
 
 	//Background thread state & method
 	Clock _mainClock; //NOTE: this clock is not the actual main thread clock, only synchronized to it

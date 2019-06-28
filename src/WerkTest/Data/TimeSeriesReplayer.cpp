@@ -33,7 +33,7 @@ BOOST_AUTO_TEST_SUITE(TimeSeriesReplayerTest)
 BOOST_AUTO_TEST_CASE(testEmpty)
 {
 	werk::Clock clock;
-	werk::Latch<volatile bool> complete;
+	werk::Latch<std::atomic<bool> > complete;
 	werk::TimeSeriesReplayer replayer("TimeSeriesReplayer", &clock, complete, &werk::NULL_ACTION);
 
 	//With no data sources, it will be immediately complete
@@ -51,7 +51,7 @@ BOOST_AUTO_TEST_CASE(testBasic)
 	BOOST_REQUIRE(csvParser.moveNext());
 
 	werk::Clock clock;
-	werk::Latch<volatile bool> complete;
+	werk::Latch<std::atomic<bool> > complete;
 	werk::TimeSeriesReplayer replayer("TimeSeriesReplayer", &clock, complete, &werk::NULL_ACTION);
 	replayer.addDataSource(&csvTimeSeries);
 

@@ -141,7 +141,7 @@ private:
 	Profile _updateProfile;
 
 	//Shared state
-	Latch<volatile bool> _quitting;
+	Latch<std::atomic<bool> > _quitting;
 
 	//Background thread state
 	BackgroundThread _backgroundThread { &_profileManager };

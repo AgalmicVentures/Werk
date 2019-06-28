@@ -39,7 +39,7 @@ class TimeSeries;
 class TimeSeriesReplayer : public Action
 {
 public:
-	TimeSeriesReplayer(const std::string &name, Clock *simulatedClock, Latch<volatile bool> &complete,
+	TimeSeriesReplayer(const std::string &name, Clock *simulatedClock, Latch<std::atomic<bool> > &complete,
 		Action *mainAction, Log *log=nullptr, uint64_t timeout=0) :
 		Action(name), _simulatedClock(simulatedClock), _complete(complete),
 		_mainAction(mainAction), _log(log), _timeout(timeout) { }
@@ -52,7 +52,7 @@ public:
 
 protected:
 	Clock *_simulatedClock;
-	Latch<volatile bool> &_complete;
+	Latch<std::atomic<bool> > &_complete;
 	Action *_mainAction;
 	Log *_log;
 	uint64_t _timeout;

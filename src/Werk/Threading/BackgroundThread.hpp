@@ -23,6 +23,7 @@
 
 #pragma once
 
+#include <atomic>
 #include <thread>
 #include <time.h>
 #include <vector>
@@ -74,7 +75,8 @@ class BackgroundThread : public Loggable
 public:
 
 	BackgroundThread(ProfileManager *profileManager, uint64_t intervalNs=10ul * 1000 * 1000) :
-		 _profileManager(profileManager), _intervalNs(intervalNs)
+		_profileManager(profileManager), _intervalNs(intervalNs),
+		_running(true), _mainClockTime(0)
 	{
 		_thread = std::thread(&BackgroundThread::backgroundThread, this);
 	}
@@ -123,8 +125,8 @@ private:
 
 	//Shared state
 	std::atomic<uint64_t> _intervalNs;
-	std::atomic<bool> _running = true;
-	std::atomic<uint64_t> _mainClockTime = 0;
+	std::atomic<bool> _running;
+	std::atomic<uint64_t> _mainClockTime;
 
 	//Background thread state & method
 	Clock _mainClock; //NOTE: this clock is not the actual main thread clock, only synchronized to it

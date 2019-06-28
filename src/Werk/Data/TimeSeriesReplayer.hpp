@@ -23,6 +23,7 @@
 
 #pragma once
 
+#include <atomic>
 #include <map>
 
 #include "Werk/OS/Time.hpp"

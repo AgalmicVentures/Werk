@@ -24,6 +24,7 @@
 #include "ApplicationContext.hpp"
 
 #include <boost/algorithm/string.hpp>
+#include <cassert>
 #include <csignal>
 #include <cstdio>
 #include <unistd.h>
@@ -66,7 +67,7 @@ ApplicationContext::ApplicationContext(const std::string &configPath) :
 	/********** Stdout Log **********/
 
 	_stdoutLog = new AsyncLog("StdoutLog", &_backgroundThread.backgroundClock());
-	_logManager.add(_stdoutLog);
+	assert(_logManager.add(_stdoutLog));
 	_backgroundThread.addTask(_stdoutLog);
 
 	/********** Config **********/
@@ -108,7 +109,7 @@ ApplicationContext::ApplicationContext(const std::string &configPath) :
 	}
 
 	_realTimeLog = new AsyncLog("RealTimeLog", &_backgroundThread.backgroundClock(), file);
-	_logManager.add(_realTimeLog);
+	assert(_logManager.add(_realTimeLog));
 	_backgroundThread.addTask(_realTimeLog);
 	_config->setLog(_realTimeLog);
 	_realTimeLog->logRaw(LogLevel::SUCCESS, "<RealTimeLog> Initialized.");
@@ -134,7 +135,7 @@ ApplicationContext::ApplicationContext(const std::string &configPath) :
 		}
 
 		_log = new AsyncLog("HistoricalLog", _clock, historicalFile);
-		_logManager.add(_log);
+		assert(_logManager.add(_log));
 		_backgroundThread.addTask(_log);
 		_config->setLog(_log);
 		_log->logRaw(LogLevel::SUCCESS, "<HistoricalLog> Initialized.");

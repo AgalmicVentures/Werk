@@ -23,8 +23,11 @@
 
 #pragma once
 
+#include <cassert>
 #include <map>
 #include <string>
+
+#include "Werk/Utility/Attributes.hpp"
 
 #include "Log.hpp"
 #include "Loggable.hpp"
@@ -38,7 +41,7 @@ public:
 	LogManager() {
 		//Create default logs
 		_nullLog = new NullLog("Null");
-		add(_nullLog);
+		assert(add(_nullLog));
 	}
 
 	//Default logs
@@ -49,9 +52,9 @@ public:
 		auto i = _logs.find(name);
 		return i == _logs.end() ? nullptr : i->second;
 	}
-	void add(Log *log) {
-		//TODO: check if already registered
-		_logs[log->name()] = log;
+	CHECKED bool add(Log *log) {
+		auto result = _logs.insert(std::pair(log->name(), log));
+		return result.second;
 	}
 
 	void logTo(Log *log) const override;

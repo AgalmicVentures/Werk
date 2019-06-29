@@ -29,8 +29,11 @@ namespace werk
 {
 
 bool IniConfigSource::reloadConfig(std::map<std::string, std::string> &values) {
-	//TODO: exception handling to return false if the file is missing
+	//Open the file
 	std::ifstream infile(_path);
+	if (infile.fail()) {
+		return false;
+	}
 
 	//Walk the lines
 	std::string line;
@@ -48,8 +51,8 @@ bool IniConfigSource::reloadConfig(std::map<std::string, std::string> &values) {
 		//Find the =
 		const std::size_t equalPos = line.find('=');
 		if (equalPos == std::string::npos) {
-			//TODO: output error? return false?
-			continue;
+			//No value found, error
+			return false;
 		}
 
 		//Copy the key and value into the map

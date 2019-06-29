@@ -58,6 +58,7 @@ public:
 			//On the first time given, start waiting
 			_lastTime = time;
 		} else if (_lastTime + _interval <= time) {
+			//Then wait until the elapsed time is greater than the interval
 			_action->execute();
 			_lastTime = time;
 			if (_count > 0) {

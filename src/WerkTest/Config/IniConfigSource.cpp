@@ -21,52 +21,21 @@
  * IN THE SOFTWARE.
  */
 
-#include "DynamicLibraryManager.hpp"
+#include <boost/test/unit_test.hpp>
 
-#include <dlfcn.h>
+#include "Werk/Config/Config.hpp"
+#include "Werk/Config/IniConfigSource.hpp"
+#include "Werk/Config/MapConfigSource.hpp"
+#include "Werk/Logging/Log.hpp"
 
-namespace werk
+BOOST_AUTO_TEST_SUITE(IniConfigSourceTest)
+
+BOOST_AUTO_TEST_CASE(TestMissingFile)
 {
+	werk::IniConfigSource iniConfigSource("azxcvsdf");
 
-DynamicLibrary::~DynamicLibrary()
-{
-	dlclose(_handle);
+	std::map<std::string, std::string> values;
+	BOOST_REQUIRE(!iniConfigSource.reloadConfig(values));
 }
 
-DynamicLibraryManager::~DynamicLibraryManager()
-{
-	//Clean up anything that's still open
-	_libraries.clear();
-}
-
-DynamicLibrary *DynamicLibraryManager::load(const std::string &path)
-{
-	const auto i = _libraries.find(path);
-	if (i != _libraries.end()) {
-		return &i->second;
-	}
-
-	//Load it
-	void *handle = dlopen(path.c_str(), RTLD_NOW | RTLD_LOCAL);
-	if (nullptr != handle) {
-		const auto j = _libraries.emplace(path, handle);
-		if (j.second) {
-			return &j.first->second;
-		}
-	}
-
-	return nullptr;
-}
-
-void DynamicLibraryManager::unload(const std::string &path)
-{
-	const auto i = _libraries.find(path);
-	if (i == _libraries.end()) {
-		return;
-	}
-
-	//Delete it which will automatically unload it
-	_libraries.erase(i);
-}
-
-}
+BOOST_AUTO_TEST_SUITE_END()

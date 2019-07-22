@@ -31,11 +31,15 @@ BOOST_AUTO_TEST_CASE(TestEpochTime)
 {
 	uint64_t t1 = werk::epochTime();
 	BOOST_REQUIRE(t1 > 0);
+}
 
-	uint64_t t2 = werk::epochTime();
+BOOST_AUTO_TEST_CASE(TestMonotoneTime)
+{
+	uint64_t t1 = werk::monotoneTime();
+	uint64_t t2 = werk::monotoneTime();
 	BOOST_REQUIRE(t2 >= t1);
 
-	uint64_t t3 = werk::epochTime();
+	uint64_t t3 = werk::monotoneTime();
 	BOOST_REQUIRE(t3 >= t2);
 }
 

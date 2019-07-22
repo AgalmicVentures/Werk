@@ -31,7 +31,33 @@
 
 namespace werk {
 
+/**
+ * Returns the wall clock time, i.e. it is affected by NTP adjustments.
+ */
 inline uint64_t epochTime()
+{
+#ifdef __MACH__
+	struct timeval t;
+	if (0 != gettimeofday(&t, nullptr)) {
+		return 0;
+	}
+
+	//Only microsecond resolution, unfortunately
+	return static_cast<uint64_t>(t.tv_sec) * 1000000000llu + static_cast<uint64_t>(t.tv_usec) * 1000llu;
+#else
+	timespec t;
+	if (0 != clock_gettime(CLOCK_REALTIME, &t)) {
+		return 0;
+	}
+
+	return t.tv_sec * 1000000000llu + t.tv_nsec;
+#endif
+}
+
+/**
+ * Returns a time which never decreases, i.e. it is not affected by NTP adjustments.
+ */
+inline uint64_t monotoneTime()
 {
 #ifdef __MACH__
 	struct timeval t;
@@ -57,6 +83,7 @@ public:
 	uint64_t time() const { return _time; }
 	void setTime(uint64_t time) { _time = time; }
 	void setEpochTime() { _time = epochTime(); }
+	void setMonotoneTime() { _time = monotoneTime(); }
 
 protected:
 	uint64_t _time = 0;

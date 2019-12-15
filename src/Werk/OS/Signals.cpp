@@ -24,9 +24,9 @@
 #include "Signals.hpp"
 
 #include <csignal>
-#include <cstdio>
 #include <cstdlib>
 #include <cstring>
+#include <iostream>
 
 #include "Werk/Utility/Action.hpp"
 
@@ -43,8 +43,9 @@ static void handleBusError(int /*signal*/, siginfo_t *info, void * /*context*/)
 	default: cause = "Unknown";
 	}
 
-	std::printf("\n\n******************** Bus Error ********************\n\n");
-	std::printf("Faulting address: 0x%p\nCause: %s (%d)\n", info->si_addr, cause, info->si_code);
+	std::cout << "\n\n******************** Bus Error ********************\n\n"
+		<< "Faulting address: " << info->si_addr << std::endl
+		<< "Cause: " << cause << "(" << info->si_code << ")" << std::endl;
 
 	std::abort();
 }
@@ -58,8 +59,9 @@ static void handleSegfault(int /*signal*/, siginfo_t *info, void * /*context*/)
 	default: cause = "Unknown";
 	}
 
-	std::printf("\n\n******************** Segmentation Fault ********************\n\n");
-	std::printf("Faulting address: 0x%p\nCause: %s (%d)\n", info->si_addr, cause, info->si_code);
+	std::cout << "\n\n******************** Segmentation Fault ********************\n\n"
+		<< "Faulting address: " << info->si_addr << std::endl
+		<< "Cause: " << cause << "(" << info->si_code << ")" << std::endl;
 
 	std::abort();
 }
@@ -149,7 +151,8 @@ bool setupSignalHandler(int signal, Action *action)
 		sigusr2Action = action;
 		break;
 	default:
-		std::fprintf(stderr, "Cannot setup signal handler for signal %d - only SIGHUP, SIGUSR1 & 2 and SIGINT may be set this way\n", signal);
+		std::cerr << "Cannot setup signal handler for signal " << signal
+			<< " - only SIGHUP, SIGUSR1 & 2 and SIGINT may be set this way" << std::endl;
 		return false;
 	}
 

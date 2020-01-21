@@ -60,6 +60,7 @@ ApplicationContext::ApplicationContext(const std::string &configPath) :
 	}
 
 	_realTimeClock.setEpochTime();
+	_startupTime = _realTimeClock.time();
 	_backgroundThread.addTask(&_backgroundActionQueue);
 	_profileManager.add(&_interUpdateProfile);
 	_profileManager.add(&_updateProfile);

@@ -132,6 +132,7 @@ private:
 	//Foreground thread state
 	Clock _realTimeClock;
 	Clock *_clock;
+	uint64_t _startupTime = 0;
 	uint64_t _updateId = 0;
 	Random _random;
 	ProfileManager _profileManager;

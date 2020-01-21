@@ -100,6 +100,10 @@ ApplicationContext::ApplicationContext(const std::string &configPath) :
 	_backgroundThread.addTask(_config);
 	_stdoutLog->logRaw(LogLevel::SUCCESS, "<Config> Initialized.");
 
+	//And begin updating the background thread at the configured interval
+	const uint64_t backgroundThreadIntervalNs = _config->getTimeAmount("Application.BackgroundThreadInterval", _backgroundThread.intervalNs());
+	_backgroundThread.setIntervalNs(backgroundThreadIntervalNs);
+
 	/********** Real Time Log **********/
 
 	const char *logPath = _config->getString("Application.LogPath");
@@ -179,10 +183,6 @@ ApplicationContext::ApplicationContext(const std::string &configPath) :
 		_processorCount, _physicalMemorySize, _pageSize);
 
 	/********** Configure Existing Components Now That Log Is Setup **********/
-
-	//Background thread
-	const uint64_t backgroundThreadIntervalNs = _config->getTimeAmount("Application.BackgroundThreadInterval", _backgroundThread.intervalNs());
-	_backgroundThread.setIntervalNs(backgroundThreadIntervalNs);
 
 	//Set the instance ID
 	_instanceId = _config->getString("Application.InstanceID", "", "ID of this instance of the application");

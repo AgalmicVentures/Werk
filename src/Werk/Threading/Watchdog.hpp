@@ -54,6 +54,10 @@ public:
 
 	void execute() override {
 		const uint64_t time = _clock->time();
+		if (_lastTime == 0) {
+			_lastTime = time;
+			return;
+		}
 
 		//If the flag is set, everything is fine
 		if (!_latch.value()) {
@@ -64,7 +68,7 @@ public:
 		}
 
 		//Otherwise, has the interval passed?
-		if (time > _lastTime + _interval) {
+		if (time > _lastTime + _interval * (_misses + 1)) {
 			_misses += 1;
 
 			//Only execute the action once

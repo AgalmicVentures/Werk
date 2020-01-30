@@ -35,20 +35,31 @@ BOOST_AUTO_TEST_CASE(TestBasic)
 	werk::CounterAction<volatile uint64_t> counterAction("Counter");
 	werk::BackgroundThread backgroundThread(nullptr, 1l * 1000 * 1000);
 
-	werk::Watchdog watchdog("Watchdog", &backgroundThread.backgroundClock(), &counterAction, 30l * 1000 * 1000, 0);
-	BOOST_REQUIRE_EQUAL(watchdog.interval(), 30l * 1000 * 1000);
-	BOOST_REQUIRE_EQUAL(watchdog.allowedMisses(), 0);
+	werk::Watchdog watchdog("Watchdog", &backgroundThread.backgroundClock(),
+		&counterAction, 100l * 1000 * 1000, 1);
+	BOOST_REQUIRE_EQUAL(watchdog.interval(), 100l * 1000 * 1000);
+	BOOST_REQUIRE_EQUAL(watchdog.allowedMisses(), 1);
 
 	//Start running
 	backgroundThread.addTask(&watchdog);
 
 	//Sleep for a little more than half the frequency -- no action
-	timespec delay { 0, 18l * 1000 * 1000 };
+	timespec delay { 0, 60l * 1000 * 1000 };
+	nanosleep(&delay, nullptr);
+	BOOST_REQUIRE(watchdog.latch());
+	BOOST_REQUIRE_EQUAL(counterAction.count(), 0);
+
+	//And again -- miss (allowed)
 	nanosleep(&delay, nullptr);
 	BOOST_REQUIRE(watchdog.latch());
 	BOOST_REQUIRE_EQUAL(counterAction.count(), 0);
 
 	//And again
+	nanosleep(&delay, nullptr);
+	BOOST_REQUIRE(watchdog.latch());
+	BOOST_REQUIRE_EQUAL(counterAction.count(), 0);
+
+	//And again -- already missed once, so execute the action
 	nanosleep(&delay, nullptr);
 	BOOST_REQUIRE(watchdog.latch());
 	BOOST_REQUIRE_EQUAL(counterAction.count(), 1);

@@ -238,6 +238,6 @@ command. Sending it a `SIGINT` (e.g. by pressing Ctrl+C) will also cause a
 clean shutdown.
 
 On shutdown:
-* Shutdown commands are run (read from `Application.ShutdownCommands`)
-* Shutdown actions, which may be registered by any component, are run
-* The application exit with exit code 0.
+* Shutdown commands are run (read from `Application.ShutdownCommands`).
+* Shutdown actions, which may be registered by any component, are run.
+* The application exits with an exit code that may optionally be set (default 0).

@@ -62,7 +62,5 @@ int main(int argc, char **argv)
 
 	context.shutdownActions().push_back(new ShutdownAction("Shutdown", context.log()));
 
-	context.run();
-
-	return 0;
+	return context.run();
 }

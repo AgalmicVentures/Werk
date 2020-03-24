@@ -1,4 +1,5 @@
 
+
 /*
  * Copyright (c) 2015-2020 Agalmic Ventures LLC (www.agalmicventures.com)
  *
@@ -350,7 +351,7 @@ void ApplicationContext::shutdown()
 	_consoleServer.reset();
 }
 
-void ApplicationContext::run(Action *mainAction)
+int ApplicationContext::run(Action *mainAction)
 {
 	//Setup the background watchdog timer
 	const uint64_t watchdogInterval = _config->getTimeAmount("Application.WatchdogInterval", 0,
@@ -460,7 +461,9 @@ void ApplicationContext::run(Action *mainAction)
 	}
 	_log->log(LogLevel::JSON, "{\"type\":\"mainLoop.exit\",\"updates\":%" PRIu64 "}", _updateId);
 
+	//Shut down and return the exit code
 	shutdown();
+	return exitCode();
 }
 
 }

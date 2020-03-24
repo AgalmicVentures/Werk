@@ -58,11 +58,13 @@ public:
 	ApplicationContext(const std::string &logFilePath);
 	~ApplicationContext();
 
+	int exitCode() { return _exitCode.load(); }
+	void setExitCode(int code) { _exitCode.store(code); }
 	bool isShutdown();
 	void shutdown();
 
-	//Optional main loop
-	void run(Action *mainAction=&NULL_ACTION);
+	//Optional main loop with exit code
+	int run(Action *mainAction=&NULL_ACTION);
 
 	void logTo(Log *log) const override;
 
@@ -142,6 +144,7 @@ private:
 	Profile _updateProfile;
 
 	//Shared state
+	std::atomic<int> _exitCode;
 	Latch<std::atomic<bool> > _quitting;
 
 	//Background thread state

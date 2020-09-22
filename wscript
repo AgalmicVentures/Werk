@@ -174,7 +174,7 @@ def build(ctx):
 		Logs.info('Building version %s' % version)
 	except subprocess.CalledProcessError:
 		version = 'NotInGit'
-		Logs.warn('Building vout of version control, so no version string is available')
+		Logs.warn('Building out of version control, so no version string is available')
 	ctx.env.VERSION = version
 
 	ctx.add_pre_fun(_preBuild)

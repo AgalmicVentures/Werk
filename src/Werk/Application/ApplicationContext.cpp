@@ -332,7 +332,7 @@ void ApplicationContext::shutdown()
 	if (nullptr != shutdownCommandsStr) {
 		//Split on ; and run each command
 		boost::split(_shutdownCommands, shutdownCommandsStr, boost::is_any_of(";"));
-		for (const auto &command : _startupCommands) {
+		for (const auto &command : _shutdownCommands) {
 			_commandManager->execute(command);
 		}
 	}

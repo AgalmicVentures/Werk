@@ -32,14 +32,14 @@ namespace werk
 
 bool CommandManager::execute(const std::string &commandLine)
 {
-	std::vector<std::string> arguments;
-	boost::split(arguments, commandLine, boost::is_any_of(" \t"));
-
 	//History is only added here, from human executions. This enables neat stuff like the redo
 	//command and allows the command system to still be used in an automated fashion.
 	_commandHistory.emplace_back(_clock.time(), commandLine);
 
-	return execute(arguments);
+	//Parse the arguments, ignoring extra whitespace
+	std::vector<std::string> arguments;
+	boost::split(arguments, boost::trim_copy(commandLine), boost::is_any_of(" \t"), boost::token_compress_on);
+	return arguments[0] == "" ? false : execute(arguments);
 }
 
 bool CommandManager::execute(const std::vector<std::string> &arguments)

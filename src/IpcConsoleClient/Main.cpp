@@ -40,10 +40,12 @@ int main(int argc, char **argv)
 		return 0;
 	}
 
+	bool connected = false;
 	try {
 		std::cout << "Connecting to " << argv[1] << "..." << std::endl;
 		std::unique_ptr<werk::IpcConsoleClient> client(new werk::IpcConsoleClient(argv[1]));
 		std::cout << "Connected to " << argv[1] << "." << std::endl;
+		connected = true;
 
 		std::string input;
 		std::vector<std::string> messages;
@@ -76,7 +78,8 @@ int main(int argc, char **argv)
 			}
 		}
 	} catch (boost::interprocess::interprocess_exception e) {
-		std::cout << "IPC exception thrown, connection lost..." << std::endl;
+		std::cout << "IPC exception thrown, " << (connected ? "connection lost" : "could not connect")
+			<< "..." << std::endl;
 	}
 
 	return 0;

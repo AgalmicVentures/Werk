@@ -77,7 +77,7 @@ int main(int argc, char **argv)
 				}
 			}
 		}
-	} catch (boost::interprocess::interprocess_exception e) {
+	} catch (boost::interprocess::interprocess_exception &e) {
 		std::cout << "IPC exception thrown, " << (connected ? "connection lost" : "could not connect")
 			<< "..." << std::endl;
 	}

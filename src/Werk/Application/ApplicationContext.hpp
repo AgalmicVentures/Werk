@@ -60,6 +60,8 @@ public:
 
 	int exitCode() { return _exitCode.load(); }
 	void setExitCode(int code) { _exitCode.store(code); }
+	bool isQuitting() { return _quitting.value(); }
+	void quit() { _quitting.set(); }
 	bool isShutdown();
 	void shutdown();
 

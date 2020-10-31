@@ -27,6 +27,7 @@
 #include <cstdlib>
 #include <cstring>
 #include <iostream>
+#include <unistd.h>
 
 #include "Werk/Utility/Action.hpp"
 
@@ -47,6 +48,8 @@ static void handleBusError(int /*signal*/, siginfo_t *info, void * /*context*/)
 		<< "Faulting address: " << info->si_addr << std::endl
 		<< "Cause: " << cause << "(" << info->si_code << ")" << std::endl;
 
+	//Sleep before aborting to allow logging to finish
+	sleep(5);
 	std::abort();
 }
 
@@ -63,6 +66,8 @@ static void handleSegfault(int /*signal*/, siginfo_t *info, void * /*context*/)
 		<< "Faulting address: " << info->si_addr << std::endl
 		<< "Cause: " << cause << "(" << info->si_code << ")" << std::endl;
 
+	//Sleep before aborting to allow logging to finish
+	sleep(5);
 	std::abort();
 }
 

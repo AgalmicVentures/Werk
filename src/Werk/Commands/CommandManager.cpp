@@ -37,8 +37,9 @@ bool CommandManager::execute(const std::string &commandLine)
 	_commandHistory.emplace_back(_clock.time(), commandLine);
 
 	//Parse the arguments, ignoring extra whitespace
+	std::string trimmedCommandLine = boost::trim_copy(commandLine);
 	std::vector<std::string> arguments;
-	boost::split(arguments, boost::trim_copy(commandLine), boost::is_any_of(" \t"), boost::token_compress_on);
+	boost::split(arguments, trimmedCommandLine, boost::is_any_of(" \t"), boost::token_compress_on);
 	return arguments[0] == "" ? false : execute(arguments);
 }
 

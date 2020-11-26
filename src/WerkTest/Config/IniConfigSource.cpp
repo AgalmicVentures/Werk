@@ -38,4 +38,15 @@ BOOST_AUTO_TEST_CASE(TestMissingFile)
 	BOOST_REQUIRE(!iniConfigSource.reloadConfig(values));
 }
 
+BOOST_AUTO_TEST_CASE(TestBasicFile)
+{
+	werk::IniConfigSource iniConfigSource("src/WerkTest/Config/TestConfig.ini");
+
+	std::map<std::string, std::string> values;
+	BOOST_REQUIRE(iniConfigSource.reloadConfig(values));
+
+	BOOST_CHECK_EQUAL(values["abc"], "123");
+	BOOST_CHECK_EQUAL(values["zxcv"], "qwer");
+}
+
 BOOST_AUTO_TEST_SUITE_END()

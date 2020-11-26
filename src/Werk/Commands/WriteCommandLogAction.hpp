@@ -42,7 +42,7 @@ public:
 	void execute() override {
 		FILE *file = std::fopen(_path.c_str(), "w");
 		if (nullptr == file) {
-			_log->log(LogLevel::INFO, "Failed to write command log to %s", _path.c_str());
+			_log->log(LogLevel::WARNING, "Failed to write command log to %s", _path.c_str());
 			return;
 		}
 

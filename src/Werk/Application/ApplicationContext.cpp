@@ -83,7 +83,8 @@ ApplicationContext::ApplicationContext(const std::string &configPath) :
 	_config->execute();
 
 	//Register other config files
-	const char *configPathsStr = _config->getString("Application.ConfigPaths");
+	const char *configPathsStr = _config->getString("Application.ConfigPaths", nullptr,
+		"Paths to config files, with the final one having highest priority");
 	if (nullptr != configPathsStr) {
 		//Add all the new configs
 		std::vector<std::string> configPaths;
@@ -103,12 +104,15 @@ ApplicationContext::ApplicationContext(const std::string &configPath) :
 	_stdoutLog->logRaw(LogLevel::SUCCESS, "<Config> Initialized.");
 
 	//And begin updating the background thread at the configured interval
-	const uint64_t backgroundThreadIntervalNs = _config->getTimeAmount("Application.BackgroundThreadInterval", _backgroundThread.intervalNs());
+	const uint64_t backgroundThreadIntervalNs = _config->getTimeAmount(
+		"Application.BackgroundThreadInterval", _backgroundThread.intervalNs(),
+		"Interval between background updates");
 	_backgroundThread.setIntervalNs(backgroundThreadIntervalNs);
 
 	/********** Real Time Log **********/
 
-	const char *logPath = _config->getString("Application.LogPath");
+	const char *logPath = _config->getString("Application.LogPath", nullptr,
+		"Path to write the main log with wall clock times (or none to use stdout)");
 	FILE *file = nullptr == logPath ? stdout : std::fopen(logPath, "a");
 	if (nullptr == file) {
 		_stdoutLog->logRaw(LogLevel::ERROR, "Could not open log file, redirecting to stderr.");
@@ -134,7 +138,8 @@ ApplicationContext::ApplicationContext(const std::string &configPath) :
 
 		/********** Main Log (Historical Time) **********/
 
-		const char *historicalLogPath = _config->getString("Application.HistoricalLogPath");
+		const char *historicalLogPath = _config->getString("Application.HistoricalLogPath", nullptr,
+			"Path to write historical logs (that is, logs timed against the simulated clock)");
 		FILE *historicalFile = nullptr == historicalLogPath ? stdout : std::fopen(historicalLogPath, "a");
 		if (nullptr == historicalFile) {
 			_stdoutLog->logRaw(LogLevel::ERROR, "Could not open historical log file, redirecting to stderr.");
@@ -203,9 +208,8 @@ ApplicationContext::ApplicationContext(const std::string &configPath) :
 	}
 
 	//Setup profiling output
-	const char *profilesPath = _config->getString("Application.ProfilesPath");
+	const char *profilesPath = _config->getString("Application.ProfilesPath", nullptr, "Path to write profiling data on exit");
 	if (nullptr != profilesPath) {
-		_log->log(LogLevel::INFO, "Writing profiles to %s on shutdown.", profilesPath);
 		_shutdownActions.push_back(new WriteProfilesAction("WriteProfiles", _log, _profileManager, profilesPath));
 	}
 
@@ -257,9 +261,9 @@ ApplicationContext::ApplicationContext(const std::string &configPath) :
 	}
 
 	//Setup command logging
-	const char *commandLogPath = _config->getString("Application.CommandLogPath");
+	const char *commandLogPath = _config->getString("Application.CommandLogPath", nullptr,
+		"Path to log commands on exit");
 	if (nullptr != commandLogPath) {
-		_log->log(LogLevel::INFO, "Writing command log to %s on shutdown.", commandLogPath);
 		_shutdownActions.push_back(new WriteCommandLogAction("WriteCommandLog", _log, *_commandManager, commandLogPath));
 	}
 
@@ -267,7 +271,8 @@ ApplicationContext::ApplicationContext(const std::string &configPath) :
 
 	//Consoles are only available for real time runs
 	if (_realTime) {
-		const char *ipcConsoleName = _config->getString("Application.IpcConsoleName");
+		const char *ipcConsoleName = _config->getString("Application.IpcConsoleName", nullptr,
+			"Name of the shared memory queue for the console (often in /dev/shm)");
 		if (nullptr != ipcConsoleName) {
 			_consoleServer.reset(new IpcConsoleServer(ipcConsoleName));
 
@@ -313,7 +318,8 @@ ApplicationContext::ApplicationContext(const std::string &configPath) :
 
 	//Load and run startup commands
 	//TODO: consider defering this until later, once the user has setup everything they need?
-	const char *startupCommandsStr = _config->getString("Application.StartupCommands");
+	const char *startupCommandsStr = _config->getString("Application.StartupCommands", nullptr,
+		"Commands to run on startup");
 	if (nullptr != startupCommandsStr) {
 		//Split and run each command
 		boost::split(_startupCommands, startupCommandsStr, boost::is_any_of(";"));
@@ -408,9 +414,9 @@ int ApplicationContext::run(Action *mainAction)
 
 		//TODO: consider a per source value for this
 		uint64_t jitterMin = _config->getTimeAmount("Application.HistoricalDataJitterMin", 0,
-			"Minimum jitter to add to event times.");
+			"Minimum jitter to add to event times");
 		uint64_t jitterMax = _config->getTimeAmount("Application.HistoricalDataJitterMax", 0,
-			"Maximum jitter to add to event times.");
+			"Maximum jitter to add to event times");
 		if (jitterMin > jitterMax) {
 			_log->log(LogLevel::WARNING, "Jitter min is more than max, swapping");
 			std::swap(jitterMin, jitterMax);
@@ -419,7 +425,8 @@ int ApplicationContext::run(Action *mainAction)
 
 		//Setup data sources
 		std::vector<std::string> dataSourcePaths;
-		const char *dataSourcePathsStr = _config->getString("Application.HistoricalDataSources");
+		const char *dataSourcePathsStr = _config->getString("Application.HistoricalDataSources", nullptr,
+			"Paths to historical data sources");
 		if (nullptr != dataSourcePathsStr) {
 			boost::split(dataSourcePaths, dataSourcePathsStr, boost::is_any_of(","));
 		}
@@ -464,7 +471,7 @@ int ApplicationContext::run(Action *mainAction)
 			_log->log(LogLevel::SUCCESS, "Opened historical data source: %s.", dataSourcePath.c_str());
 		}
 
-		_log->logRaw(LogLevel::SUCCESS, "Simulator initialized.");
+		_log->logRaw(LogLevel::SUCCESS, "<TimeSeriesReplayer> Initialized.");
 	}
 
 	//Run the main loop

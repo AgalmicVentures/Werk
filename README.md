@@ -157,6 +157,8 @@ log level.
 A `CommandAction` helper class allows a `Command` to be run whenever an `Action`
 is needed, opening up many opportunities for connecting components.
 
+The `CommandAlias` helper class allows for short aliases of long command lines.
+
 ### Console
 Consoles allow users to connect to a real time run and enter commands. Currently
 the only available console is the `IpcConsoleServer` and `IpcConsoleClient` pair
@@ -187,6 +189,9 @@ components initialized:
 trail purposes.
 * `Application.ProfilesPath`: Path to profiling information JSON, written on
 shutdown. Default none.
+* `Application.CommandAliases`: Command aliases in the form `abc:echo Abc!;123: echo 123!`.
+* `Application.CommandLogPath`: Path to log commands, written on shutdown.
+Default none.
 * `Application.BackgroundThreadInterval`:  The interval of the background
 thread, in nanoseconds. Default 10ms.
 * `Application.Debug`: Boolean indicating whether the application is in debug

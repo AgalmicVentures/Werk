@@ -30,6 +30,7 @@
 #include <cstdio>
 #include <unistd.h>
 
+#include "Werk/Commands/CommandAlias.hpp"
 #include "Werk/Commands/WriteCommandLogAction.hpp"
 #include "Werk/Console/ConsoleCommandReceiver.hpp"
 #include "Werk/Console/IpcConsoleServer.hpp"
@@ -208,8 +209,9 @@ ApplicationContext::ApplicationContext(const std::string &configPath) :
 		_shutdownActions.push_back(new WriteProfilesAction("WriteProfiles", _log, _profileManager, profilesPath));
 	}
 
-	/********** Command Manager **********/
+	/********** Commands **********/
 
+	//Initialize command manager
 	_commandManager = new CommandManager(_backgroundThread.backgroundClock(), _log);
 
 	_commandManager->add("app", new ActionCommand(
@@ -231,6 +233,30 @@ ApplicationContext::ApplicationContext(const std::string &configPath) :
 		"Quits the application cleanly."));
 	_log->logRaw(LogLevel::SUCCESS, "<CommandManager> Initialized.");
 
+	//Setup command aliases configured like so:
+	//Application.CommandAliases=abc:echo Abc!;123:echo 123!
+	const char *commandAliasesStr = _config->getString("Application.CommandAliases");
+	if (nullptr != commandAliasesStr) {
+		//Split on ; and add each command
+		std::vector<std::string> commandAliases;
+		boost::split(commandAliases, commandAliasesStr, boost::is_any_of(";"));
+		for (const auto &commandAlias : commandAliases) {
+			//Split on :
+			const std::size_t colonPos = commandAlias.find(':');
+			if (std::string::npos == colonPos) {
+				//No value found, error
+				_log->log(LogLevel::ERROR, "Could not parse command alias: %s",
+					commandAlias.c_str());
+				continue;
+			}
+
+			//Copy the key and value into the map
+			_commandManager->add(commandAlias.substr(0, colonPos),
+				new CommandAlias(*_commandManager, commandAlias.substr(colonPos + 1)));
+		}
+	}
+
+	//Setup command logging
 	const char *commandLogPath = _config->getString("Application.CommandLogPath");
 	if (nullptr != commandLogPath) {
 		_log->log(LogLevel::INFO, "Writing command log to %s on shutdown.", commandLogPath);

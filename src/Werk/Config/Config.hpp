@@ -76,8 +76,20 @@ public:
 		_values.store(&_values1);
 	}
 
-	void addConfigSource(ConfigSource *configSource) { _configSources.push_back(configSource); }
-	void addConfigurable(Configurable *configurable) { _configurables.push_back(configurable); }
+	void addConfigSource(ConfigSource *configSource) {
+		if (nullptr == configSource) {
+			_log->log(LogLevel::ERROR, "<Config> Tried to add null config source");
+			return;
+		}
+		_configSources.push_back(configSource);
+	}
+	void addConfigurable(Configurable *configurable) {
+		if (nullptr == configurable) {
+			_log->log(LogLevel::ERROR, "<Config> Tried to add null configurable");
+			return;
+		}
+		_configurables.push_back(configurable);
+	}
 
 	//This exists so the log can be swapped from stdout/stderr to a file once a config is read, if necessary
 	void setLog(Log *log) {

@@ -96,6 +96,12 @@ public:
 	const std::vector<CommandHistory> &commandHistory() const { return _commandHistory; }
 
 	void add(const std::string &name, Command *command) {
+		if (nullptr == command) {
+			_log->log(LogLevel::ERROR, "<CommandManager> Tried to register null command to %s",
+				name.c_str());
+			return;
+		}
+
 		_commands[name] = command;
 	}
 

@@ -56,6 +56,7 @@ public:
 	const std::map<std::string, Profile *> &profiles() const { return _profiles; }
 
 	void add(Profile *profile) {
+		assert(nullptr != profile);
 		_profiles[profile->name()] = profile;
 	}
 

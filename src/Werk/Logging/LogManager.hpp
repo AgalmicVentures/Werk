@@ -53,6 +53,7 @@ public:
 		return i == _logs.end() ? nullptr : i->second;
 	}
 	CHECKED bool add(Log *log) {
+		assert(nullptr != log);
 		auto result = _logs.insert(std::make_pair(log->name(), log));
 		return result.second;
 	}

@@ -55,7 +55,7 @@ private:
 	FILE *_file;
 
 	uint64_t _nextSendSequenceNumber = 0;
-	boost::lockfree::queue<LogMessage, boost::lockfree::capacity<2048> > _messages;
+	boost::lockfree::queue<LogMessage, boost::lockfree::capacity<4096> > _messages;
 	uint64_t _nextReceiveSequenceNumber = 0;
 };
 

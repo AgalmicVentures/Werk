@@ -23,6 +23,8 @@
 
 #include "Config.hpp"
 
+#include <boost/algorithm/string.hpp>
+
 #include "Werk/Utility/Units.hpp"
 
 namespace werk
@@ -234,6 +236,38 @@ uint64_t Config::getTimeAmount(const std::string &key, uint64_t defaultValue, co
 		key.c_str(),
 		value);
 	return value;
+}
+
+const char *Config::getStrings(const std::string &key, std::vector<std::string> &values,
+	const char *defaultValue, const char *help, const char *delimiters) const
+{
+	const char *stringValue = getStringRaw(key);
+	const char *defaultLogValue = "";
+	const char *quoteChar = "\"";
+	if (nullptr == stringValue) {
+		stringValue = defaultValue;
+		defaultLogValue = " [DEFAULT]";
+		if (nullptr == stringValue) {
+			quoteChar = "";
+		}
+	}
+
+	if (nullptr != stringValue) {
+		boost::split(values, stringValue, boost::is_any_of(delimiters));
+	}
+
+	_log->log(LogLevel::CONFIG, "<Config> [%s] = %s%s%s%s",
+		key.c_str(),
+		stringValue,
+		defaultLogValue,
+		help == nullptr ? "" : " -- ",
+		help == nullptr ? "" : help);
+	_log->log(LogLevel::JSON, "{\"type\":\"config\",\"key\":\"%s\",\"value\":%s%s%s}",
+		key.c_str(),
+		quoteChar,
+		nullptr == stringValue ? "null" : stringValue,
+		quoteChar);
+	return stringValue;
 }
 
 }

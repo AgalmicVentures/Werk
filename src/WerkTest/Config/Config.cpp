@@ -40,6 +40,7 @@ BOOST_AUTO_TEST_CASE(TestBasicTypes)
 	mapConfigSource.values()["Pi"] = "3.25";
 	mapConfigSource.values()["Two"] = "2";
 	mapConfigSource.values()["Nested.Value"] = "asdf";
+	mapConfigSource.values()["ListValues"] = "abc,123,do re mi,!";
 	c.addConfigSource(&mapConfigSource);
 	c.reloadConfig();
 	c.execute();
@@ -50,6 +51,14 @@ BOOST_AUTO_TEST_CASE(TestBasicTypes)
 	BOOST_REQUIRE_EQUAL(c.getString("Two"), "2");
 	BOOST_REQUIRE_EQUAL(c.getInt64("Two", 0, "Help test"), 2);
 	BOOST_REQUIRE_EQUAL(c.getUint64("Two"), 2);
+
+	std::vector<std::string> list;
+	c.getStrings("ListValues", list);
+	BOOST_REQUIRE_EQUAL(list.size(), 4);
+	BOOST_REQUIRE_EQUAL(list[0], "abc");
+	BOOST_REQUIRE_EQUAL(list[1], "123");
+	BOOST_REQUIRE_EQUAL(list[2], "do re mi");
+	BOOST_REQUIRE_EQUAL(list[3], "!");
 }
 
 BOOST_AUTO_TEST_CASE(TestDefaultValue)

@@ -83,15 +83,11 @@ ApplicationContext::ApplicationContext(const std::string &configPath) :
 	_config->execute();
 
 	//Register other config files
-	const char *configPathsStr = _config->getString("Application.ConfigPaths", nullptr,
+	std::vector<std::string> configPaths;
+	_config->getStrings("Application.ConfigPaths", configPaths, nullptr,
 		"Paths to config files, with the final one having highest priority");
-	if (nullptr != configPathsStr) {
-		//Add all the new configs
-		std::vector<std::string> configPaths;
-		boost::split(configPaths, configPathsStr, boost::is_any_of(","));
-		for (const auto &path : configPaths) {
-			_config->addConfigSource(new IniConfigSource(path));
-		}
+	for (const auto &path : configPaths) {
+		_config->addConfigSource(new IniConfigSource(path));
 	}
 
 	//Synchronously reload with everything
@@ -239,25 +235,22 @@ ApplicationContext::ApplicationContext(const std::string &configPath) :
 
 	//Setup command aliases configured like so:
 	//Application.CommandAliases=abc:echo Abc!;123:echo 123!
-	const char *commandAliasesStr = _config->getString("Application.CommandAliases");
-	if (nullptr != commandAliasesStr) {
-		//Split on ; and add each command
-		std::vector<std::string> commandAliases;
-		boost::split(commandAliases, commandAliasesStr, boost::is_any_of(";"));
-		for (const auto &commandAlias : commandAliases) {
-			//Split on :
-			const std::size_t colonPos = commandAlias.find(':');
-			if (std::string::npos == colonPos) {
-				//No value found, error
-				_log->log(LogLevel::ERROR, "Could not parse command alias: %s",
-					commandAlias.c_str());
-				continue;
-			}
-
-			//Copy the key and value into the map
-			_commandManager->add(commandAlias.substr(0, colonPos),
-				new CommandAlias(*_commandManager, commandAlias.substr(colonPos + 1)));
+	std::vector<std::string> commandAliases;
+	_config->getStrings("Application.CommandAliases", commandAliases,
+		nullptr, nullptr, ";");
+	for (const auto &commandAlias : commandAliases) {
+		//Split on :
+		const std::size_t colonPos = commandAlias.find(':');
+		if (std::string::npos == colonPos) {
+			//No value found, error
+			_log->log(LogLevel::ERROR, "Could not parse command alias: %s",
+				commandAlias.c_str());
+			continue;
 		}
+
+		//Copy the key and value into the map
+		_commandManager->add(commandAlias.substr(0, colonPos),
+			new CommandAlias(*_commandManager, commandAlias.substr(colonPos + 1)));
 	}
 
 	//Setup command logging
@@ -425,12 +418,8 @@ int ApplicationContext::run(Action *mainAction)
 
 		//Setup data sources
 		std::vector<std::string> dataSourcePaths;
-		const char *dataSourcePathsStr = _config->getString("Application.HistoricalDataSources", nullptr,
-			"Paths to historical data sources");
-		if (nullptr != dataSourcePathsStr) {
-			boost::split(dataSourcePaths, dataSourcePathsStr, boost::is_any_of(","));
-		}
-
+		_config->getStrings("Application.HistoricalDataSources", dataSourcePaths,
+			nullptr, "Paths to historical data sources");
 		for (const std::string &dataSourcePath : dataSourcePaths) {
 			TimeSeries *timeSeries = nullptr;
 			if (boost::algorithm::ends_with(dataSourcePath, ".csv")) {

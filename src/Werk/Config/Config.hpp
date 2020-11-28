@@ -123,6 +123,10 @@ public:
 	uint64_t getStorageAmount(const std::string &key, uint64_t defaultValue=0, const char *help=nullptr) const;
 	uint64_t getTimeAmount(const std::string &key, uint64_t defaultValue=0, const char *help=nullptr) const;
 
+	//List types
+	const char *getStrings(const std::string &key, std::vector<std::string> &values,
+		const char *defaultValue=nullptr, const char *help=nullptr, const char *delimiters=",") const;
+
 protected:
 	//Config
 	Log *_log;

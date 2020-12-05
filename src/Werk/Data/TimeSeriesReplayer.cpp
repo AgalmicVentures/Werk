@@ -41,6 +41,12 @@ void TimeSeriesReplayer::addDataSource(TimeSeries *dataSource)
 				dataSource->name().c_str(), time);
 		}
 		return;
+	} else if (nextTime < time) {
+		if (nullptr != _log) {
+			_log->log(LogLevel::JSON, "{\"type\":\"timeSeriesReplayer.unorderedSource\",\"name\":\"%s\",\"time\":%" PRIu64 ",\"nexTime\":%" PRIu64 "}",
+				dataSource->name().c_str(), time, nextTime);
+		}
+		return;
 	}
 
 	_dataSources.insert(std::make_pair(nextTime, dataSource));

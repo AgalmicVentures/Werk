@@ -426,14 +426,14 @@ int ApplicationContext::run(Action *mainAction)
 				//TODO: this demands more configurability
 				CsvParser *csvParser = new CsvParser();
 				if (csvParser->open(dataSourcePath)) {
-					CsvTimeSeries *csvTimeSeries = new CsvTimeSeries(*csvParser);
+					CsvTimeSeries *csvTimeSeries = new CsvTimeSeries(dataSourcePath, *csvParser); //Use path as name
 					timeSeries = csvTimeSeries;
 				} else {
 					_log->log(LogLevel::ERROR, "Failed to open historical data source: %s.", dataSourcePath.c_str());
 					delete csvParser;
 				}
 			} else if (boost::algorithm::ends_with(dataSourcePath, ".pcap")) {
-				PcapParser *pcapParser = new PcapParser();
+				PcapParser *pcapParser = new PcapParser(dataSourcePath); //Use path as name
 				if (pcapParser->open(dataSourcePath)) {
 					timeSeries = pcapParser;
 				} else {

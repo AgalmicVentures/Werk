@@ -40,7 +40,7 @@ class JitterTimeSeries : public TimeSeries
 public:
 
 	JitterTimeSeries(Random &random, TimeSeries *underlying, uint64_t min, uint64_t max)
-		: _random(random), _underlying(underlying), _min(min), _max(max) { }
+		: TimeSeries(underlying->name() + "_Jitter"), _random(random), _underlying(underlying), _min(min), _max(max) { }
 
 	//Return the current time plus some jitter.
 	CHECKED virtual uint64_t time() const { return _time; }

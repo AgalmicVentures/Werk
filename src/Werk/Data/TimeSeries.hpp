@@ -26,6 +26,7 @@
 #include <cinttypes>
 
 #include "Werk/Utility/Attributes.hpp"
+#include "Werk/Utility/NamedObject.hpp"
 
 namespace werk
 {
@@ -33,10 +34,11 @@ namespace werk
 /**
  * Represents a time series iterator.
  */
-class TimeSeries
+class TimeSeries : public NamedObject
 {
 public:
 
+	TimeSeries(const std::string &name) : NamedObject(name) { }
 	virtual ~TimeSeries() { }
 
 	/**

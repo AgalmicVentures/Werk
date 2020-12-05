@@ -66,6 +66,7 @@ class PcapParser : public TimeSeries
 {
 public:
 
+	PcapParser(const std::string &name) : TimeSeries(name) { }
 	virtual ~PcapParser() { close(); }
 
 	CHECKED bool isOpen() const { return _file.is_open(); }

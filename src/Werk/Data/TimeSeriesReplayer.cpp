@@ -37,8 +37,8 @@ void TimeSeriesReplayer::addDataSource(TimeSeries *dataSource)
 
 	if (finished || 0 == nextTime) {
 		if (nullptr != _log) {
-			//TODO: would be nice if this had the path
-			_log->log(LogLevel::JSON, "{\"type\":\"timeSeriesReplayer.finishedSource\",\"at\":%" PRIu64 "}", time);
+			_log->log(LogLevel::JSON, "{\"type\":\"timeSeriesReplayer.finishedSource\",\"name\":\"%s\",\"time\":%" PRIu64 "}",
+				dataSource->name().c_str(), time);
 		}
 		return;
 	}

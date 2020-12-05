@@ -46,7 +46,7 @@ BOOST_AUTO_TEST_CASE(testBasic)
 {
 	//Open and skip headers
 	werk::CsvParser csvParser;
-	werk::CsvTimeSeries csvTimeSeries(csvParser, 0, 1e9);
+	werk::CsvTimeSeries csvTimeSeries("Csv", csvParser, 0, 1e9);
 	BOOST_REQUIRE(csvParser.open("src/WerkTest/Data/Csv/test.csv"));
 	BOOST_REQUIRE(csvParser.moveNext());
 

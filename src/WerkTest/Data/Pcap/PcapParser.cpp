@@ -31,7 +31,7 @@ BOOST_AUTO_TEST_SUITE(PcapParserTest)
 
 BOOST_AUTO_TEST_CASE(testBasic)
 {
-	werk::PcapParser pcapParser;
+	werk::PcapParser pcapParser("Pcap");
 	BOOST_REQUIRE(pcapParser.open("src/WerkTest/Data/Pcap/SSH_L3.pcap"));
 
 	BOOST_CHECK(!pcapParser.isNanosecond());

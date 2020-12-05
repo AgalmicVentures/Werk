@@ -37,7 +37,7 @@ BOOST_AUTO_TEST_CASE(testBasic)
 	//Skip headers
 	BOOST_REQUIRE(csvParser.moveNext());
 
-	werk::CsvTimeSeries csvTimeSeries(csvParser, 0);
+	werk::CsvTimeSeries csvTimeSeries("Csv", csvParser, 0);
 
 	BOOST_REQUIRE(csvTimeSeries.moveNext());
 	BOOST_CHECK_EQUAL(csvTimeSeries.time(), 10);

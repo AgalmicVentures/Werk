@@ -46,6 +46,7 @@ BOOST_AUTO_TEST_CASE(TestBasicFile)
 	BOOST_REQUIRE(iniConfigSource.reloadConfig(values));
 
 	BOOST_CHECK_EQUAL(values["abc"], "123");
+	BOOST_CHECK_EQUAL(values["def"], "456");
 	BOOST_CHECK_EQUAL(values["zxcv"], "qwer");
 }
 

@@ -25,6 +25,8 @@
 
 #include <fstream>
 
+#include <boost/algorithm/string.hpp>
+
 namespace werk
 {
 
@@ -56,7 +58,7 @@ bool IniConfigSource::reloadConfig(std::map<std::string, std::string> &values) {
 		}
 
 		//Copy the key and value into the map
-		values[line.substr(0, equalPos)] = line.substr(equalPos + 1);
+		values[boost::trim_copy(line.substr(0, equalPos))] = boost::trim_copy(line.substr(equalPos + 1));
 	}
 
 	return true;

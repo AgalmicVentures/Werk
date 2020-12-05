@@ -399,7 +399,7 @@ int ApplicationContext::run(Action *mainAction)
 	Action *actionToRun = mainAction;
 	TimeSeriesReplayer *timeSeriesReplayer = nullptr;
 	if (!_realTime) {
-		_log->logRaw(LogLevel::INFO, "Initializing time series replayer...");
+		_log->logRaw(LogLevel::INFO, "<TimeSeriesReplayer> Initializing...");
 		uint64_t timeout = _config->getTimeAmount("Application.HistoricalDataTimeout", 0,
 			"Maximum time between events (allows updating at a higher frequency than the data)");
 		timeSeriesReplayer = new TimeSeriesReplayer("TimeSeriesReplayer", _clock, _quitting, mainAction, _log, timeout);

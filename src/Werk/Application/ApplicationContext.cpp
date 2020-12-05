@@ -399,7 +399,7 @@ int ApplicationContext::run(Action *mainAction)
 	Action *actionToRun = mainAction;
 	TimeSeriesReplayer *timeSeriesReplayer = nullptr;
 	if (!_realTime) {
-		_log->logRaw(LogLevel::INFO, "<TimeSeriesReplayer> Initializing...");
+		_log->logRaw(LogLevel::JSON, "{\"type\":\"timeSeriesReplayer.initializing\"}");
 		uint64_t timeout = _config->getTimeAmount("Application.HistoricalDataTimeout", 0,
 			"Maximum time between events (allows updating at a higher frequency than the data)");
 		timeSeriesReplayer = new TimeSeriesReplayer("TimeSeriesReplayer", _clock, _quitting, mainAction, _log, timeout);
@@ -460,7 +460,7 @@ int ApplicationContext::run(Action *mainAction)
 			_log->log(LogLevel::SUCCESS, "Opened historical data source: %s.", dataSourcePath.c_str());
 		}
 
-		_log->logRaw(LogLevel::SUCCESS, "<TimeSeriesReplayer> Initialized.");
+		_log->logRaw(LogLevel::JSON, "{\"type\":\"timeSeriesReplayer.initialized\"}");
 	}
 
 	//Run the main loop

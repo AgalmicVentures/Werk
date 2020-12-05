@@ -52,9 +52,16 @@ jsonMessageTranslations = {
 	'shutdown.shutdownActionsComplete': ('SUCCESS', '<ApplicationContext> Shutdown actions complete.'),
 	'shutdown.shuttingDown': ('INFO', '<ApplicationContext> Shutting down...'),
 
-	'startup.software': ('INFO', '<ApplicationContext> Detected... OS: %(os)s | Hostname: %(hostname)s | PID: %(pid)s | PPID: %(ppid)s | CWD: %(cwd)s.'),
+	'startup.software': ('INFO', '<ApplicationContext> Detected... OS: %(os)s | Hostname: %(hostname)s | CWD: %(cwd)s.'),
+	'startup.pid': ('INFO', '<ApplicationContext> Detected... PID: %(pid)s | PPID: %(ppid)s'),
 	'startup.hardware': ('INFO', '<ApplicationContext> Detected... %(processorCount)s CPU cores | %(physicalMemory)s bytes of RAM [%(pageSize)s per page].'),
 	'startup.initialized': ('SUCCESS', '<ApplicationContext> Initialized.'),
+
+	'timeSeriesReplayer.initializing': ('INFO', '<TimeSeriesReplayer> Initializing...'),
+	'timeSeriesReplayer.initialized': ('SUCCESS', '<TimeSeriesReplayer> Initialized.'),
+	'timeSeriesReplayer.unorderedSource': ('ERROR', '<TimeSeriesReplayer> Removing source %(name)s for out of order times: next %(nextTime)s < last %(time)s.'),
+	'timeSeriesReplayer.finishedSource': ('INFO', '<TimeSeriesReplayer> Finished source: %(name)s.'),
+	'timeSeriesReplayer.finished': ('SUCCESS', '<TimeSeriesReplayer> Finished.'),
 }
 
 def handleLine(line):

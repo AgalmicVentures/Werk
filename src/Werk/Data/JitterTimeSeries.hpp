@@ -33,14 +33,16 @@ namespace werk
 {
 
 /**
- * Represents a time series iterator.
+ * Represents a time series, offset by randomized jitter.
+ *
+ * It still ensures that the series only plays forward, even if the jitter on the next item is much less.
  */
 class JitterTimeSeries : public TimeSeries
 {
 public:
 
-	JitterTimeSeries(Random &random, TimeSeries *underlying, uint64_t min, uint64_t max)
-		: TimeSeries(underlying->name() + "_Jitter"), _random(random), _underlying(underlying), _min(min), _max(max) { }
+	JitterTimeSeries(Random &random, TimeSeries *underlying, uint64_t min, uint64_t max) :
+		TimeSeries(underlying->name() + "_Jitter"), _random(random), _underlying(underlying), _min(min), _max(max) { }
 
 	//Return the current time plus some jitter.
 	CHECKED virtual uint64_t time() const { return _time; }

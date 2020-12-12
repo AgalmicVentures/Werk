@@ -101,14 +101,24 @@ def main():
 	arguments = parser.parse_args(sys.argv[1:])
 
 	quitting = False
-	while True:
+	for n, line in enumerate(sys.stdin):
 		try:
-			line = sys.stdin.readline()
 			if line == '':
-				break
+				time.sleep(0.1)
+				continue
+			elif line[0] == '{':
+				try:
+					line = line.replace('\":nan', '\":NaN') #XXX: sort of a hack, but this works to fix how C++ outputs NaN
+					value = json.loads(line)
+				except ValueError:
+					print(line)
+					continue
 
-			value = json.loads(line)
-			handleLine(value)
+				handleLine(value)
+			else:
+				print(line)
+		except UnicodeDecodeError:
+			print('Unicode error on line %d' % n)
 		except KeyboardInterrupt:
 			if quitting:
 				break

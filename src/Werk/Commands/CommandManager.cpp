@@ -35,6 +35,7 @@ bool CommandManager::execute(const std::string &commandLine)
 	//History is only added here, from human executions. This enables neat stuff like the redo
 	//command and allows the command system to still be used in an automated fashion.
 	_commandHistory.emplace_back(_clock.time(), commandLine);
+	_log->log(LogLevel::JSON, "{\"type\":\"command.received\",\"commandLine\":\"%s\"}", commandLine.c_str());
 
 	//Parse the arguments, ignoring extra whitespace
 	std::string trimmedCommandLine = boost::trim_copy(commandLine);

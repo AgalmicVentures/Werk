@@ -270,7 +270,7 @@ ApplicationContext::ApplicationContext(const std::string &configPath) :
 			_consoleServer.reset(new IpcConsoleServer(ipcConsoleName, _log));
 
 			//Setup a background task to forward tasks to the command manager
-			ConsoleCommandReceiver *consoleCommandReceiver = new ConsoleCommandReceiver("IpcConsole", *_consoleServer, *_commandManager);
+			ConsoleCommandReceiver *consoleCommandReceiver = new ConsoleCommandReceiver("IpcConsoleServer", *_consoleServer, *_commandManager);
 			_backgroundThread.addTask(consoleCommandReceiver);
 		}
 	}

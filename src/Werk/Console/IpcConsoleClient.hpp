@@ -24,6 +24,7 @@
 #pragma once
 
 #include <boost/interprocess/ipc/message_queue.hpp>
+#include <unistd.h>
 
 #include "Werk/Utility/NamedObject.hpp"
 
@@ -38,13 +39,15 @@ class IpcConsoleClient : public NamedObject
 public:
 	IpcConsoleClient(const std::string &name) :
 		NamedObject(name),
-		_queue(boost::interprocess::open_only, name.c_str()) { }
+		_queue(boost::interprocess::open_only, name.c_str()),
+		_pid(getpid()) { }
 
 	bool send(const std::string &message);
 
 private:
 	boost::interprocess::message_queue _queue;
 
+	uint64_t _pid = 0;
 	uint32_t _nextSequenceNumber = 0;
 };
 

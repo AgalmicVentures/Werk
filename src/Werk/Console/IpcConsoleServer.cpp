@@ -23,10 +23,12 @@
 
 #include "IpcConsoleServer.hpp"
 
+#include "Werk/Logging/Log.hpp"
+
 namespace werk
 {
 
-bool IpcConsoleServer::receive(uint32_t &sequenceNumber, std::string &message)
+bool IpcConsoleServer::receive(uint64_t &clientPid, uint32_t &sequenceNumber, std::string &message)
 {
 	//Read the message
 	char buffer[sizeof(ConsoleMessage)];
@@ -38,8 +40,28 @@ bool IpcConsoleServer::receive(uint32_t &sequenceNumber, std::string &message)
 
 	//Deserialize the message
 	const ConsoleMessage *consoleMessage = (const ConsoleMessage *) buffer;
+	clientPid = consoleMessage->clientPid;
 	sequenceNumber = consoleMessage->sequenceNumber;
 	message = consoleMessage->message;
+
+	//Check sequence numbers numbers versus clients
+	const auto i = _sequenceNumbers.find(clientPid);
+	if (i == _sequenceNumbers.end()) {
+		_sequenceNumbers[clientPid] = sequenceNumber;
+	} else {
+		uint64_t lastSequenceNumber = i->second;
+		if (sequenceNumber < lastSequenceNumber) {
+			_log->log(LogLevel::ERROR, "<ConsoleServer> Received out of order sequence number from client %lu: got %lu vs last %lu",
+				clientPid, sequenceNumber, lastSequenceNumber);
+		} else if (sequenceNumber == lastSequenceNumber) {
+			_log->log(LogLevel::ERROR, "<ConsoleServer> Received duplicate sequence number from client %lu: got %lu vs last %lu",
+				clientPid, sequenceNumber, lastSequenceNumber);
+		} else if (sequenceNumber > lastSequenceNumber + 1) {
+			_log->log(LogLevel::WARNING, "<ConsoleServer> Missing sequence numbers from client %lu: got %lu vs last %lu",
+				clientPid, sequenceNumber, lastSequenceNumber);
+		}
+	}
+
 	return true;
 }
 

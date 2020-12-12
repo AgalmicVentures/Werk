@@ -31,7 +31,7 @@ namespace werk
  */
 struct ConsoleMessage
 {
-	//TODO: client ID or something?
+	uint64_t clientPid;
 	uint32_t sequenceNumber;
 	char message[252];
 };

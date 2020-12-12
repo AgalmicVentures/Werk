@@ -44,9 +44,10 @@ public:
 
 	void execute() override {
 		//Run all of the commands in the buffer
+		uint64_t clientPid = 0;
 		uint32_t sequenceNumber = 0;
 		std::string message;
-		while (_server.receive(sequenceNumber, message)) {
+		while (_server.receive(clientPid, sequenceNumber, message)) {
 			_commandManager.execute(message);
 		}
 	}

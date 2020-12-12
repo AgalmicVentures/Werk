@@ -24,6 +24,7 @@
 #pragma once
 
 #include <boost/interprocess/ipc/message_queue.hpp>
+#include <map>
 
 #include "Werk/Utility/NamedObject.hpp"
 
@@ -31,6 +32,8 @@
 
 namespace werk
 {
+
+class Log;
 
 /**
  * A console server that uses an interprocess queue to receive messages.
@@ -44,17 +47,19 @@ public:
 		boost::interprocess::message_queue::remove(name.c_str());
 	}
 
-	IpcConsoleServer(const std::string &name, uint32_t maxMessages=1024) :
+	IpcConsoleServer(const std::string &name, Log *log, uint32_t maxMessages=1024) :
 		NamedObject(name),
+		_log(log),
 		_queue(boost::interprocess::create_only, name.c_str(), maxMessages, sizeof(ConsoleMessage)) { }
 	~IpcConsoleServer() { remove(name()); }
 
-	bool receive(uint32_t &sequenceNumber, std::string &message);
+	bool receive(uint64_t &clientPid, uint32_t &sequenceNumber, std::string &message);
 
 private:
+	Log *_log;
 	boost::interprocess::message_queue _queue;
 
-	//TODO: sequence number management
+	std::map<uint64_t, uint64_t> _sequenceNumbers;
 };
 
 }

@@ -31,6 +31,7 @@ namespace werk
 bool IpcConsoleClient::send(const std::string &message)
 {
 	ConsoleMessage consoleMessage;
+	consoleMessage.clientPid = _pid;
 	consoleMessage.sequenceNumber = _nextSequenceNumber;
 
 	//Copy the message

@@ -40,9 +40,13 @@ public:
 	IpcConsoleClient(const std::string &name) :
 		NamedObject(name),
 		_queue(boost::interprocess::open_only, name.c_str()),
-		_pid(getpid()) { }
+		_pid(getpid()) {
+		//Send a heartbeat to let the server know about the connection
+		heartbeat();
+	}
 
 	bool send(const std::string &message);
+	bool heartbeat() { return send(""); }
 
 private:
 	boost::interprocess::message_queue _queue;

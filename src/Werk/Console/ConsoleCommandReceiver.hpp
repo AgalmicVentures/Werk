@@ -48,7 +48,10 @@ public:
 		uint32_t sequenceNumber = 0;
 		std::string message;
 		while (_server.receive(clientPid, sequenceNumber, message)) {
-			_commandManager.execute(message);
+			//Skip heartbeats
+			if (message.length() > 0) {
+				_commandManager.execute(message);
+			}
 		}
 	}
 

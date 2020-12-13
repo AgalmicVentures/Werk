@@ -33,6 +33,7 @@
 namespace werk
 {
 
+class Clock;
 class Log;
 
 /**
@@ -47,9 +48,10 @@ public:
 		boost::interprocess::message_queue::remove(name.c_str());
 	}
 
-	IpcConsoleServer(const std::string &name, Log *log, uint32_t maxMessages=1024) :
+	IpcConsoleServer(const std::string &name, Log *log, Clock *realTimeClock, uint32_t maxMessages=1024) :
 		NamedObject(name),
 		_log(log),
+		_realTimeClock(realTimeClock),
 		_queue(boost::interprocess::create_only, name.c_str(), maxMessages, sizeof(ConsoleMessage)) { }
 	~IpcConsoleServer() { remove(name()); }
 
@@ -57,6 +59,7 @@ public:
 
 private:
 	Log *_log;
+	Clock *_realTimeClock;
 	boost::interprocess::message_queue _queue;
 
 	std::map<uint64_t, uint64_t> _sequenceNumbers;

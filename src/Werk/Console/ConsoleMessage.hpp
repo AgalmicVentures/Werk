@@ -26,12 +26,18 @@
 namespace werk
 {
 
+const uint32_t IPC_CONSOLE_MAGIC = 0xBADF00D5;
+const uint32_t IPC_CONSOLE_VERSION = 2;
+
 /**
  * Represents a single message from a console client to a console server.
  */
 struct ConsoleMessage
 {
+	uint32_t magic;
+	uint32_t version;
 	uint64_t clientPid;
+	uint64_t time;
 	uint32_t sequenceNumber;
 	char message[252];
 };

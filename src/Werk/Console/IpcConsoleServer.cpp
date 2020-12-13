@@ -24,6 +24,7 @@
 #include "IpcConsoleServer.hpp"
 
 #include "Werk/Logging/Log.hpp"
+#include "Werk/OS/Time.hpp"
 
 namespace werk
 {
@@ -37,9 +38,23 @@ bool IpcConsoleServer::receive(uint64_t &clientPid, uint32_t &sequenceNumber, st
 	if (!_queue.try_receive(buffer, sizeof(ConsoleMessage), receivedSize, priority)) {
 		return false;
 	}
-
-	//Deserialize the message
 	const ConsoleMessage *consoleMessage = (const ConsoleMessage *) buffer;
+
+	//Check the magic
+	if (IPC_CONSOLE_MAGIC != consoleMessage->magic) {
+		_log->log(LogLevel::JSON, "{\"type\":\"ipcConsoleServer.badMagic\",\"magic\":%u,\"expectedMagic\":%u}",
+			clientPid, consoleMessage->magic, IPC_CONSOLE_MAGIC);
+		return false;
+	}
+
+	//Check the version
+	if (IPC_CONSOLE_VERSION != consoleMessage->version) {
+		_log->log(LogLevel::JSON, "{\"type\":\"ipcConsoleServer.mistmatchedVersion\",\"version\":%u,\"expectedVersion\":%u}",
+			clientPid, consoleMessage->version, IPC_CONSOLE_VERSION);
+		return false;
+	}
+
+	//Magic is good and version matches, deserialize the values
 	clientPid = consoleMessage->clientPid;
 	sequenceNumber = consoleMessage->sequenceNumber;
 	message = consoleMessage->message;
@@ -65,6 +80,15 @@ bool IpcConsoleServer::receive(uint64_t &clientPid, uint32_t &sequenceNumber, st
 		//Always try to resync
 		i->second = sequenceNumber;
 	}
+
+	//Check the timestamps as well, to ensure timely processing -- anything more than 3s old is stale and should warn the user
+	const uint64_t time = _realTimeClock->time();
+	if (time > consoleMessage->time + 3000l * 1000 * 1000) {
+		_log->log(LogLevel::JSON, "{\"type\":\"ipcConsoleServer.stale\",\"clientPid\":%lu,\"sequenceNumber\":%lu,\"timestamp\":%lu,\"delta\":%lu}",
+			clientPid, sequenceNumber, consoleMessage->time, time - consoleMessage->time);
+	}
+
+	//Log
 	_log->log(LogLevel::JSON, "{\"type\":\"ipcConsoleServer.received\",\"clientPid\":%lu,\"commandLine\":\"%s\"}", clientPid, message.c_str());
 
 	return true;

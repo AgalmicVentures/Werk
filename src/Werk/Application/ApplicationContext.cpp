@@ -267,7 +267,7 @@ ApplicationContext::ApplicationContext(const std::string &configPath) :
 		const char *ipcConsoleName = _config->getString("Application.IpcConsoleName", nullptr,
 			"Name of the shared memory queue for the console (often in /dev/shm)");
 		if (nullptr != ipcConsoleName) {
-			_consoleServer.reset(new IpcConsoleServer(ipcConsoleName, _log));
+			_consoleServer.reset(new IpcConsoleServer(ipcConsoleName, _log, &_realTimeClock));
 
 			//Setup a background task to forward tasks to the command manager
 			ConsoleCommandReceiver *consoleCommandReceiver = new ConsoleCommandReceiver("IpcConsoleServer", *_consoleServer, *_commandManager);

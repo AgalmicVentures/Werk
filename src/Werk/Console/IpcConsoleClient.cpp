@@ -25,13 +25,18 @@
 
 #include "ConsoleMessage.hpp"
 
+#include "Werk/OS/Time.hpp"
+
 namespace werk
 {
 
 bool IpcConsoleClient::send(const std::string &message)
 {
 	ConsoleMessage consoleMessage;
+	consoleMessage.magic = IPC_CONSOLE_MAGIC;
+	consoleMessage.version = IPC_CONSOLE_VERSION;
 	consoleMessage.clientPid = _pid;
+	consoleMessage.time = monotoneTime();
 	consoleMessage.sequenceNumber = _nextSequenceNumber;
 
 	//Copy the message

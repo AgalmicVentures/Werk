@@ -23,6 +23,8 @@
 
 #pragma once
 
+#include <cinttypes>
+
 #include "Werk/Math/OrderStatistics.hpp"
 #include "Werk/Math/SummaryStatistics.hpp"
 #include "Werk/Utility/NamedObject.hpp"
@@ -117,6 +119,8 @@ public:
 
 	void writeJson(FILE *file) const {
 		std::fprintf(file, "{\"name\": \"%s\"", name().c_str());
+		std::fprintf(file, ", \"n\": %" PRIu64, _count);
+		std::fprintf(file, ", \"sampleSize\": %" PRIu64, _sampleSize);
 		std::fprintf(file, ", \"warmup\": "); _warmupStatistics.writeJson(file);
 		std::fprintf(file, ", \"min\": "); _minStatistics.writeJson(file);
 		std::fprintf(file, ", \"f25\": "); _f25Statistics.writeJson(file);

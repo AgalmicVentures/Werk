@@ -47,20 +47,23 @@ bool IpcConsoleServer::receive(uint64_t &clientPid, uint32_t &sequenceNumber, st
 	//Check sequence numbers numbers versus clients
 	const auto i = _sequenceNumbers.find(clientPid);
 	if (i == _sequenceNumbers.end()) {
-		_log->log(LogLevel::SUCCESS, "<IpcConsoleServer> Connected new client %lu", clientPid);
+		_log->log(LogLevel::JSON, "{\"type\":\"ipcConsoleServer.clientConnected\",\"clientPid\":%lu}", clientPid);
 		_sequenceNumbers[clientPid] = sequenceNumber;
 	} else {
 		uint64_t lastSequenceNumber = i->second;
 		if (sequenceNumber < lastSequenceNumber) {
-			_log->log(LogLevel::ERROR, "<IpcConsoleServer> Received out of order sequence number from client %lu: got %lu vs last %lu",
+			_log->log(LogLevel::JSON, "{\"type\":\"ipcConsoleServer.outOfOrderSequence\",\"clientPid\":%lu,\"sequenceNumber\":%lu,\"lastSequenceNumber\":%lu}",
 				clientPid, sequenceNumber, lastSequenceNumber);
 		} else if (sequenceNumber == lastSequenceNumber) {
-			_log->log(LogLevel::ERROR, "<IpcConsoleServer> Received duplicate sequence number from client %lu: got %lu vs last %lu",
+			_log->log(LogLevel::JSON, "{\"type\":\"ipcConsoleServer.duplicateSequence\",\"clientPid\":%lu,\"sequenceNumber\":%lu,\"lastSequenceNumber\":%lu}",
 				clientPid, sequenceNumber, lastSequenceNumber);
 		} else if (sequenceNumber > lastSequenceNumber + 1) {
-			_log->log(LogLevel::WARNING, "<IpcConsoleServer> Missing sequence numbers from client %lu: got %lu vs last %lu",
+			_log->log(LogLevel::JSON, "{\"type\":\"ipcConsoleServer.missingSequence\",\"clientPid\":%lu,\"sequenceNumber\":%lu,\"lastSequenceNumber\":%lu}",
 				clientPid, sequenceNumber, lastSequenceNumber);
 		}
+
+		//Always try to resync
+		i->second = sequenceNumber;
 	}
 	_log->log(LogLevel::JSON, "{\"type\":\"ipcConsoleServer.received\",\"clientPid\":%lu,\"commandLine\":\"%s\"}", clientPid, message.c_str());
 

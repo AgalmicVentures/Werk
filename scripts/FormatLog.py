@@ -45,6 +45,11 @@ levelColors = {
 }
 
 jsonMessageTranslations = {
+	'ipcConsoleServer.clientConnected': ('SUCCESS', '<IpcConsoleServer> Connected new client %(clientPid)s'),
+	'ipcConsoleServer.outOfOrderSequence': ('ERROR', '<IpcConsoleServer> Received out of order sequence number from client %(clientPid)s: got %(sequenceNumber)s vs last %(lastSequenceNumber)s'),
+	'ipcConsoleServer.duplicateSequence': ('ERROR', '<IpcConsoleServer> Received duplicate sequence number from client %(clientPid)s: got %(sequenceNumber)s vs last %(lastSequenceNumber)s'),
+	'ipcConsoleServer.missingSequence': ('WARNING', '<IpcConsoleServer> Missing sequence numbers from client %(clientPid)s: got %(sequenceNumber)s vs last %(lastSequenceNumber)s'),
+
 	'mainLoop.enter': ('ALERT', '<ApplicationContext> Entering main loop...'),
 	'mainLoop.exit': ('ALERT', '<ApplicationContext> Exiting main loop after %(updates)s updates...'),
 

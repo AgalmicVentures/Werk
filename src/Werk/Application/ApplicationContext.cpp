@@ -31,6 +31,7 @@
 #include <unistd.h>
 
 #include "Werk/Commands/CommandAlias.hpp"
+#include "Werk/Commands/SegfaultCommand.hpp"
 #include "Werk/Commands/WriteCommandLogAction.hpp"
 #include "Werk/Console/ConsoleCommandReceiver.hpp"
 #include "Werk/Console/IpcConsoleServer.hpp"
@@ -231,6 +232,12 @@ ApplicationContext::ApplicationContext(const std::string &configPath) :
 	_commandManager->add("quit", new ActionCommand(
 		quitAction,
 		"Quits the application cleanly."));
+
+	//Some commands are only available in simulation
+	if (_simulation) {
+		_commandManager->add("segfault", new SegfaultCommand(_log));
+	}
+
 	_log->logRaw(LogLevel::SUCCESS, "<CommandManager> Initialized.");
 
 	//Setup command aliases configured like so:
@@ -385,7 +392,7 @@ int ApplicationContext::run(Action *mainAction)
 		"Number of times the main thread can miss the watchdog");
 	//TODO: configurable watchdog action
 	Watchdog *watchdog = new Watchdog("Watchdog", &_backgroundThread.backgroundClock(),
-		new LogAction("WatchdogWarning", new StringLoggable("Main thread missed watchdog!", LogLevel::WARNING), _log),
+		new LogAction("WatchdogWarning", new StringLoggable("Main thread missed watchdog timer! It may be hung or dead.", LogLevel::ERROR), _log),
 		watchdogInterval, watchdogAllowedMisses);
 
 	if (0 != watchdogInterval) {

@@ -49,6 +49,7 @@ static void handleBusError(int /*signal*/, siginfo_t *info, void * /*context*/)
 		<< "Cause: " << cause << "(" << info->si_code << ")" << std::endl;
 
 	//Sleep before aborting to allow logging to finish
+	std::cout << std::endl << "Sleeping 5 to allow other threads to finish (e.g. logging)..." << std::endl;
 	sleep(5);
 	std::abort();
 }
@@ -67,6 +68,7 @@ static void handleSegfault(int /*signal*/, siginfo_t *info, void * /*context*/)
 		<< "Cause: " << cause << "(" << info->si_code << ")" << std::endl;
 
 	//Sleep before aborting to allow logging to finish
+	std::cout << std::endl << "Sleeping 5 to allow other threads to finish (e.g. logging)..." << std::endl;
 	sleep(5);
 	std::abort();
 }

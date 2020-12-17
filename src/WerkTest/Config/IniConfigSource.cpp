@@ -46,8 +46,12 @@ BOOST_AUTO_TEST_CASE(TestBasicFile)
 	BOOST_REQUIRE(iniConfigSource.reloadConfig(values));
 
 	BOOST_CHECK_EQUAL(values["abc"], "123");
-	BOOST_CHECK_EQUAL(values["def"], "456");
+	BOOST_CHECK_EQUAL(values["def"], " 456");
 	BOOST_CHECK_EQUAL(values["zxcv"], "qwer");
+
+	BOOST_CHECK_EQUAL(values["Section.SecVal1"], "QWERTY");
+	BOOST_CHECK_EQUAL(values["Section.SecVal2"], "ASDF");
+	BOOST_CHECK_EQUAL(values["Section2.Sec2Val1"], "ZXCV");
 }
 
 BOOST_AUTO_TEST_SUITE_END()

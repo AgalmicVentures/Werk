@@ -39,6 +39,7 @@ bool IniConfigSource::reloadConfig(std::map<std::string, std::string> &values) {
 
 	//Walk the lines
 	std::string line;
+	std::string prefix = "";
 	while (std::getline(infile, line)) {
 		//Trim beginning of line whitespace
 		const std::size_t firstNonWhitespacePos = line.find_first_not_of(' ');
@@ -50,6 +51,17 @@ bool IniConfigSource::reloadConfig(std::map<std::string, std::string> &values) {
 			continue;
 		}
 
+		//Check for headers
+		if (line[0] == '[') {
+			if (line[line.length() - 1] != ']') {
+				//No closing bracket, errror
+				return false;
+			}
+
+			prefix = line.substr(1, line.length() - 2) + ".";
+			continue;
+		}
+
 		//Find the =
 		const std::size_t equalPos = line.find('=');
 		if (equalPos == std::string::npos) {
@@ -58,7 +70,7 @@ bool IniConfigSource::reloadConfig(std::map<std::string, std::string> &values) {
 		}
 
 		//Copy the key and value into the map
-		values[boost::trim_copy(line.substr(0, equalPos))] = boost::trim_copy(line.substr(equalPos + 1));
+		values[prefix + boost::trim_copy(line.substr(0, equalPos))] = line.substr(equalPos + 1);
 	}
 
 	return true;

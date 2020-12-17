@@ -58,7 +58,10 @@ bool IniConfigSource::reloadConfig(std::map<std::string, std::string> &values) {
 				return false;
 			}
 
-			prefix = line.substr(1, line.length() - 2) + ".";
+			prefix = line.substr(1, line.length() - 2);
+			if (prefix.length() > 0) {
+				prefix += ".";
+			}
 			continue;
 		}
 

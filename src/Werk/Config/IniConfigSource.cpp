@@ -54,7 +54,7 @@ bool IniConfigSource::reloadConfig(std::map<std::string, std::string> &values) {
 		//Check for headers
 		if (line[0] == '[') {
 			if (line[line.length() - 1] != ']') {
-				//No closing bracket, errror
+				//No closing bracket, error
 				return false;
 			}
 

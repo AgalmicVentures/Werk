@@ -45,6 +45,8 @@ levelColors = {
 }
 
 jsonMessageTranslations = {
+	'ipcConsoleClient.state': ('INFO', ' %(clientPid)10s %(lastSequenceNumber)12s %(lastCommandAgeSec)15ss %(lastHeartbeatAgeSec)15ss'),
+
 	'ipcConsoleServer.clientConnected': ('SUCCESS', '<IpcConsoleServer> Connected new client %(clientPid)s.'),
 	'ipcConsoleServer.badMagic': ('ERROR', '<IpcConsoleServer> Received message with bad magic number! This should never happen: %(magic)s vs expected %(expectedMagic)s.'),
 	'ipcConsoleServer.mistmatchedVersion': ('WARNING', '<IpcConsoleServer> Received message with mismatched version: %(version)s vs expected %(expectedVersion)s. Update your console to the same version at the beginning of the log.'),

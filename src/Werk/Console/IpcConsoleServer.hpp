@@ -36,6 +36,13 @@ namespace werk
 class Clock;
 class Log;
 
+struct IpcConsoleClientState
+{
+	uint64_t lastSequenceNumber = 0;
+	uint64_t lastHeartbeatTime = 0;
+	uint64_t lastCommandTime = 0;
+};
+
 /**
  * A console server that uses an interprocess queue to receive messages.
  */
@@ -55,6 +62,10 @@ public:
 		_queue(boost::interprocess::create_only, name.c_str(), maxMessages, sizeof(ConsoleMessage)) { }
 	~IpcConsoleServer() { remove(name()); }
 
+	uint64_t lastCommandTime() const { return _lastCommandTime; }
+	uint64_t lastHeartbeatTime() const { return _lastHeartbeatTime; }
+	const std::map<uint64_t, IpcConsoleClientState> &clientStates() const { return _clientStates; }
+
 	bool receive(uint64_t &clientPid, uint32_t &sequenceNumber, std::string &message);
 
 private:
@@ -62,7 +73,10 @@ private:
 	Clock *_realTimeClock;
 	boost::interprocess::message_queue _queue;
 
-	std::map<uint64_t, uint64_t> _sequenceNumbers;
+	//Client state, including some helpful globals
+	uint64_t _lastCommandTime = 0;
+	uint64_t _lastHeartbeatTime = 0;
+	std::map<uint64_t, IpcConsoleClientState> _clientStates;
 };
 
 }

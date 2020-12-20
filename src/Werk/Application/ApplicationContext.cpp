@@ -31,6 +31,7 @@
 #include <unistd.h>
 
 #include "Werk/Commands/CommandAlias.hpp"
+#include "Werk/Commands/ConsoleClientsCommand.hpp"
 #include "Werk/Commands/SegfaultCommand.hpp"
 #include "Werk/Commands/WriteCommandLogAction.hpp"
 #include "Werk/Console/ConsoleCommandReceiver.hpp"
@@ -275,6 +276,7 @@ ApplicationContext::ApplicationContext(const std::string &configPath) :
 			"Name of the shared memory queue for the console (often in /dev/shm)");
 		if (nullptr != ipcConsoleName) {
 			_consoleServer.reset(new IpcConsoleServer(ipcConsoleName, _log, &_realTimeClock));
+			_commandManager->add("consoles", new ConsoleClientsCommand(*_consoleServer, _log, &_realTimeClock));
 
 			//Setup a background task to forward tasks to the command manager
 			ConsoleCommandReceiver *consoleCommandReceiver = new ConsoleCommandReceiver("IpcConsoleServer", *_consoleServer, *_commandManager);

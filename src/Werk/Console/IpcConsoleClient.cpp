@@ -36,7 +36,7 @@ bool IpcConsoleClient::send(const std::string &message)
 	consoleMessage.magic = IPC_CONSOLE_MAGIC;
 	consoleMessage.version = IPC_CONSOLE_VERSION;
 	consoleMessage.clientPid = _pid;
-	consoleMessage.time = monotoneTime();
+	consoleMessage.time = epochTime();
 	consoleMessage.sequenceNumber = _nextSequenceNumber;
 
 	//Copy the message

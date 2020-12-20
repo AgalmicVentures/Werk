@@ -21,14 +21,28 @@
  * IN THE SOFTWARE.
  */
 
+#include <atomic>
 #include <boost/algorithm/string.hpp>
 #include <iostream>
 #include <memory>
 #include <string>
+#include <thread>
 #include <vector>
 
 #include "Werk/Console/IpcConsoleClient.hpp"
 #include "Werk/Version.hpp"
+
+void heartbeat(std::atomic<bool> *running, werk::IpcConsoleClient *client)
+{
+	timespec delay;
+	delay.tv_sec = 1;
+	delay.tv_nsec = 0;
+
+	while (*running) {
+		nanosleep(&delay, nullptr);
+		client->heartbeat();
+	}
+}
 
 int main(int argc, char **argv)
 {
@@ -43,21 +57,18 @@ int main(int argc, char **argv)
 	bool connected = false;
 	try {
 		std::cout << "Connecting to " << argv[1] << "..." << std::endl;
-		std::unique_ptr<werk::IpcConsoleClient> client(new werk::IpcConsoleClient(argv[1]));
+		werk::IpcConsoleClient *client = new werk::IpcConsoleClient(argv[1]);
 		std::cout << "Connected to " << argv[1] << "." << std::endl;
 		connected = true;
 
+		std::atomic<bool> running = true;
+		std::thread heartbeatThread(heartbeat, &running, client);
+
 		std::string input;
 		std::vector<std::string> messages;
-		while (std::getline(std::cin, input)) {
+		while (running && std::getline(std::cin, input)) {
 			if (input.empty()) {
 				//Skip 0 length inputs
-				continue;
-			} else if (input == "reconnect") {
-				//In some situations, the client may want to "reconnect", e.g. if the server goes down
-				std::cout << "Reconnecting..." << std::endl;
-				client.reset(new werk::IpcConsoleClient(argv[1]));
-				std::cout << "Reconnected." << std::endl;
 				continue;
 			}
 
@@ -70,6 +81,7 @@ int main(int argc, char **argv)
 
 					if (message == "quit") {
 						std::cout << "Received 'quit' command..." << std::endl;
+						running = false;
 						break;
 					}
 				} else {
@@ -77,6 +89,8 @@ int main(int argc, char **argv)
 				}
 			}
 		}
+
+		heartbeatThread.join();
 	} catch (boost::interprocess::interprocess_exception &e) {
 		std::cout << "IPC exception thrown, " << (connected ? "connection lost" : "could not connect")
 			<< "..." << std::endl;

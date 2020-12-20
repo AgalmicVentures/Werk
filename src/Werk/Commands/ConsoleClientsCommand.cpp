@@ -33,7 +33,8 @@ bool ConsoleClientsCommand::execute(const std::vector<std::string> &)
 {
 	//Log all console clients
 	const uint64_t time = _realTimeClock->time();
-	_log->log(LogLevel::INFO, "******************** Console Clients ********************");
+	_log->log(LogLevel::INFO, "******************** Console Clients (%s) ********************",
+		_ipcConsoleServer.isClientConnected() ? "Connected" : "Not Connected");
 	_log->log(LogLevel::INFO, " %10s %12s %16s %16s",
 		"PID", "Last Seq. #", "Last Command", "Last Heartbeat");
 	_log->log(LogLevel::JSON, "{\"type\":\"ipcConsoleClient.state\",\"clientPid\":\"All\",\"lastSequenceNumber\":\"\",\"lastCommandTime\":%" PRIu64 ",\"lastHeartbeatTime\":%" PRIu64 ",\"lastCommandAgeSec\":%.1lf,\"lastHeartbeatAgeSec\":%.1lf}",

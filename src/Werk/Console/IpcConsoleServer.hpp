@@ -62,11 +62,13 @@ public:
 		_queue(boost::interprocess::create_only, name.c_str(), maxMessages, sizeof(ConsoleMessage)) { }
 	~IpcConsoleServer() { remove(name()); }
 
+	bool isClientConnected() const { return _clientConnected; }
 	uint64_t lastCommandTime() const { return _lastCommandTime; }
 	uint64_t lastHeartbeatTime() const { return _lastHeartbeatTime; }
 	const std::map<uint64_t, IpcConsoleClientState> &clientStates() const { return _clientStates; }
 
 	bool receive(uint64_t &clientPid, uint32_t &sequenceNumber, std::string &message);
+	void update();
 
 private:
 	Log *_log;
@@ -74,6 +76,7 @@ private:
 	boost::interprocess::message_queue _queue;
 
 	//Client state, including some helpful globals
+	bool _clientConnected = false;
 	uint64_t _lastCommandTime = 0;
 	uint64_t _lastHeartbeatTime = 0;
 	std::map<uint64_t, IpcConsoleClientState> _clientStates;

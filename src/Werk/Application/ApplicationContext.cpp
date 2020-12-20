@@ -278,9 +278,10 @@ ApplicationContext::ApplicationContext(const std::string &configPath) :
 			_consoleServer.reset(new IpcConsoleServer(ipcConsoleName, _log, &_realTimeClock));
 			_commandManager->add("consoles", new ConsoleClientsCommand(*_consoleServer, _log, &_realTimeClock));
 
-			//Setup a background task to forward tasks to the command manager
-			ConsoleCommandReceiver *consoleCommandReceiver = new ConsoleCommandReceiver("IpcConsoleServer", *_consoleServer, *_commandManager);
-			_backgroundThread.addTask(consoleCommandReceiver);
+			//Create the receiver
+			//TODO: move to the background thread
+			_consoleCommandReceiver.reset(new ConsoleCommandReceiver("IpcConsoleServer", *_consoleServer, *_commandManager));
+			//_backgroundThread.addTask(consoleCommandReceiver);
 		}
 	}
 
@@ -485,6 +486,13 @@ int ApplicationContext::run(Action *mainAction)
 		//Update stats
 		_interUpdateProfile.restart(_clock->time());
 		_updateProfile.restart(_realTimeClock.time());
+
+		//Receive commands and update
+		//TODO: Move to the background thread
+		if (nullptr != _consoleServer) {
+			_consoleCommandReceiver->execute();
+			_consoleServer->update();
+		}
 
 		//Made it through another loop, update background objects -- update clock, reset the watchdog
 		_backgroundThread.setMainClockTime(_realTimeClock.time());

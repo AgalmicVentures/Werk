@@ -64,6 +64,7 @@ bool IpcConsoleServer::receive(uint64_t &clientPid, uint32_t &sequenceNumber, st
 	//Check sequence numbers numbers versus clients
 	auto i = _clientStates.find(clientPid);
 	if (i == _clientStates.end()) {
+		_clientConnected = true;
 		_log->log(LogLevel::JSON, "{\"type\":\"ipcConsoleServer.clientConnected\",\"clientPid\":%" PRIu64 "}", clientPid);
 		auto i2 = _clientStates.emplace(std::make_pair(clientPid, IpcConsoleClientState()));
 		i = i2.first; //The insert can't fail
@@ -98,13 +99,29 @@ bool IpcConsoleServer::receive(uint64_t &clientPid, uint32_t &sequenceNumber, st
 	if (0 != message[0]) {
 		_lastCommandTime = time;
 		i->second.lastCommandTime = time;
+
+		//Log
+		_log->log(LogLevel::JSON, "{\"type\":\"ipcConsoleServer.received\",\"clientPid\":%" PRIu64 ",\"sequenceNumber\":%" PRIu64 ",\"commandLine\":\"%s\"}",
+			clientPid, sequenceNumber, message.c_str());
 	}
 
-	//Log
-	_log->log(LogLevel::JSON, "{\"type\":\"ipcConsoleServer.received\",\"clientPid\":%" PRIu64 ",\"sequenceNumber\":%" PRIu64 ",\"commandLine\":\"%s\"}",
-		clientPid, sequenceNumber, message.c_str());
-
 	return true;
+}
+
+void IpcConsoleServer::update()
+{
+	if (_clientConnected) {
+		//Allowing up to 5 missed heartbeats
+		const uint64_t time = _realTimeClock->time();
+		if (_lastHeartbeatTime != 0 && time > _lastHeartbeatTime + 5l * 1000 * 1000 * 1000) {
+			_clientConnected = false;
+			_log->log(LogLevel::JSON, "{\"type\":\"ipcConsoleServer.noHeartbeats\",\"lastCommandTime\":%" PRIu64 ",\"lastHeartbeatTime\":%" PRIu64 ",\"lastCommandAgeSec\":%.1lf,\"lastHeartbeatAgeSec\":%.1lf}",
+				_lastCommandTime,
+				_lastHeartbeatTime,
+				(time - _lastCommandTime) / 1e9,
+				(time - _lastHeartbeatTime) / 1e9);
+		}
+	}
 }
 
 }

@@ -30,6 +30,7 @@
 #include "Werk/Commands/CommandManager.hpp"
 #include "Werk/Config/Config.hpp"
 #include "Werk/Config/IniConfigSource.hpp"
+#include "Werk/Console/ConsoleCommandReceiver.hpp"
 #include "Werk/Logging/AsyncLog.hpp"
 #include "Werk/Logging/LogManager.hpp"
 #include "Werk/Logging/Loggable.hpp"
@@ -159,6 +160,7 @@ private:
 	Config *_config;
 	CommandManager *_commandManager;
 	std::unique_ptr<IpcConsoleServer> _consoleServer;
+	std::unique_ptr<ConsoleCommandReceiver> _consoleCommandReceiver;
 	Scheduler *_scheduler;
 };
 

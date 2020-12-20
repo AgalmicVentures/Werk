@@ -50,6 +50,7 @@ jsonMessageTranslations = {
 	'ipcConsoleServer.clientConnected': ('SUCCESS', '<IpcConsoleServer> Connected new client %(clientPid)s.'),
 	'ipcConsoleServer.badMagic': ('ERROR', '<IpcConsoleServer> Received message with bad magic number! This should never happen: %(magic)s vs expected %(expectedMagic)s.'),
 	'ipcConsoleServer.mistmatchedVersion': ('WARNING', '<IpcConsoleServer> Received message with mismatched version: %(version)s vs expected %(expectedVersion)s. Update your console to the same version at the beginning of the log.'),
+	'ipcConsoleServer.noHeartbeats': ('WARNING', 'All consoles disconnected. Last command: %(lastCommandAgeSec)ss ago. Last heartbeat: %(lastHeartbeatAgeSec)ss ago.'),
 	'ipcConsoleServer.outOfOrderSequence': ('ERROR', '<IpcConsoleServer> Received out of order sequence number from client %(clientPid)s: %(sequenceNumber)s vs last %(lastSequenceNumber)s.'),
 	'ipcConsoleServer.duplicateSequence': ('ERROR', '<IpcConsoleServer> Received duplicate sequence number from client %(clientPid)s: %(sequenceNumber)s vs last %(lastSequenceNumber)s.'),
 	'ipcConsoleServer.missingSequence': ('WARNING', '<IpcConsoleServer> Missing sequence numbers from client %(clientPid)s: %(sequenceNumber)s vs last %(lastSequenceNumber)s.'),

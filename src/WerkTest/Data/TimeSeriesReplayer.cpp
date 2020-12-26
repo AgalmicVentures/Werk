@@ -68,6 +68,10 @@ BOOST_AUTO_TEST_CASE(testBasic)
 	BOOST_CHECK_EQUAL(clock.time(), 25e9);
 
 	replayer.execute();
+	BOOST_CHECK(!complete.value());
+	BOOST_CHECK_EQUAL(clock.time(), 35e9);
+
+	replayer.execute();
 	BOOST_CHECK(complete.value());
 }
 

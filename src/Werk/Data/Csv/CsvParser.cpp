@@ -38,7 +38,7 @@ bool CsvParser::open(const std::string &path)
 	return _file.is_open();
 }
 
-bool CsvParser::moveNext()
+bool CsvParser::moveNext(bool loadHeaders)
 {
 	//Walk to the next line
 	_line.clear();
@@ -48,17 +48,65 @@ bool CsvParser::moveNext()
 			continue;
 		}
 
-		//Split on ,
-		//TODO: handle quotes properly
-		boost::split(_values, _line, boost::is_any_of(","));
-		for (auto &value : _values) {
-			boost::trim(value);
+		//Parse either into the headers or the next buffer slot
+		if (!loadHeaders) {
+			++_valuesN;
 		}
+		std::vector<std::string> &currentValues = loadHeaders ?
+			_headers :
+			(_valuesN % 2 == 0 ? _values0 : _values1);
+		currentValues.clear();
+
+		//Split on ,
+		std::string::size_type i = 0;
+		std::string::size_type nextComma = 0;
+		do {
+			//Find the next command, accounting for quotes
+			bool isQuoted = _line[i] == '"';
+			if (isQuoted) {
+				std::string::size_type nextQuote = _line.find('"', i + 1);
+				nextComma = _line.find(',', nextQuote);
+			} else {
+				nextComma = _line.find(',', i);
+			}
+
+			//Grab the value
+			std::string value = _line.substr(i, nextComma - i);
+			i = nextComma + 1;
+
+			//Remove whitespace
+			boost::trim(value);
+
+			//And quotes
+			if (value.length() >= 2 && value[0] == '"' && value[value.length() - 1] == '"') {
+				value = value.substr(1, value.length() - 2);
+			}
+
+			//Finally add the cleaned data
+			currentValues.push_back(value);
+		} while (nextComma != std::string::npos);
+
+		//TODO: better parser that doesn't over-split on quoted commas
+		/*boost::split(currentValues, _line, boost::is_any_of(","));
+		for (auto &value : currentValues) {
+			boost::trim(value);
+
+			//Handle quoted values
+			if (value.length() >= 2 && value[0] == '"' && value[value.length() - 1] == '"') {
+				value = value.substr(1, value.length() - 2);
+			}
+		}*/
 
 		//Read a line successfully
 		return true;
 	}
 
+	//Flip the buffer one last time and preserve only the last set of values
+	if (!loadHeaders) {
+		++_valuesN;
+		std::vector<std::string>  &nextValues = _valuesN % 2 == 0 ? _values0 : _values1;
+		nextValues.clear();
+	}
 	return false;
 }
 

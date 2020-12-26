@@ -38,16 +38,25 @@ public:
 
 	CHECKED bool isOpen() const { return _file.is_open(); }
 	CHECKED const std::string &line() const { return _line; }
-	CHECKED const std::vector<std::string> &values() const { return _values; }
+	CHECKED const std::vector<std::string> &headers() const { return _headers; }
+	CHECKED const std::vector<std::string> &values() const {
+		return _valuesN % 2 == 0 ? _values0 : _values1;
+	}
+	CHECKED const std::vector<std::string> &lastValues() const {
+		return _valuesN % 2 == 0 ? _values1 : _values0;
+	}
 
 	CHECKED bool open(const std::string &path);
-	CHECKED bool moveNext();
+	CHECKED bool moveNext(bool loadHeaders=false);
 	void close();
 
 protected:
 	std::ifstream _file;
 	std::string _line;
-	std::vector<std::string> _values;
+	std::vector<std::string> _headers;
+	std::vector<std::string> _values0;
+	std::vector<std::string> _values1;
+	uint64_t _valuesN = 0;
 };
 
 }

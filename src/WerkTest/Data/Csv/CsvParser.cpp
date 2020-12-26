@@ -34,20 +34,35 @@ BOOST_AUTO_TEST_CASE(testBasic)
 	werk::CsvParser csvParser;
 	BOOST_REQUIRE(csvParser.open("src/WerkTest/Data/Csv/test.csv"));
 
-	BOOST_REQUIRE(csvParser.moveNext());
-	BOOST_CHECK_EQUAL(csvParser.values()[0], "Time");
-	BOOST_CHECK_EQUAL(csvParser.values()[1], "X");
-	BOOST_CHECK_EQUAL(csvParser.values()[2], "Y");
-	BOOST_CHECK_EQUAL(csvParser.values()[3], "Z");
+	BOOST_REQUIRE(csvParser.moveNext(true));
+	BOOST_CHECK_EQUAL(csvParser.headers()[0], "Time");
+	BOOST_CHECK_EQUAL(csvParser.headers()[1], "X");
+	BOOST_CHECK_EQUAL(csvParser.headers()[2], "Y");
+	BOOST_CHECK_EQUAL(csvParser.headers()[3], "Z");
+	BOOST_CHECK_EQUAL(csvParser.headers()[4], "Comment");
+	BOOST_CHECK_EQUAL(csvParser.values().size(), 0);
+	BOOST_CHECK_EQUAL(csvParser.lastValues().size(), 0);
 
 	BOOST_REQUIRE(csvParser.moveNext());
 	BOOST_CHECK_EQUAL(csvParser.values()[0], "10");
+	BOOST_CHECK_EQUAL(csvParser.values()[4], "this is a comment"); //Do spaces work?
+	BOOST_CHECK_EQUAL(csvParser.values().size(), 5);
+	BOOST_CHECK_EQUAL(csvParser.lastValues().size(), 0);
 
 	BOOST_REQUIRE(csvParser.moveNext());
 	BOOST_CHECK_EQUAL(csvParser.values()[0], "20");
+	BOOST_CHECK_EQUAL(csvParser.values()[4], "a quoted comment"); //Do quotes work?
+	BOOST_CHECK_EQUAL(csvParser.values().size(), 5);
+	BOOST_CHECK_EQUAL(csvParser.lastValues().size(), 5);
 
 	BOOST_REQUIRE(csvParser.moveNext());
 	BOOST_CHECK_EQUAL(csvParser.values()[0], "25");
+	BOOST_CHECK_EQUAL(csvParser.values()[4], "a quoted comment, with a comma"); //Do commas work?
+	BOOST_CHECK_EQUAL(csvParser.values().size(), 5);
+	BOOST_CHECK_EQUAL(csvParser.lastValues().size(), 5);
+
+	BOOST_REQUIRE(csvParser.moveNext());
+	BOOST_CHECK_EQUAL(csvParser.values()[0], "35");
 
 	BOOST_REQUIRE(!csvParser.moveNext());
 }

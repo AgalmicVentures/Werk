@@ -48,6 +48,9 @@ BOOST_AUTO_TEST_CASE(testBasic)
 	BOOST_REQUIRE(csvTimeSeries.moveNext());
 	BOOST_CHECK_EQUAL(csvTimeSeries.time(), 25);
 
+	BOOST_REQUIRE(csvTimeSeries.moveNext());
+	BOOST_CHECK_EQUAL(csvTimeSeries.time(), 35);
+
 	BOOST_REQUIRE(!csvParser.moveNext());
 }
 

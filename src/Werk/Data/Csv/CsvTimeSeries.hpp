@@ -61,7 +61,7 @@ public:
 		return true;
 	}
 
-	CHECKED const std::vector<std::string> values() const { return _parser.values(); }
+	CHECKED const std::vector<std::string> values() const { return _parser.lastValues(); }
 
 protected:
 	CsvParser &_parser;

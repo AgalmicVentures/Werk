@@ -86,17 +86,6 @@ bool CsvParser::moveNext(bool loadHeaders)
 			currentValues.push_back(value);
 		} while (nextComma != std::string::npos);
 
-		//TODO: better parser that doesn't over-split on quoted commas
-		/*boost::split(currentValues, _line, boost::is_any_of(","));
-		for (auto &value : currentValues) {
-			boost::trim(value);
-
-			//Handle quoted values
-			if (value.length() >= 2 && value[0] == '"' && value[value.length() - 1] == '"') {
-				value = value.substr(1, value.length() - 2);
-			}
-		}*/
-
 		//Read a line successfully
 		return true;
 	}

@@ -146,7 +146,7 @@ lines can be accepted and parsed by a `CommandManager`, which will forward
 execution to the appropriate `Command` instance. Command managers optionally
 start with a set of default, standard commands.
 
-Built-in commands include:
+Standard commands include (others are added by the framework, see below):
 * `echo`, `warning`, `error` (`EchoCommand`): Logs the arguments at a certain
 log level.
 * `null` (`NullCommand`): Does nothing (useful as a placeholder for testing).
@@ -233,9 +233,14 @@ this interval.
 The application context adds additional default commands:
 * `app`: Logs information about the high level state of the application.
 * `bg`: Logs information about background tasks.
+* `consoles`: Logs information about consoles.
 * `logs`: Logs information about what logs are available.
-* `reload`: Reloads the configuration.
 * `quit`: Quits the application cleanly, running shutdown commands and actions.
+* `reload`: Reloads the configuration.
+* `segfault`: Generate a segfault (simulation only; for testing).
+
+It also supports command aliases via the `Application.CommandAliases` config (see
+above).
 
 ## Shutdown
 The application may be shut down cleanly at any time by running the `quit`

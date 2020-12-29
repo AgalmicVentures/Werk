@@ -43,6 +43,7 @@ levelColors = {
 	'TRACE': nc,
 	'UNKNOWN': nc,
 }
+levelNumbers = {level: n for n, level in enumerate(levelColors.keys())}
 
 jsonMessageTranslations = {
 	'ipcConsoleClient.state': ('INFO', ' %(clientPid)10s %(lastSequenceNumber)12s %(lastCommandAgeSec)15ss %(lastHeartbeatAgeSec)15ss'),
@@ -75,7 +76,7 @@ jsonMessageTranslations = {
 	'timeSeriesReplayer.finished': ('SUCCESS', '<TimeSeriesReplayer> Finished.'),
 }
 
-def handleLine(line):
+def handleLine(line, minLevelNumber=None):
 	#Get basics
 	n = line.get('n', 0)
 	time = line.get('t', 0)
@@ -96,6 +97,10 @@ def handleLine(line):
 	else:
 		message = line.get('message')
 
+	levelNumber = levelNumbers.get(level)
+	if minLevelNumber is not None and levelNumber is not None and levelNumber > minLevelNumber:
+		return
+
 	#Colorize
 	color = levelColors.get(level)
 
@@ -109,10 +114,22 @@ def main():
 	parser = argparse.ArgumentParser(description='Log Formatting Script (For Humans)')
 	#TODO: allow loading additional JSON translation dictionaries
 
+	parser.add_argument('-f', '--file',
+		help='Optional input file to read, rather than stdin.')
+	parser.add_argument('-l', '--level',
+		help='Minimum log level')
+
 	arguments = parser.parse_args(sys.argv[1:])
 
+	minLevelNumber = levelNumbers.get(arguments.level)
+	if arguments.level is not None and minLevelNumber is None:
+		print('ERROR: Minimum level not found. Must be one of: %s' % ', '.join(levelNumbers.keys()))
+		return 1
+
+	inputFile = sys.stdin if arguments.file is None else open(arguments.file, 'r')
+
 	quitting = False
-	for n, line in enumerate(sys.stdin):
+	for n, line in enumerate(inputFile):
 		try:
 			if line == '':
 				time.sleep(0.1)
@@ -125,7 +142,7 @@ def main():
 					print(line)
 					continue
 
-				handleLine(value)
+				handleLine(value, minLevelNumber=minLevelNumber)
 			else:
 				print(line)
 		except UnicodeDecodeError:
@@ -137,8 +154,8 @@ def main():
 				quitting = True
 				continue
 		except Exception as e: # @suppress the general exception warning, it's important to let nothing through
-			#print('Exception thrown: %s -- %s' % (type(e), e))
-			break
+			print('Exception thrown: %s -- %s' % (type(e), e))
+			raise
 
 	return 0
 

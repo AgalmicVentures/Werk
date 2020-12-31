@@ -37,7 +37,7 @@ void AsyncLog::log(LogLevel level, const char *format, ...)
 {
 	//Create the buffer
 	LogMessage message;
-	message.sequenceNumber = _nextSendSequenceNumber++;
+	message.sequenceNumber = _nextSendSequenceNumber.fetch_add(1);
 	message.time = clock()->time();
 	message.level = level;
 
@@ -63,7 +63,7 @@ void AsyncLog::log(LogLevel level, const char *format, ...)
 void AsyncLog::logRaw(LogLevel level, const char *rawMessage)
 {
 	LogMessage message;
-	message.sequenceNumber = _nextSendSequenceNumber++;
+	message.sequenceNumber = _nextSendSequenceNumber.fetch_add(1);
 	message.time = clock()->time();
 	message.level = level;
 

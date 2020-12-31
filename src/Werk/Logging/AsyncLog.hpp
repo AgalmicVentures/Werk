@@ -23,6 +23,7 @@
 
 #pragma once
 
+#include <atomic>
 #include <boost/lockfree/queue.hpp>
 #include <boost/lockfree/spsc_queue.hpp>
 #include <cstdint>
@@ -54,7 +55,7 @@ public:
 private:
 	FILE *_file;
 
-	uint64_t _nextSendSequenceNumber = 0;
+	std::atomic<uint64_t> _nextSendSequenceNumber = 0;
 	boost::lockfree::queue<LogMessage, boost::lockfree::capacity<4096> > _messages;
 	uint64_t _nextReceiveSequenceNumber = 0;
 };

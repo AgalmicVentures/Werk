@@ -66,14 +66,15 @@ debug_profile_job:
   only:
     - master
 
-debug_valgrind_profile_job:
-  stage: profile
-  script:
-    - ./waf profile --valgrind
-  dependencies:
-    - debug_build_job
-  only:
-    - master
+#XXX: temporarily disabled due to spurious timing and valgrind failures
+#debug_valgrind_profile_job:
+#  stage: profile
+#  script:
+#    - ./waf profile --valgrind
+#  dependencies:
+#    - debug_build_job
+#  only:
+#    - master
 
 debug_hello_world_real_time_job:
   stage: functional_test

@@ -50,6 +50,31 @@ class ScopedConfig
 public:
 
 	ScopedConfig(Config &config) : _config(config) { }
+	ScopedConfig(Config &config, const std::string &scope) : ScopedConfig(config)
+	{
+		_scopes.push_back(scope);
+	}
+	ScopedConfig(Config &config, const std::string &scope1, const std::string scope2) :
+		ScopedConfig(config)
+	{
+		_scopes.push_back(scope1);
+		_scopes.push_back(scope2);
+	}
+	ScopedConfig(Config &config, const std::string &scope1, const std::string scope2, const std::string scope3) :
+		ScopedConfig(config)
+	{
+		_scopes.push_back(scope1);
+		_scopes.push_back(scope2);
+		_scopes.push_back(scope3);
+	}
+	ScopedConfig(Config &config, const std::string &scope1, const std::string scope2, const std::string scope3, const std::string scope4) :
+		ScopedConfig(config)
+	{
+		_scopes.push_back(scope1);
+		_scopes.push_back(scope2);
+		_scopes.push_back(scope3);
+		_scopes.push_back(scope4);
+	}
 
 	std::vector<std::string> &scopes() { return _scopes; }
 	const std::vector<std::string> &scopes() const { return _scopes; }

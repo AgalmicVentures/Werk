@@ -36,14 +36,17 @@ BOOST_AUTO_TEST_CASE(TestBasic)
 	n = r.getUint64(0, 0);
 	BOOST_REQUIRE_EQUAL(n, 0);
 
+	n = r.getUint64(253, 253);
+	BOOST_REQUIRE_EQUAL(n, 253);
+
 	n = r.getUint64(1000, 1000);
 	BOOST_REQUIRE_EQUAL(n, 1000);
 
 	//Test larger ranges
 	for (int i = 0; i < 100000; ++i) {
-		n = r.getUint64(0, 1000);
-		BOOST_REQUIRE_GE(n, 0);
-		BOOST_REQUIRE_LE(n, 1000);
+		n = r.getUint64(17, 1017);
+		BOOST_REQUIRE_GE(n, 17);
+		BOOST_REQUIRE_LE(n, 1017);
 	}
 }
 

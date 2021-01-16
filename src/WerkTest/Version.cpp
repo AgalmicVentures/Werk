@@ -23,40 +23,22 @@
 
 #include <boost/test/unit_test.hpp>
 
-#include "Werk/Math/SummaryStatistics.hpp"
+#include "Werk/Version.hpp"
 
-BOOST_AUTO_TEST_SUITE(SummaryStatisticsTest)
+BOOST_AUTO_TEST_SUITE(VersionTest)
 
-BOOST_AUTO_TEST_CASE(TestEmpty)
+BOOST_AUTO_TEST_CASE(TestGetVersion)
 {
-	werk::SummaryStatistics<double> s;
-	BOOST_REQUIRE_EQUAL(s.count(), 0);
-	BOOST_REQUIRE_EQUAL(s.sum(), 0.0);
-	BOOST_REQUIRE_EQUAL(s.average(), 0.0);
-	BOOST_REQUIRE_EQUAL(s.variance(), 0.0);
-	BOOST_REQUIRE_EQUAL(s.stddev(), 0.0);
-}
+	//Version must be set
+	const char *version = werk::getVersion();
+	BOOST_REQUIRE(version != nullptr);
 
-BOOST_AUTO_TEST_CASE(TestBasic)
-{
-	werk::SummaryStatistics<double> s;
-
-	s.sample(5.0);
-	BOOST_REQUIRE_EQUAL(s.count(), 1);
-	BOOST_REQUIRE_EQUAL(s.sum(), 5.0);
-	BOOST_REQUIRE_EQUAL(s.average(), 5.0);
-	BOOST_REQUIRE_EQUAL(s.variance(), 0.0);
-	BOOST_REQUIRE_EQUAL(s.stddev(), 0.0);
-
-	s.sample(1.0);
-	BOOST_REQUIRE_EQUAL(s.count(), 2);
-	BOOST_REQUIRE_EQUAL(s.sum(), 6.0);
-	BOOST_REQUIRE_EQUAL(s.average(), 3.0);
-	BOOST_REQUIRE_EQUAL(s.variance(), 4.0);
-	BOOST_REQUIRE_EQUAL(s.stddev(), 2.0);
-
-	s.reset();
-	BOOST_REQUIRE_EQUAL(s.count(), 0);
+	//Version should be a valid Git hash, i.e. a 40 character hexidecimal string
+	const size_t length = std::strlen(version);
+	BOOST_CHECK_EQUAL(length, 40);
+	for (size_t i = 0; i < 40; ++i) {
+		BOOST_CHECK(std::isxdigit(version[i]));
+	}
 }
 
 BOOST_AUTO_TEST_SUITE_END()

@@ -31,13 +31,21 @@ BOOST_AUTO_TEST_CASE(TestEmpty)
 {
 	werk::SimpleLinearRegression r;
 	BOOST_REQUIRE_EQUAL(r.count(), 0);
+	BOOST_REQUIRE(std::isnan(r.beta()));
+	BOOST_REQUIRE(std::isnan(r.correlation()));
+	BOOST_REQUIRE(std::isnan(r.predict(2.0)));
 }
 
-BOOST_AUTO_TEST_CASE(TestBasic)
+BOOST_AUTO_TEST_CASE(TestLinear)
 {
 	werk::SimpleLinearRegression r;
 
 	r.sample(1.0, 4.0);
+	BOOST_REQUIRE_EQUAL(r.count(), 1);
+	BOOST_REQUIRE(std::isnan(r.beta()));
+	BOOST_REQUIRE(std::isnan(r.correlation()));
+	BOOST_REQUIRE(std::isnan(r.predict(2.0)));
+
 	r.sample(3.0, 8.0);
 	BOOST_REQUIRE_EQUAL(r.count(), 2);
 	BOOST_REQUIRE_EQUAL(r.beta(), 2.0);
@@ -51,11 +59,18 @@ BOOST_AUTO_TEST_CASE(TestBasic)
 	BOOST_REQUIRE_CLOSE(r.alpha(), 2.0, 0.000000001);
 	BOOST_REQUIRE_CLOSE(r.predict(2.0), 6.0, 0.000000001);
 
+	r.sample(6.0, 14.0);
+	BOOST_REQUIRE_EQUAL(r.count(), 4);
+	BOOST_REQUIRE_EQUAL(r.correlation(), 1.0);
+	BOOST_REQUIRE_CLOSE(r.beta(), 2.0, 0.000000001);
+	BOOST_REQUIRE_CLOSE(r.alpha(), 2.0, 0.000000001);
+	BOOST_REQUIRE_CLOSE(r.predict(2.0), 6.0, 0.000000001);
+
 	r.reset();
 	BOOST_REQUIRE_EQUAL(r.count(), 0);
 }
 
-BOOST_AUTO_TEST_CASE(TestZero)
+BOOST_AUTO_TEST_CASE(TestZeroCorrelation)
 {
 	werk::SimpleLinearRegression r;
 

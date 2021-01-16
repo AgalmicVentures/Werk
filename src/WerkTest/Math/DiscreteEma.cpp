@@ -29,7 +29,7 @@
 
 BOOST_AUTO_TEST_SUITE(DiscreteEmaTest)
 
-BOOST_AUTO_TEST_CASE(testEmpty)
+BOOST_AUTO_TEST_CASE(TestEmpty)
 {
 	werk::DiscreteEma ema(0.5);
 
@@ -37,7 +37,7 @@ BOOST_AUTO_TEST_CASE(testEmpty)
 	BOOST_CHECK(std::isnan(ema.value()));
 }
 
-BOOST_AUTO_TEST_CASE(testConstant)
+BOOST_AUTO_TEST_CASE(TestConstant)
 {
 	werk::DiscreteEma ema(0.5);
 
@@ -49,7 +49,7 @@ BOOST_AUTO_TEST_CASE(testConstant)
 	BOOST_CHECK_EQUAL(ema.value(), 10.0);
 }
 
-BOOST_AUTO_TEST_CASE(testDecreasing)
+BOOST_AUTO_TEST_CASE(TestDecreasing)
 {
 	werk::DiscreteEma ema(0.5);
 
@@ -64,7 +64,7 @@ BOOST_AUTO_TEST_CASE(testDecreasing)
 	BOOST_CHECK(ema.value() < value);
 }
 
-BOOST_AUTO_TEST_CASE(testIncreasing)
+BOOST_AUTO_TEST_CASE(TestIncreasing)
 {
 	werk::DiscreteEma ema(0.5);
 
@@ -78,7 +78,7 @@ BOOST_AUTO_TEST_CASE(testIncreasing)
 	BOOST_CHECK(ema.value() > value);
 }
 
-BOOST_AUTO_TEST_CASE(testOscillating)
+BOOST_AUTO_TEST_CASE(TestOscillating)
 {
 	werk::DiscreteEma ema(0.5);
 
@@ -92,7 +92,7 @@ BOOST_AUTO_TEST_CASE(testOscillating)
 	BOOST_CHECK_CLOSE(ema.value(), 3.75, 0.5);
 }
 
-BOOST_AUTO_TEST_CASE(testNan)
+BOOST_AUTO_TEST_CASE(TestNan)
 {
 	werk::DiscreteEma ema(0.5);
 
@@ -104,7 +104,7 @@ BOOST_AUTO_TEST_CASE(testNan)
 	BOOST_CHECK_EQUAL(ema.value(), 10.0);
 }
 
-BOOST_AUTO_TEST_CASE(testZeroAlpha)
+BOOST_AUTO_TEST_CASE(TestZeroAlpha)
 {
 	werk::DiscreteEma ema(0.0);
 

@@ -171,6 +171,8 @@ def build(ctx):
 	import subprocess
 	try:
 		version = subprocess.check_output(versionCommand).strip()
+		if not isinstance(version, str):
+			version = version.decode('utf8') #Python 3 compatibility
 		Logs.info('Building version %s' % version)
 	except subprocess.CalledProcessError:
 		version = 'NotInGit'

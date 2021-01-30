@@ -136,7 +136,8 @@ def main():
 				continue
 			elif line[0] == '{':
 				try:
-					line = line.replace('\":nan', '\":NaN') #XXX: sort of a hack, but this works to fix how C++ outputs NaN
+					#XXX: sort of a hack, but this works to fix how C++ outputs NaN and Infinity
+					line = line.replace('\":nan', '\":NaN').replace('\":inf', '\":Infinity').replace('\":-inf', '\":-Infinity')
 					value = json.loads(line)
 				except ValueError:
 					print(line)

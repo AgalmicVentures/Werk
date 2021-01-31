@@ -114,18 +114,29 @@ public:
 		return i == values->end() ? nullptr : i->second.c_str();
 	}
 
-	//Basic types
-	const char *getString(const std::string &key, const char *defaultValue=nullptr, const char *help=nullptr) const;
-	bool getBool(const std::string &key, bool defaultValue=false, const char *help=nullptr) const;
-	double getDouble(const std::string &key, double defaultValue=0, const char *help=nullptr) const;
-	int64_t getInt64(const std::string &key, int64_t defaultValue=0, const char *help=nullptr) const;
-	uint64_t getUint64(const std::string &key, uint64_t defaultValue=0, const char *help=nullptr) const;
-	uint64_t getStorageAmount(const std::string &key, uint64_t defaultValue=0, const char *help=nullptr) const;
-	uint64_t getTimeAmount(const std::string &key, uint64_t defaultValue=0, const char *help=nullptr) const;
+	//Basic types -- all similar parameters
+	//
+	//specificKey is used by ScopedConfig to make the human readable logging show
+	//the specific key being read, while reading from the general key.
+	const char *getString(const std::string &key, const char *defaultValue=nullptr,
+		const char *help=nullptr, const char *specificKey=nullptr) const;
+	bool getBool(const std::string &key, bool defaultValue=false,
+		const char *help=nullptr, const char *specificKey=nullptr) const;
+	double getDouble(const std::string &key, double defaultValue=0,
+		const char *help=nullptr, const char *specificKey=nullptr) const;
+	int64_t getInt64(const std::string &key, int64_t defaultValue=0,
+		const char *help=nullptr, const char *specificKey=nullptr) const;
+	uint64_t getUint64(const std::string &key, uint64_t defaultValue=0,
+		const char *help=nullptr, const char *specificKey=nullptr) const;
+	uint64_t getStorageAmount(const std::string &key, uint64_t defaultValue=0,
+		const char *help=nullptr, const char *specificKey=nullptr) const;
+	uint64_t getTimeAmount(const std::string &key, uint64_t defaultValue=0,
+		const char *help=nullptr, const char *specificKey=nullptr) const;
 
 	//List types
 	const char *getStrings(const std::string &key, std::vector<std::string> &values,
-		const char *defaultValue=nullptr, const char *help=nullptr, const char *delimiters=",") const;
+		const char *defaultValue=nullptr, const char *help=nullptr, const char *delimiters=",",
+		const char *specificKey=nullptr) const;
 
 protected:
 	//Config

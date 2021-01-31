@@ -28,10 +28,17 @@
 namespace werk
 {
 
-void ScopedConfig::findScopedKey(const std::string &key, std::string &foundKey) const
+void ScopedConfig::findScopedKey(const std::string &key, std::string &specificKey, std::string &foundKey) const
 {
+	bool first = true;
 	for (const std::string &scope : _scopes) {
 		const std::string qualifiedKey = scope + key;
+
+		if (first) {
+			specificKey = qualifiedKey;
+			first = false;
+		}
+
 		const char *stringValue = _config.getStringRaw(qualifiedKey);
 		if (nullptr != stringValue) {
 			foundKey = qualifiedKey;
@@ -39,65 +46,73 @@ void ScopedConfig::findScopedKey(const std::string &key, std::string &foundKey) 
 		}
 	}
 
-	foundKey = _scopes.size() == 0 ? key : _scopes[0] + key;
+	foundKey = _scopes.size() == 0 ? key : specificKey;
 }
 
 const char *ScopedConfig::getString(const std::string &key, const char *defaultValue, const char *help) const
 {
+	std::string specificKey;
 	std::string scopedKey;
-	findScopedKey(key, scopedKey);
-	return _config.getString(scopedKey, defaultValue, help);
+	findScopedKey(key, specificKey, scopedKey);
+	return _config.getString(scopedKey, defaultValue, help, specificKey.c_str());
 }
 
 bool ScopedConfig::getBool(const std::string &key, bool defaultValue, const char *help) const
 {
+	std::string specificKey;
 	std::string scopedKey;
-	findScopedKey(key, scopedKey);
-	return _config.getBool(scopedKey, defaultValue, help);
+	findScopedKey(key, specificKey, scopedKey);
+	return _config.getBool(scopedKey, defaultValue, help, specificKey.c_str());
 }
 
 double ScopedConfig::getDouble(const std::string &key, double defaultValue, const char *help) const
 {
+	std::string specificKey;
 	std::string scopedKey;
-	findScopedKey(key, scopedKey);
-	return _config.getDouble(scopedKey, defaultValue, help);
+	findScopedKey(key, specificKey, scopedKey);
+	return _config.getDouble(scopedKey, defaultValue, help, specificKey.c_str());
 }
 
 int64_t ScopedConfig::getInt64(const std::string &key, int64_t defaultValue, const char *help) const
 {
+	std::string specificKey;
 	std::string scopedKey;
-	findScopedKey(key, scopedKey);
-	return _config.getInt64(scopedKey, defaultValue, help);
+	findScopedKey(key, specificKey, scopedKey);
+	return _config.getInt64(scopedKey, defaultValue, help, specificKey.c_str());
 }
 
 uint64_t ScopedConfig::getUint64(const std::string &key, uint64_t defaultValue, const char *help) const
 {
+	std::string specificKey;
 	std::string scopedKey;
-	findScopedKey(key, scopedKey);
-	return _config.getUint64(scopedKey, defaultValue, help);
+	findScopedKey(key, specificKey, scopedKey);
+	return _config.getUint64(scopedKey, defaultValue, help, specificKey.c_str());
 }
 
 uint64_t ScopedConfig::getStorageAmount(const std::string &key, uint64_t defaultValue, const char *help) const
 {
+	std::string specificKey;
 	std::string scopedKey;
-	findScopedKey(key, scopedKey);
-	return _config.getStorageAmount(scopedKey, defaultValue, help);
+	findScopedKey(key, specificKey, scopedKey);
+	return _config.getStorageAmount(scopedKey, defaultValue, help, specificKey.c_str());
 }
 
 uint64_t ScopedConfig::getTimeAmount(const std::string &key, uint64_t defaultValue, const char *help) const
 {
+	std::string specificKey;
 	std::string scopedKey;
-	findScopedKey(key, scopedKey);
-	return _config.getTimeAmount(scopedKey, defaultValue, help);
+	findScopedKey(key, specificKey, scopedKey);
+	return _config.getTimeAmount(scopedKey, defaultValue, help, specificKey.c_str());
 }
 
 //List types
 const char *ScopedConfig::getStrings(const std::string &key, std::vector<std::string> &values,
 	const char *defaultValue, const char *help, const char *delimiters) const
 {
+	std::string specificKey;
 	std::string scopedKey;
-	findScopedKey(key, scopedKey);
-	return _config.getStrings(scopedKey, values, defaultValue, help, delimiters);
+	findScopedKey(key, specificKey, scopedKey);
+	return _config.getStrings(scopedKey, values, defaultValue, help, delimiters, specificKey.c_str());
 }
 
 }

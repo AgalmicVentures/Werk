@@ -70,8 +70,11 @@ void Config::reloadConfigurables()
 }
 
 //Basic types
-const char *Config::getString(const std::string &key, const char *defaultValue, const char *help) const
+const char *Config::getString(const std::string &key, const char *defaultValue,
+	const char *help, const char *specificKey) const
 {
+	const char *forKey = nullptr != specificKey ? specificKey : key.c_str();
+
 	const char *stringValue = getStringRaw(key);
 	const char *defaultLogValue = "";
 	const char *quoteChar = "\"";
@@ -84,21 +87,25 @@ const char *Config::getString(const std::string &key, const char *defaultValue, 
 	}
 
 	_log->log(LogLevel::CONFIG, "<Config> [%s] = %s%s%s%s",
-		key.c_str(),
+		forKey,
 		stringValue,
 		defaultLogValue,
 		help == nullptr ? "" : " -- ",
 		help == nullptr ? "" : help);
-	_log->log(LogLevel::JSON, "{\"type\":\"config\",\"key\":\"%s\",\"value\":%s%s%s}",
+	_log->log(LogLevel::JSON, "{\"type\":\"config\",\"key\":\"%s\",\"forKey\":\"%s\",\"value\":%s%s%s}",
 		key.c_str(),
+		forKey,
 		quoteChar,
 		nullptr == stringValue ? "null" : stringValue,
 		quoteChar);
 	return stringValue;
 }
 
-bool Config::getBool(const std::string &key, bool defaultValue, const char *help) const
+bool Config::getBool(const std::string &key, bool defaultValue,
+	const char *help, const char *specificKey) const
 {
+	const char *forKey = nullptr != specificKey ? specificKey : key.c_str();
+
 	bool value = defaultValue;
 	const char *stringValue = value ? "true" : "false";
 	const char *defaultLogValue = " [DEFAULT]";
@@ -112,19 +119,23 @@ bool Config::getBool(const std::string &key, bool defaultValue, const char *help
 	}
 
 	_log->log(LogLevel::CONFIG, "<Config> [%s] = %s%s%s%s",
-		key.c_str(),
+		forKey,
 		stringValue,
 		defaultLogValue,
 		help == nullptr ? "" : " -- ",
 		help == nullptr ? "" : help);
-	_log->log(LogLevel::JSON, "{\"type\":\"config\",\"key\":\"%s\",\"value\":%s}",
+	_log->log(LogLevel::JSON, "{\"type\":\"config\",\"key\":\"%s\",\"forKey\":\"%s\",\"value\":%s}",
 		key.c_str(),
+		forKey,
 		value ? "true" : "false");
 	return value;
 }
 
-double Config::getDouble(const std::string &key, double defaultValue, const char *help) const
+double Config::getDouble(const std::string &key, double defaultValue,
+	const char *help, const char *specificKey) const
 {
+	const char *forKey = nullptr != specificKey ? specificKey : key.c_str();
+
 	double value = defaultValue;
 	const char *defaultLogValue = " [DEFAULT]";
 
@@ -135,19 +146,23 @@ double Config::getDouble(const std::string &key, double defaultValue, const char
 	}
 
 	_log->log(LogLevel::CONFIG, "<Config> [%s] = %s (%f)%s%s%s",
-		key.c_str(),
+		forKey,
 		stringValue, value,
 		defaultLogValue,
 		help == nullptr ? "" : " -- ",
 		help == nullptr ? "" : help);
-	_log->log(LogLevel::JSON, "{\"type\":\"config\",\"key\":\"%s\",\"value\":%f}",
+	_log->log(LogLevel::JSON, "{\"type\":\"config\",\"key\":\"%s\",\"forKey\":\"%s\",\"value\":%f}",
 		key.c_str(),
+		forKey,
 		value);
 	return value;
 }
 
-int64_t Config::getInt64(const std::string &key, int64_t defaultValue, const char *help) const
+int64_t Config::getInt64(const std::string &key, int64_t defaultValue,
+	const char *help, const char *specificKey) const
 {
+	const char *forKey = nullptr != specificKey ? specificKey : key.c_str();
+
 	int64_t value = defaultValue;
 	const char *defaultLogValue = " [DEFAULT]";
 
@@ -158,19 +173,23 @@ int64_t Config::getInt64(const std::string &key, int64_t defaultValue, const cha
 	}
 
 	_log->log(LogLevel::CONFIG, "<Config> [%s] = %s (%" PRIi64 ")%s%s%s",
-		key.c_str(),
+		forKey,
 		stringValue, value,
 		defaultLogValue,
 		help == nullptr ? "" : " -- ",
 		help == nullptr ? "" : help);
-	_log->log(LogLevel::JSON, "{\"type\":\"config\",\"key\":\"%s\",\"value\":%" PRIi64 "}",
+	_log->log(LogLevel::JSON, "{\"type\":\"config\",\"key\":\"%s\",\"forKey\":\"%s\",\"value\":%" PRIi64 "}",
 		key.c_str(),
+		forKey,
 		value);
 	return value;
 }
 
-uint64_t Config::getUint64(const std::string &key, uint64_t defaultValue, const char *help) const
+uint64_t Config::getUint64(const std::string &key, uint64_t defaultValue,
+	const char *help, const char *specificKey) const
 {
+	const char *forKey = nullptr != specificKey ? specificKey : key.c_str();
+
 	uint64_t value = defaultValue;
 	const char *defaultLogValue = " [DEFAULT]";
 
@@ -181,19 +200,23 @@ uint64_t Config::getUint64(const std::string &key, uint64_t defaultValue, const 
 	}
 
 	_log->log(LogLevel::CONFIG, "<Config> [%s] = %s (%" PRIu64 ")%s%s%s",
-		key.c_str(),
+		forKey,
 		stringValue, value,
 		defaultLogValue,
 		help == nullptr ? "" : " -- ",
 		help == nullptr ? "" : help);
-	_log->log(LogLevel::JSON, "{\"type\":\"config\",\"key\":\"%s\",\"value\":%" PRIu64 "}",
+	_log->log(LogLevel::JSON, "{\"type\":\"config\",\"key\":\"%s\",\"forKey\":\"%s\",\"value\":%" PRIu64 "}",
 		key.c_str(),
+		forKey,
 		value);
 	return value;
 }
 
-uint64_t Config::getStorageAmount(const std::string &key, uint64_t defaultValue, const char *help) const
+uint64_t Config::getStorageAmount(const std::string &key, uint64_t defaultValue,
+	const char *help, const char *specificKey) const
 {
+	const char *forKey = nullptr != specificKey ? specificKey : key.c_str();
+
 	uint64_t value = defaultValue;
 	const char *defaultLogValue = " [DEFAULT]";
 
@@ -204,19 +227,23 @@ uint64_t Config::getStorageAmount(const std::string &key, uint64_t defaultValue,
 	}
 
 	_log->log(LogLevel::CONFIG, "<Config> [%s] = %s (%" PRIu64 ")%s%s%s",
-		key.c_str(),
+		forKey,
 		stringValue, value,
 		defaultLogValue,
 		help == nullptr ? "" : " -- ",
 		help == nullptr ? "" : help);
-	_log->log(LogLevel::JSON, "{\"type\":\"config\",\"key\":\"%s\",\"value\":%" PRIu64 "}",
+	_log->log(LogLevel::JSON, "{\"type\":\"config\",\"key\":\"%s\",\"forKey\":\"%s\",\"value\":%" PRIu64 "}",
 		key.c_str(),
+		forKey,
 		value);
 	return value;
 }
 
-uint64_t Config::getTimeAmount(const std::string &key, uint64_t defaultValue, const char *help) const
+uint64_t Config::getTimeAmount(const std::string &key, uint64_t defaultValue,
+	const char *help, const char *specificKey) const
 {
+	const char *forKey = nullptr != specificKey ? specificKey : key.c_str();
+
 	uint64_t value = defaultValue;
 	const char *defaultLogValue = " [DEFAULT]";
 
@@ -227,20 +254,24 @@ uint64_t Config::getTimeAmount(const std::string &key, uint64_t defaultValue, co
 	}
 
 	_log->log(LogLevel::CONFIG, "<Config> [%s] = %s (%" PRIu64 ")%s%s%s",
-		key.c_str(),
+		forKey,
 		stringValue, value,
 		defaultLogValue,
 		help == nullptr ? "" : " -- ",
 		help == nullptr ? "" : help);
-	_log->log(LogLevel::JSON, "{\"type\":\"config\",\"key\":\"%s\",\"value\":%" PRIu64 "}",
+	_log->log(LogLevel::JSON, "{\"type\":\"config\",\"key\":\"%s\",\"forKey\":\"%s\",\"value\":%" PRIu64 "}",
 		key.c_str(),
+		forKey,
 		value);
 	return value;
 }
 
 const char *Config::getStrings(const std::string &key, std::vector<std::string> &values,
-	const char *defaultValue, const char *help, const char *delimiters) const
+	const char *defaultValue, const char *help, const char *delimiters,
+	const char *specificKey) const
 {
+	const char *forKey = nullptr != specificKey ? specificKey : key.c_str();
+
 	const char *stringValue = getStringRaw(key);
 	const char *defaultLogValue = "";
 	const char *quoteChar = "\"";
@@ -257,13 +288,14 @@ const char *Config::getStrings(const std::string &key, std::vector<std::string> 
 	}
 
 	_log->log(LogLevel::CONFIG, "<Config> [%s] = %s%s%s%s",
-		key.c_str(),
+		forKey,
 		stringValue,
 		defaultLogValue,
 		help == nullptr ? "" : " -- ",
 		help == nullptr ? "" : help);
-	_log->log(LogLevel::JSON, "{\"type\":\"config\",\"key\":\"%s\",\"value\":%s%s%s}",
+	_log->log(LogLevel::JSON, "{\"type\":\"config\",\"key\":\"%s\",\"forKey\":\"%s\",\"value\":%s%s%s}",
 		key.c_str(),
+		forKey,
 		quoteChar,
 		nullptr == stringValue ? "null" : stringValue,
 		quoteChar);

@@ -44,10 +44,36 @@ void heartbeat(std::atomic<bool> *running, werk::IpcConsoleClient *client)
 	}
 }
 
+/**
+ * Sends a message, and returns false if time to quit.
+ */
+bool sendMessage(std::atomic<bool> *running, werk::IpcConsoleClient *client, const std::string &message)
+{
+	if (message == "consoleQuit") {
+		std::cout << "Received 'consoleQuit' command..." << std::endl;
+		*running = false;
+		return false;
+	}
+
+	if (client->send(message)) {
+		std::cout << "Sent '" << message << "'" << std::endl;
+
+		if (message == "quit") {
+			std::cout << "Received 'quit' command..." << std::endl;
+			*running = false;
+			return false;
+		}
+	} else {
+		std::cout << "Failed to send '" << message << "'!" << std::endl;
+	}
+
+	return true;
+}
+
 int main(int argc, char **argv)
 {
 	if (argc < 2) {
-		std::cout << "Usage: ./IpcConsoleClient <NAME>" << std::endl;
+		std::cout << "Usage: ./IpcConsoleClient <NAME> [<COMMAND1> ...]" << std::endl;
 		return 1;
 	} else if (0 == std::strcmp(argv[1], "--version")) {
 		std::cout << "Version: " << werk::getVersion() << std::endl;
@@ -61,11 +87,20 @@ int main(int argc, char **argv)
 		std::cout << "Connected to " << argv[1] << "." << std::endl;
 		connected = true;
 
+		//Run commands from arguments
 		std::atomic<bool> running = true;
+		std::vector<std::string> messages;
+		for (uint32_t i = 2; i < argc; ++i) {
+			if (!sendMessage(&running, client, argv[i])) {
+				return 0;
+			}
+		}
+
+		//Start the background thread
 		std::thread heartbeatThread(heartbeat, &running, client);
 
+		//Read input from the foreground
 		std::string input;
-		std::vector<std::string> messages;
 		while (running && std::getline(std::cin, input)) {
 			if (input.empty()) {
 				//Skip 0 length inputs
@@ -76,16 +111,8 @@ int main(int argc, char **argv)
 			messages.clear();
 			boost::split(messages, input, boost::is_any_of(";"));
 			for (const auto &message : messages) {
-				if (client->send(message)) {
-					std::cout << "Sent '" << message << "'" << std::endl;
-
-					if (message == "quit") {
-						std::cout << "Received 'quit' command..." << std::endl;
-						running = false;
-						break;
-					}
-				} else {
-					std::cout << "Failed to send '" << message << "'!" << std::endl;
+				if (!sendMessage(&running, client, message)) {
+					break;
 				}
 			}
 		}

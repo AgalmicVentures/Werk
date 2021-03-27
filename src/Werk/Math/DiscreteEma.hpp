@@ -26,6 +26,8 @@
 #include <cmath>
 #include <limits>
 
+#include "Werk/Utility/Attributes.hpp"
+
 namespace werk
 {
 
@@ -38,8 +40,8 @@ public:
 
 	DiscreteEma(double alpha) : _alpha(alpha) { }
 
-	double alpha() const { return _alpha; }
-	double value() const { return _value; }
+	CHECKED double alpha() const { return _alpha; }
+	CHECKED double value() const { return _value; }
 
 	void sample(double x) {
 		_value = std::isnan(_value) ? x : (1.0 - _alpha) * _value + _alpha * x;

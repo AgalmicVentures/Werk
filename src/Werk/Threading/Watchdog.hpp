@@ -27,6 +27,7 @@
 
 #include "Werk/OS/Time.hpp"
 #include "Werk/Utility/Action.hpp"
+#include "Werk/Utility/Attributes.hpp"
 #include "Werk/Utility/Latch.hpp"
 
 namespace werk
@@ -45,11 +46,11 @@ public:
 		assert(nullptr != action);
 	}
 
-	uint64_t interval() const { return _interval; }
-	uint64_t allowedMisses() const { return _allowedMisses; }
-	Action *action() const { return _action; }
+	CHECKED uint64_t interval() const { return _interval; }
+	CHECKED uint64_t allowedMisses() const { return _allowedMisses; }
+	CHECKED Action *action() const { return _action; }
 
-	bool latch() const { return _latch.value(); }
+	CHECKED bool latch() const { return _latch.value(); }
 	void reset() { _latch.reset(); }
 
 	void execute() override {

@@ -28,6 +28,7 @@
 
 #include "Werk/OS/Time.hpp"
 #include "Werk/Utility/Action.hpp"
+#include "Werk/Utility/Attributes.hpp"
 #include "Werk/Utility/Latch.hpp"
 
 namespace werk
@@ -45,7 +46,7 @@ public:
 		Action(name), _simulatedClock(simulatedClock), _complete(complete),
 		_mainAction(mainAction), _log(log), _timeout(timeout) { }
 
-	const TimeSeries *currentDataSource() const { return _currentDataSource; }
+	CHECKED const TimeSeries *currentDataSource() const { return _currentDataSource; }
 
 	void addDataSource(TimeSeries *dataSource);
 

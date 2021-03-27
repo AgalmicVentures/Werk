@@ -25,6 +25,8 @@
 
 #include <cstdint>
 
+#include "Attributes.hpp"
+
 namespace werk {
 
 /**
@@ -37,11 +39,11 @@ public:
 
 	IdGenerator(T start=0, T step=1) : _step(step), _nextId(start) { }
 
-	T step() const { return _step; }
+	CHECKED T step() const { return _step; }
 
-	T nextId() const { return _nextId; }
+	CHECKED T nextId() const { return _nextId; }
 
-	T getNext() {
+	CHECKED T getNext() {
 		T id = _nextId;
 		++_nextId;
 		return id;

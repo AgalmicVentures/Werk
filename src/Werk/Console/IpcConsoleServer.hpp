@@ -26,6 +26,7 @@
 #include <boost/interprocess/ipc/message_queue.hpp>
 #include <map>
 
+#include "Werk/Utility/Attributes.hpp"
 #include "Werk/Utility/NamedObject.hpp"
 
 #include "ConsoleMessage.hpp"
@@ -62,12 +63,12 @@ public:
 		_queue(boost::interprocess::create_only, name.c_str(), maxMessages, sizeof(ConsoleMessage)) { }
 	~IpcConsoleServer() { remove(name()); }
 
-	bool isClientConnected() const { return _clientConnected; }
-	uint64_t lastCommandTime() const { return _lastCommandTime; }
-	uint64_t lastHeartbeatTime() const { return _lastHeartbeatTime; }
-	const std::map<uint64_t, IpcConsoleClientState> &clientStates() const { return _clientStates; }
+	CHECKED bool isClientConnected() const { return _clientConnected; }
+	CHECKED uint64_t lastCommandTime() const { return _lastCommandTime; }
+	CHECKED uint64_t lastHeartbeatTime() const { return _lastHeartbeatTime; }
+	CHECKED const std::map<uint64_t, IpcConsoleClientState> &clientStates() const { return _clientStates; }
 
-	bool receive(uint64_t &clientPid, uint32_t &sequenceNumber, std::string &message);
+	CHECKED bool receive(uint64_t &clientPid, uint32_t &sequenceNumber, std::string &message);
 	void update();
 
 private:

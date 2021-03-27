@@ -26,6 +26,8 @@
 #include <cstdint>
 #include <random>
 
+#include "Werk/Utility/Attributes.hpp"
+
 namespace werk
 {
 
@@ -38,7 +40,7 @@ public:
 
 	//TODO: flesh this out as use cases arise
 
-	uint64_t getUint64(uint64_t min, uint64_t max) {
+	CHECKED uint64_t getUint64(uint64_t min, uint64_t max) {
 		std::uniform_int_distribution<uint64_t> uniform(min, max);
 		return uniform(_generator);
 	}

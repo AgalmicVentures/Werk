@@ -27,6 +27,7 @@
 
 #include "Werk/OS/Time.hpp"
 #include "Werk/Utility/Action.hpp"
+#include "Werk/Utility/Attributes.hpp"
 #include "Werk/Utility/Latch.hpp"
 
 namespace werk
@@ -43,10 +44,10 @@ public:
 		assert(nullptr != action);
 	}
 
-	uint64_t interval() const { return _interval; }
-	int64_t count() const { return _count; }
+	CHECKED uint64_t interval() const { return _interval; }
+	CHECKED int64_t count() const { return _count; }
 	void setCount(int64_t count) { _count = count; }
-	Action *action() { return _action; }
+	CHECKED Action *action() { return _action; }
 
 	void execute() override {
 		if (0 == _count) {

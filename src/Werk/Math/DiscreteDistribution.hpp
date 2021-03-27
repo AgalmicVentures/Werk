@@ -26,6 +26,8 @@
 #include <cstdint>
 #include <map>
 
+#include "Werk/Utility/Attributes.hpp"
+
 namespace werk
 {
 
@@ -40,17 +42,17 @@ class DiscreteDistribution
 {
 public:
 	//Basic accessors
-	uint64_t sampleCount() const { return _sampleCount; }
-	uint64_t weightCount() const { return _weights.size(); }
-	double weightSum() const { return _weightSum; }
-	const std::map<T, double> &weights() const { return _weights; }
+	CHECKED uint64_t sampleCount() const { return _sampleCount; }
+	CHECKED uint64_t weightCount() const { return _weights.size(); }
+	CHECKED double weightSum() const { return _weightSum; }
+	CHECKED const std::map<T, double> &weights() const { return _weights; }
 
 	//Weight accessors
-	double weight(const T &t) const {
+	CHECKED double weight(const T &t) const {
 		auto i = _weights.find(t);
 		return i != _weights.end() ? i->second : 0.0;
 	}
-	double cumulativeWeight(const T &t) const {
+	CHECKED double cumulativeWeight(const T &t) const {
 		double sum = 0.0;
 		for (const auto &i : _weights) {
 			if (i.first > t) {
@@ -63,11 +65,11 @@ public:
 	}
 
 	//Probability accessors
-	double pdf(const T &t) const {
+	CHECKED double pdf(const T &t) const {
 		auto i = _weights.find(t);
 		return i != _weights.end() ? i->second / _weightSum : 0.0;
 	}
-	double cdf(const T &t) const {
+	CHECKED double cdf(const T &t) const {
 		return cumulativeWeight(t) / _weightSum;
 	}
 

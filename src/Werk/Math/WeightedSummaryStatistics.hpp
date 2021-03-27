@@ -29,6 +29,8 @@
 #include <cstdio>
 #include <limits>
 
+#include "Werk/Utility/Attributes.hpp"
+
 namespace werk
 {
 
@@ -39,16 +41,16 @@ class WeightedSummaryStatistics
 {
 public:
 
-	uint64_t count() const { return _count; }
-	double weightSum() const { return _weightSum; }
-	double sum() const { return _sum; }
-	double average() const { return _average; }
-	double m2() const { return _m2; }
+	CHECKED uint64_t count() const { return _count; }
+	CHECKED double weightSum() const { return _weightSum; }
+	CHECKED double sum() const { return _sum; }
+	CHECKED double average() const { return _average; }
+	CHECKED double m2() const { return _m2; }
 
-	double variance() const {
+	CHECKED double variance() const {
 		return _weightSum != 0.0 ? _m2 / _weightSum : 0.0;
 	}
-	double stddev() const {
+	CHECKED double stddev() const {
 		return  _weightSum != 0.0 ? std::sqrt(_m2 / _weightSum ) : 0.0;
 	}
 

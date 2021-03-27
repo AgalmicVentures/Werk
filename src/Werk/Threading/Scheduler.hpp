@@ -27,6 +27,7 @@
 
 #include "Werk/OS/Time.hpp"
 #include "Werk/Utility/Action.hpp"
+#include "Werk/Utility/Attributes.hpp"
 
 namespace werk
 {
@@ -41,9 +42,9 @@ public:
 	ScheduledTask(Action *action, uint64_t interval, int64_t count=-1) :
 		_action(action), _interval(interval), _count(count) { }
 
-	uint64_t interval() const { return _interval; }
-	int64_t count() const { return _count; }
-	bool repeat() const { return _count != 0; }
+	CHECKED uint64_t interval() const { return _interval; }
+	CHECKED int64_t count() const { return _count; }
+	CHECKED bool repeat() const { return _count != 0; }
 
 	void execute() {
 		_action->execute();

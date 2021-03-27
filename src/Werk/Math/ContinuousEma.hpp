@@ -26,6 +26,8 @@
 #include <cmath>
 #include <limits>
 
+#include "Werk/Utility/Attributes.hpp"
+
 namespace werk
 {
 
@@ -41,10 +43,10 @@ public:
 		reset();
 	}
 
-	double factor() const { return _factor; }
-	double halfLife() const { return _halfLife; }
-	double value() const { return _value; }
-	double lastIndex() const { return _lastIndex; }
+	CHECKED double factor() const { return _factor; }
+	CHECKED double halfLife() const { return _halfLife; }
+	CHECKED double value() const { return _value; }
+	CHECKED double lastIndex() const { return _lastIndex; }
 
 	void setHalfLife(double halfLife) {
 		assert(halfLife >= 0.0);

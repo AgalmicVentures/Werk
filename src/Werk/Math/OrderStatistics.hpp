@@ -29,6 +29,8 @@
 #include <cstdint>
 #include <vector>
 
+#include "Werk/Utility/Attributes.hpp"
+
 namespace werk
 {
 
@@ -40,9 +42,9 @@ class OrderStatistics
 {
 public:
 
-	uint64_t count() const { return _samples.size(); }
+	CHECKED uint64_t count() const { return _samples.size(); }
 
-	T min() const {
+	CHECKED T min() const {
 		if (count() == 0) {
 			return 0;
 		} else {
@@ -50,7 +52,7 @@ public:
 			return _samples[0];
 		}
 	}
-	T max() const {
+	CHECKED T max() const {
 		if (count() == 0) {
 			return 0;
 		} else {
@@ -58,7 +60,7 @@ public:
 			return _samples[count() - 1];
 		}
 	}
-	T fractile(double f) const {
+	CHECKED T fractile(double f) const {
 		assert(0.0 <= f);
 		assert(f <= 1.0);
 		if (count() == 0) {
@@ -68,9 +70,9 @@ public:
 			return _samples[static_cast<size_t>(f * static_cast<double>(count()))];
 		}
 	}
-	T q1() const { return fractile(0.25); }
-	T median() const { return fractile(0.5); }
-	T q3() const { return fractile(0.75); }
+	CHECKED T q1() const { return fractile(0.25); }
+	CHECKED T median() const { return fractile(0.5); }
+	CHECKED T q3() const { return fractile(0.75); }
 
 	void sample(T t) {
 		if (handleNaN && std::isnan(t)) {

@@ -27,6 +27,7 @@
 #include <limits>
 
 #include "Action.hpp"
+#include "Attributes.hpp"
 
 namespace werk
 {
@@ -57,7 +58,7 @@ class Counter
 {
 public:
 
-	T value() const { return _value; }
+	CHECKED T value() const { return _value; }
 
 	void reset() { _value = initialValue; }
 	void increment() {

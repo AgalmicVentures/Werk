@@ -24,6 +24,7 @@
 #pragma once
 
 #include "Action.hpp"
+#include "Attributes.hpp"
 
 namespace werk
 {
@@ -39,7 +40,7 @@ class Latch
 public:
 	Latch(bool value=false) : _value(value) { }
 
-	bool value() const { return _value; }
+	CHECKED bool value() const { return _value; }
 	void set() { _value = true; }
 	void reset() { _value = false; }
 

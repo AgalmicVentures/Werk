@@ -25,6 +25,8 @@
 
 #include <string>
 
+#include "Attributes.hpp"
+
 namespace werk
 {
 
@@ -37,7 +39,7 @@ class NamedObject
 public:
 	NamedObject(const std::string &name) : _name(name) { }
 
-	const std::string &name() const { return _name; }
+	CHECKED const std::string &name() const { return _name; }
 
 private:
 	const std::string _name;

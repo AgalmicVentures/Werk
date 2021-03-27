@@ -24,6 +24,7 @@
 #pragma once
 
 #include "Werk/Math/WeightedSummaryStatistics.hpp"
+#include "Werk/Utility/Attributes.hpp"
 #include "Werk/Utility/SlidingWindow.hpp"
 
 namespace werk
@@ -38,7 +39,7 @@ class SlidingSummaryStatistics : public BaseSlidingWindow<TIndex, TValue, size, 
 public:
 	SlidingSummaryStatistics(TIndex duration) : BaseSlidingWindow<TIndex, TValue, size, SlidingWindow<TIndex, TValue, size> >(duration) { }
 
-	const SummaryStatistics<TValue> &statistics() const { return _statistics; }
+	CHECKED const SummaryStatistics<TValue> &statistics() const { return _statistics; }
 
 	void onAddValue(TIndex index, TValue value) {
 		(void) index;

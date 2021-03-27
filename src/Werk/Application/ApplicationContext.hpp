@@ -40,6 +40,7 @@
 #include "Werk/Threading/ActionQueue.hpp"
 #include "Werk/Threading/BackgroundThread.hpp"
 #include "Werk/Threading/Scheduler.hpp"
+#include "Werk/Utility/Attributes.hpp"
 #include "Werk/Utility/Latch.hpp"
 
 namespace werk
@@ -59,66 +60,66 @@ public:
 	ApplicationContext(const std::string &logFilePath);
 	~ApplicationContext();
 
-	int exitCode() { return _exitCode.load(); }
+	CHECKED int exitCode() { return _exitCode.load(); }
 	void setExitCode(int code) { _exitCode.store(code); }
-	bool isQuitting() { return _quitting.value(); }
+	CHECKED bool isQuitting() { return _quitting.value(); }
 	void quit() { _quitting.set(); }
-	bool isShutdown();
+	CHECKED bool isShutdown();
 	void shutdown();
 
 	//Optional main loop with exit code
-	int run(Action *mainAction=&NULL_ACTION);
+	CHECKED int run(Action *mainAction=&NULL_ACTION);
 
 	void logTo(Log *log) const override;
 
 	//Configuration
-	size_t processorCount() const { return _processorCount; }
-	const std::string &instanceId() { return _instanceId; }
-	bool isDebug() const { return _debug; }
-	bool isRealTime() const { return _realTime; }
-	bool isSimulation() const { return _simulation; }
-	const std::string &temporaryPath() const { return _temporaryPath; }
-	std::vector<std::string> &startupCommands() { return _startupCommands; }
-	const std::vector<std::string> &startupCommands() const { return _startupCommands; }
-	std::vector<std::string> &shutdownCommands() { return _shutdownCommands; }
-	const std::vector<std::string> &shutdownCommands() const { return _shutdownCommands; }
-	DynamicLibraryManager &dynamicLibraryManager() { return _dynamicLibraryManager; }
-	const DynamicLibraryManager &dynamicLibraryManager() const { return _dynamicLibraryManager; }
+	CHECKED size_t processorCount() const { return _processorCount; }
+	CHECKED const std::string &instanceId() { return _instanceId; }
+	CHECKED bool isDebug() const { return _debug; }
+	CHECKED bool isRealTime() const { return _realTime; }
+	CHECKED bool isSimulation() const { return _simulation; }
+	CHECKED const std::string &temporaryPath() const { return _temporaryPath; }
+	CHECKED std::vector<std::string> &startupCommands() { return _startupCommands; }
+	CHECKED const std::vector<std::string> &startupCommands() const { return _startupCommands; }
+	CHECKED std::vector<std::string> &shutdownCommands() { return _shutdownCommands; }
+	CHECKED const std::vector<std::string> &shutdownCommands() const { return _shutdownCommands; }
+	CHECKED DynamicLibraryManager &dynamicLibraryManager() { return _dynamicLibraryManager; }
+	CHECKED const DynamicLibraryManager &dynamicLibraryManager() const { return _dynamicLibraryManager; }
 
 	//Main thread
-	const Clock &realTimeClock() const { return _realTimeClock; }
-	const Clock *clock() const { return _clock; }
-	uint64_t upateId() const { return _updateId; }
-	Random &random() { return _random; }
-	const Random &random() const { return _random; }
-	ProfileManager &profileManager() { return _profileManager; }
-	const ProfileManager &profileManager() const { return _profileManager; }
-	ActionQueue<> &foregroundActionQueue() { return _backgroundActionQueue; }
-	const ActionQueue<> &foregroundActionQueue() const { return _backgroundActionQueue; }
-	std::vector<Action *> &shutdownActions() { return _shutdownActions; }
-	const std::vector<Action *> &shutdownActions() const { return _shutdownActions; }
-	Profile &interUpdateProfile() { return _interUpdateProfile; }
-	const Profile &interUpdateProfile() const { return _interUpdateProfile; }
-	Profile &updateProfile() { return _updateProfile; }
-	const Profile &updateProfile() const { return _updateProfile; }
+	CHECKED const Clock &realTimeClock() const { return _realTimeClock; }
+	CHECKED const Clock *clock() const { return _clock; }
+	CHECKED uint64_t upateId() const { return _updateId; }
+	CHECKED Random &random() { return _random; }
+	CHECKED const Random &random() const { return _random; }
+	CHECKED ProfileManager &profileManager() { return _profileManager; }
+	CHECKED const ProfileManager &profileManager() const { return _profileManager; }
+	CHECKED ActionQueue<> &foregroundActionQueue() { return _backgroundActionQueue; }
+	CHECKED const ActionQueue<> &foregroundActionQueue() const { return _backgroundActionQueue; }
+	CHECKED std::vector<Action *> &shutdownActions() { return _shutdownActions; }
+	CHECKED const std::vector<Action *> &shutdownActions() const { return _shutdownActions; }
+	CHECKED Profile &interUpdateProfile() { return _interUpdateProfile; }
+	CHECKED const Profile &interUpdateProfile() const { return _interUpdateProfile; }
+	CHECKED Profile &updateProfile() { return _updateProfile; }
+	CHECKED const Profile &updateProfile() const { return _updateProfile; }
 
 	//Background thread and tasks
-	BackgroundThread &backgroundThread() { return _backgroundThread; }
-	const BackgroundThread &backgroundThread() const { return _backgroundThread; }
-	ActionQueue<> &backgroundActionQueue() { return _backgroundActionQueue; }
-	const ActionQueue<> &backgroundActionQueue() const { return _backgroundActionQueue; }
-	LogManager &logManager() { return _logManager; }
-	const LogManager &logManager() const { return _logManager; }
-	AsyncLog *stdoutLog() { return _stdoutLog; }
-	const AsyncLog *stdoutLog() const { return _stdoutLog; }
-	AsyncLog *realTimeLog() { return _realTimeLog; }
-	const AsyncLog *realTimeLog() const { return _realTimeLog; }
-	AsyncLog *log() { return _log; }
-	const AsyncLog *log() const { return _log; }
-	Config *config() { return _config; }
-	const Config *config() const { return _config; }
-	CommandManager *commandManager() { return _commandManager; }
-	const CommandManager *commandManager() const { return _commandManager; }
+	CHECKED BackgroundThread &backgroundThread() { return _backgroundThread; }
+	CHECKED const BackgroundThread &backgroundThread() const { return _backgroundThread; }
+	CHECKED ActionQueue<> &backgroundActionQueue() { return _backgroundActionQueue; }
+	CHECKED const ActionQueue<> &backgroundActionQueue() const { return _backgroundActionQueue; }
+	CHECKED LogManager &logManager() { return _logManager; }
+	CHECKED const LogManager &logManager() const { return _logManager; }
+	CHECKED AsyncLog *stdoutLog() { return _stdoutLog; }
+	CHECKED const AsyncLog *stdoutLog() const { return _stdoutLog; }
+	CHECKED AsyncLog *realTimeLog() { return _realTimeLog; }
+	CHECKED const AsyncLog *realTimeLog() const { return _realTimeLog; }
+	CHECKED AsyncLog *log() { return _log; }
+	CHECKED const AsyncLog *log() const { return _log; }
+	CHECKED Config *config() { return _config; }
+	CHECKED const Config *config() const { return _config; }
+	CHECKED CommandManager *commandManager() { return _commandManager; }
+	CHECKED const CommandManager *commandManager() const { return _commandManager; }
 
 private:
 	//Configuration

@@ -26,6 +26,7 @@
 #include <boost/interprocess/ipc/message_queue.hpp>
 #include <unistd.h>
 
+#include "Werk/Utility/Attributes.hpp"
 #include "Werk/Utility/NamedObject.hpp"
 
 namespace werk
@@ -45,8 +46,8 @@ public:
 		heartbeat();
 	}
 
-	bool send(const std::string &message);
-	bool heartbeat() { return send(""); }
+	CHECKED bool send(const std::string &message);
+	CHECKED bool heartbeat() { return send(""); }
 
 private:
 	boost::interprocess::message_queue _queue;

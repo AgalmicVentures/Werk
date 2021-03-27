@@ -34,6 +34,7 @@
 
 #include "Werk/Logging/Log.hpp"
 #include "Werk/Utility/Action.hpp"
+#include "Werk/Utility/Attributes.hpp"
 #include "Werk/Utility/Latch.hpp"
 
 namespace werk
@@ -76,17 +77,17 @@ public:
 		_scopes.push_back(scope4);
 	}
 
-	std::vector<std::string> &scopes() { return _scopes; }
-	const std::vector<std::string> &scopes() const { return _scopes; }
+	CHECKED std::vector<std::string> &scopes() { return _scopes; }
+	CHECKED const std::vector<std::string> &scopes() const { return _scopes; }
 
 	//Basic types
-	const char *getString(const std::string &key, const char *defaultValue=nullptr, const char *help=nullptr) const;
-	bool getBool(const std::string &key, bool defaultValue=false, const char *help=nullptr) const;
-	double getDouble(const std::string &key, double defaultValue=0, const char *help=nullptr) const;
-	int64_t getInt64(const std::string &key, int64_t defaultValue=0, const char *help=nullptr) const;
-	uint64_t getUint64(const std::string &key, uint64_t defaultValue=0, const char *help=nullptr) const;
-	uint64_t getStorageAmount(const std::string &key, uint64_t defaultValue=0, const char *help=nullptr) const;
-	uint64_t getTimeAmount(const std::string &key, uint64_t defaultValue=0, const char *help=nullptr) const;
+	CHECKED const char *getString(const std::string &key, const char *defaultValue=nullptr, const char *help=nullptr) const;
+	CHECKED bool getBool(const std::string &key, bool defaultValue=false, const char *help=nullptr) const;
+	CHECKED double getDouble(const std::string &key, double defaultValue=0, const char *help=nullptr) const;
+	CHECKED int64_t getInt64(const std::string &key, int64_t defaultValue=0, const char *help=nullptr) const;
+	CHECKED uint64_t getUint64(const std::string &key, uint64_t defaultValue=0, const char *help=nullptr) const;
+	CHECKED uint64_t getStorageAmount(const std::string &key, uint64_t defaultValue=0, const char *help=nullptr) const;
+	CHECKED uint64_t getTimeAmount(const std::string &key, uint64_t defaultValue=0, const char *help=nullptr) const;
 
 	//List types
 	const char *getStrings(const std::string &key, std::vector<std::string> &values,

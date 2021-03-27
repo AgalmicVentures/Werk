@@ -27,6 +27,8 @@
 
 #include "Config.hpp"
 
+#include "Werk/Utility/Attributes.hpp"
+
 namespace werk
 {
 
@@ -37,8 +39,8 @@ class MapConfigSource : public ConfigSource
 {
 public:
 
-	std::map<std::string, std::string> &values() { return _values; }
-	const std::map<std::string, std::string> &values() const { return _values; }
+	CHECKED std::map<std::string, std::string> &values() { return _values; }
+	CHECKED const std::map<std::string, std::string> &values() const { return _values; }
 
 	bool reloadConfig(std::map<std::string, std::string> &values) override {
 		for (const auto &i : _values) {

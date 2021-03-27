@@ -32,6 +32,7 @@
 #include "Werk/OS/Time.hpp"
 #include "Werk/Profiling/ProfileManager.hpp"
 #include "Werk/Utility/Action.hpp"
+#include "Werk/Utility/Attributes.hpp"
 #include "Werk/Utility/Latch.hpp"
 
 namespace werk
@@ -49,12 +50,12 @@ public:
 	BackgroundTask(Action *action) :
 		_action(action), _profile(std::string("Background_") + action->name()) { }
 
-	const Action *action() const { return _action; }
-	Profile &profile() { return _profile; }
-	const Profile &profile() const { return _profile; }
+	CHECKED const Action *action() const { return _action; }
+	CHECKED Profile &profile() { return _profile; }
+	CHECKED const Profile &profile() const { return _profile; }
 
-	Latch<std::atomic<bool> > &active() { return _active; }
-	const Latch<std::atomic<bool> > &active() const { return _active; }
+	CHECKED Latch<std::atomic<bool> > &active() { return _active; }
+	CHECKED const Latch<std::atomic<bool> > &active() const { return _active; }
 
 	void execute();
 
@@ -82,9 +83,9 @@ public:
 	}
 	~BackgroundThread() { stop(); }
 
-	bool stopped() const { return _stopped; }
+	CHECKED bool stopped() const { return _stopped; }
 
-	uint64_t intervalNs() const { return _intervalNs; }
+	CHECKED uint64_t intervalNs() const { return _intervalNs; }
 	void setIntervalNs(uint64_t intervalNs) { _intervalNs = intervalNs; }
 
 	//Used to pass time back from the main thread during e.g. simulations
@@ -93,8 +94,8 @@ public:
 	void logTo(Log *log) const override;
 
 	//Tasks in the order they should be executed
-	std::vector<BackgroundTask *> &tasks() { return _tasks; }
-	const std::vector<BackgroundTask *> &tasks() const { return _tasks; }
+	CHECKED std::vector<BackgroundTask *> &tasks() { return _tasks; }
+	CHECKED const std::vector<BackgroundTask *> &tasks() const { return _tasks; }
 	void addTask(Action *action) {
 		BackgroundTask *task = new BackgroundTask(action);
 		if (nullptr != _profileManager) {
@@ -103,8 +104,8 @@ public:
 		_tasks.push_back(task);
 	}
 
-	const Clock &mainClock() const { return _backgroundClock; }
-	const Clock &backgroundClock() const { return _backgroundClock; }
+	CHECKED const Clock &mainClock() const { return _backgroundClock; }
+	CHECKED const Clock &backgroundClock() const { return _backgroundClock; }
 
 	void stop() {
 		if (_running) {

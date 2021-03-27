@@ -25,6 +25,8 @@
 
 #include "Config.hpp"
 
+#include "Werk/Utility/Attributes.hpp"
+
 namespace werk
 {
 
@@ -37,7 +39,7 @@ public:
 
 	IniConfigSource(const std::string &path) : _path(path) { }
 
-	bool reloadConfig(std::map<std::string, std::string> &values) override;
+	CHECKED bool reloadConfig(std::map<std::string, std::string> &values) override;
 
 private:
 	const std::string _path;

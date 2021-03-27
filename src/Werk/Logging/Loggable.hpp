@@ -24,6 +24,7 @@
 #pragma once
 
 #include "Werk/Utility/Action.hpp"
+#include "Werk/Utility/Attributes.hpp"
 
 #include "Log.hpp"
 
@@ -48,7 +49,7 @@ public:
 	StringLoggable(const std::string value, LogLevel level=LogLevel::INFO) :
 		_value(value), _level(level) { }
 
-	const std::string &value() const { return _value; }
+	CHECKED const std::string &value() const { return _value; }
 
 	void logTo(Log *log) const override;
 

@@ -29,6 +29,7 @@
 #include <string>
 
 #include "Werk/OS/Time.hpp"
+#include "Werk/Utility/Attributes.hpp"
 #include "Werk/Utility/NamedObject.hpp"
 
 namespace werk
@@ -64,7 +65,7 @@ public:
 	Log(const std::string &name, const werk::Clock *clock) : NamedObject(name), _clock(clock) { }
 	virtual ~Log() { }
 
-	const werk::Clock *clock() const { return _clock; }
+	CHECKED const werk::Clock *clock() const { return _clock; }
 
 	virtual void logRaw(LogLevel level, const char *message) = 0;
 	virtual void log(LogLevel level, const char *format, ...) = 0;

@@ -34,6 +34,7 @@
 
 #include "Werk/Logging/Log.hpp"
 #include "Werk/Utility/Action.hpp"
+#include "Werk/Utility/Attributes.hpp"
 #include "Werk/Utility/Latch.hpp"
 
 namespace werk
@@ -49,7 +50,7 @@ class Configurable
 {
 public:
 	//Pass the Config object so
-	virtual bool reloadConfig(const Config &config) = 0;
+	CHECKED virtual bool reloadConfig(const Config &config) = 0;
 };
 
 /**
@@ -59,7 +60,7 @@ public:
 class ConfigSource
 {
 public:
-	virtual bool reloadConfig(std::map<std::string, std::string> &values) = 0;
+	CHECKED virtual bool reloadConfig(std::map<std::string, std::string> &values) = 0;
 };
 
 /**
@@ -99,7 +100,7 @@ public:
 
 	//Flags the config to be reloaded in the background
 	void reloadConfig() { _reloadConfig.set(); }
-	Action *getReloadConfigAction() { return &_reloadConfigAction; }
+	CHECKED Action *getReloadConfigAction() { return &_reloadConfigAction; }
 
 	//Run in the background to reload
 	void execute() override;
@@ -108,7 +109,7 @@ public:
 	void reloadConfigurables();
 
 	//Basic value-as-string accessor - this is the method that every inheriting class must override (return nullptr if the key is missing)
-	const char *getStringRaw(const std::string &key) const {
+	CHECKED const char *getStringRaw(const std::string &key) const {
 		const ConfigValuesT * const values = _values;
 		auto i = values->find(key);
 		return i == values->end() ? nullptr : i->second.c_str();
@@ -118,19 +119,19 @@ public:
 	//
 	//specificKey is used by ScopedConfig to make the human readable logging show
 	//the specific key being read, while reading from the general key.
-	const char *getString(const std::string &key, const char *defaultValue=nullptr,
+	CHECKED const char *getString(const std::string &key, const char *defaultValue=nullptr,
 		const char *help=nullptr, const char *specificKey=nullptr) const;
-	bool getBool(const std::string &key, bool defaultValue=false,
+	CHECKED bool getBool(const std::string &key, bool defaultValue=false,
 		const char *help=nullptr, const char *specificKey=nullptr) const;
-	double getDouble(const std::string &key, double defaultValue=0,
+	CHECKED double getDouble(const std::string &key, double defaultValue=0,
 		const char *help=nullptr, const char *specificKey=nullptr) const;
-	int64_t getInt64(const std::string &key, int64_t defaultValue=0,
+	CHECKED int64_t getInt64(const std::string &key, int64_t defaultValue=0,
 		const char *help=nullptr, const char *specificKey=nullptr) const;
-	uint64_t getUint64(const std::string &key, uint64_t defaultValue=0,
+	CHECKED uint64_t getUint64(const std::string &key, uint64_t defaultValue=0,
 		const char *help=nullptr, const char *specificKey=nullptr) const;
-	uint64_t getStorageAmount(const std::string &key, uint64_t defaultValue=0,
+	CHECKED uint64_t getStorageAmount(const std::string &key, uint64_t defaultValue=0,
 		const char *help=nullptr, const char *specificKey=nullptr) const;
-	uint64_t getTimeAmount(const std::string &key, uint64_t defaultValue=0,
+	CHECKED uint64_t getTimeAmount(const std::string &key, uint64_t defaultValue=0,
 		const char *help=nullptr, const char *specificKey=nullptr) const;
 
 	//List types

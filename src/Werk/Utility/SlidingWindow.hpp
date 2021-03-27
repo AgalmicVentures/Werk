@@ -26,6 +26,8 @@
 #include <cassert>
 #include <cinttypes>
 
+#include "Attributes.hpp"
+
 namespace werk
 {
 
@@ -41,15 +43,15 @@ class BaseSlidingWindow
 public:
 	BaseSlidingWindow(TIndex duration) : _duration(duration) { }
 
-	TIndex duration() const { return _duration; }
+	CHECKED TIndex duration() const { return _duration; }
 
-	size_t count() const { return _count; }
-	bool isEmpty() const { return _count == 0; }
-	bool isFull() const { return _count == size; }
+	CHECKED size_t count() const { return _count; }
+	CHECKED bool isEmpty() const { return _count == 0; }
+	CHECKED bool isFull() const { return _count == size; }
 
 	//NOTE: These are not bounds checked since there is no sensible default
-	TIndex frontIndex() const { return _indexes[_front]; }
-	TValue front() const { return _values[_front]; }
+	CHECKED TIndex frontIndex() const { return _indexes[_front]; }
+	CHECKED TValue front() const { return _values[_front]; }
 
 	void slideOne() {
 		if (_count == 0) {
@@ -82,7 +84,7 @@ public:
 	}
 
 protected:
-	size_t backLocation() const {
+	CHECKED size_t backLocation() const {
 		const size_t back = _front + _count;
 		return back >= size ? back - size : back;
 	}

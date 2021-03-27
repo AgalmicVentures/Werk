@@ -26,6 +26,8 @@
 #include <cassert>
 #include <cinttypes>
 
+#include "Attributes.hpp"
+
 namespace werk
 {
 
@@ -38,14 +40,14 @@ class Throttle
 public:
 	Throttle(TIndex duration) : _duration(duration) { }
 
-	TIndex duration() const { return _duration; }
+	CHECKED TIndex duration() const { return _duration; }
 
-	size_t count() const { return _count; }
-	bool isEmpty() const { return _count == 0; }
-	bool isFull() const { return _count == size; }
+	CHECKED size_t count() const { return _count; }
+	CHECKED bool isEmpty() const { return _count == 0; }
+	CHECKED bool isFull() const { return _count == size; }
 
 	//NOTE: These are not bounds checked since there is no sensible default
-	TIndex frontIndex() const { return _indexes[_front]; }
+	CHECKED TIndex frontIndex() const { return _indexes[_front]; }
 
 	void slideOne() {
 		if (_count == 0) {
@@ -69,7 +71,7 @@ public:
 		_indexes[back] = index;
 		_count += 1;
 	}
-	bool tryUseSlot(TIndex index) {
+	CHECKED bool tryUseSlot(TIndex index) {
 		if (isFull()) {
 			return false;
 		}

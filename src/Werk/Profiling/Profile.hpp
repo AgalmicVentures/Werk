@@ -27,6 +27,7 @@
 
 #include "Werk/Math/OrderStatistics.hpp"
 #include "Werk/Math/SummaryStatistics.hpp"
+#include "Werk/Utility/Attributes.hpp"
 #include "Werk/Utility/NamedObject.hpp"
 
 #define PROFILE_START(p) (p).start(werk::monotoneTime())
@@ -45,18 +46,18 @@ public:
 	Profile(const std::string &name, uint64_t sampleSize = 100, uint64_t warmupSize = 0)
 		: NamedObject(name), _sampleSize(sampleSize), _warmupSize(warmupSize) { }
 
-	uint64_t sampleSize() const { return _sampleSize; }
-	uint64_t count() const { return _count; }
-	const RangedSummaryStatistics<uint64_t> &warmupStatistics() const { return _warmupStatistics; }
-	const OrderStatistics<uint64_t> &orderStatistics() const { return _orderStatistics; }
-	const RangedSummaryStatistics<uint64_t> &minStatistics() const { return _minStatistics; }
-	const RangedSummaryStatistics<uint64_t> &f25Statistics() const { return _f25Statistics; }
-	const RangedSummaryStatistics<uint64_t> &f50Statistics() const { return _f50Statistics; }
-	const RangedSummaryStatistics<uint64_t> &f75Statistics() const { return _f75Statistics; }
-	const RangedSummaryStatistics<uint64_t> &f90Statistics() const { return _f90Statistics; }
-	const RangedSummaryStatistics<uint64_t> &f95Statistics() const { return _f95Statistics; }
-	const RangedSummaryStatistics<uint64_t> &f99Statistics() const { return _f99Statistics; }
-	const RangedSummaryStatistics<uint64_t> &maxStatistics() const { return _maxStatistics; }
+	CHECKED uint64_t sampleSize() const { return _sampleSize; }
+	CHECKED uint64_t count() const { return _count; }
+	CHECKED const RangedSummaryStatistics<uint64_t> &warmupStatistics() const { return _warmupStatistics; }
+	CHECKED const OrderStatistics<uint64_t> &orderStatistics() const { return _orderStatistics; }
+	CHECKED const RangedSummaryStatistics<uint64_t> &minStatistics() const { return _minStatistics; }
+	CHECKED const RangedSummaryStatistics<uint64_t> &f25Statistics() const { return _f25Statistics; }
+	CHECKED const RangedSummaryStatistics<uint64_t> &f50Statistics() const { return _f50Statistics; }
+	CHECKED const RangedSummaryStatistics<uint64_t> &f75Statistics() const { return _f75Statistics; }
+	CHECKED const RangedSummaryStatistics<uint64_t> &f90Statistics() const { return _f90Statistics; }
+	CHECKED const RangedSummaryStatistics<uint64_t> &f95Statistics() const { return _f95Statistics; }
+	CHECKED const RangedSummaryStatistics<uint64_t> &f99Statistics() const { return _f99Statistics; }
+	CHECKED const RangedSummaryStatistics<uint64_t> &maxStatistics() const { return _maxStatistics; }
 
 	void start(uint64_t time) { _startTime = time; }
 	void stop(uint64_t time) {

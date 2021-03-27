@@ -29,12 +29,14 @@
 #include <sys/time.h>
 #endif
 
+#include "Werk/Utility/Attributes.hpp"
+
 namespace werk {
 
 /**
  * Returns the wall clock time, i.e. it is affected by NTP adjustments.
  */
-inline uint64_t epochTime()
+CHECKED inline uint64_t epochTime()
 {
 #ifdef __MACH__
 	struct timeval t;
@@ -57,7 +59,7 @@ inline uint64_t epochTime()
 /**
  * Returns a time which never decreases, i.e. it is not affected by NTP adjustments.
  */
-inline uint64_t monotoneTime()
+CHECKED inline uint64_t monotoneTime()
 {
 #ifdef __MACH__
 	struct timeval t;
@@ -80,7 +82,7 @@ inline uint64_t monotoneTime()
 class Clock
 {
 public:
-	uint64_t time() const { return _time; }
+	CHECKED uint64_t time() const { return _time; }
 	void setTime(uint64_t time) { _time = time; }
 	void setEpochTime() { _time = epochTime(); }
 	void setMonotoneTime() { _time = monotoneTime(); }

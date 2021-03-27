@@ -48,7 +48,7 @@ public:
 	NullLog *nullLog() { return _nullLog; }
 
 	//Accessors
-	Log *getLog(const std::string &name) {
+	CHECKED Log *getLog(const std::string &name) {
 		auto i = _logs.find(name);
 		return i == _logs.end() ? nullptr : i->second;
 	}

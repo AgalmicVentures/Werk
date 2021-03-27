@@ -30,6 +30,8 @@
 #include <limits>
 #include <type_traits>
 
+#include "Werk/Utility/Attributes.hpp"
+
 namespace werk
 {
 
@@ -41,15 +43,15 @@ class SummaryStatistics
 {
 public:
 
-	uint64_t count() const { return _count; }
-	T sum() const { return _sum; }
-	double average() const { return _average; }
-	double m2() const { return _m2; }
+	CHECKED uint64_t count() const { return _count; }
+	CHECKED T sum() const { return _sum; }
+	CHECKED double average() const { return _average; }
+	CHECKED double m2() const { return _m2; }
 
-	double variance() const {
+	CHECKED double variance() const {
 		return _count >= 2 ? _m2 / static_cast<double>(_count) : 0.0;
 	}
-	double stddev() const {
+	CHECKED double stddev() const {
 		return _count >= 2 ? std::sqrt(_m2 / static_cast<double>(_count)) : 0.0;
 	}
 

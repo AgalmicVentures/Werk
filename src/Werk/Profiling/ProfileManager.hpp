@@ -29,6 +29,7 @@
 
 #include "Werk/OS/Time.hpp"
 #include "Werk/Profiling/Profile.hpp"
+#include "Werk/Utility/Attributes.hpp"
 
 namespace werk
 {
@@ -53,7 +54,7 @@ public:
 		}
 	}
 
-	const std::map<std::string, Profile *> &profiles() const { return _profiles; }
+	CHECKED const std::map<std::string, Profile *> &profiles() const { return _profiles; }
 
 	void add(Profile *profile) {
 		assert(nullptr != profile);

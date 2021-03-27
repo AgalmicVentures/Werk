@@ -56,17 +56,21 @@ void Config::execute()
 }
 
 //Run on whatever thread the configurables live on
-void Config::reloadConfigurables()
+bool Config::reloadConfigurables()
 {
 	//Don't reload unless changed
 	if (!_changed.value()) {
-		return;
+		return true;
 	}
 	_changed.reset();
 
+	bool success = true;
 	for (Configurable *configurable : _configurables) {
-		configurable->reloadConfig(*this);
+		if (!configurable->reloadConfig(*this)) {
+			success = false;
+		}
 	}
+	return success;
 }
 
 //Basic types

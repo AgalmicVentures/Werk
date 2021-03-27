@@ -43,7 +43,8 @@ public:
 		_queue(boost::interprocess::open_only, name.c_str()),
 		_pid(getpid()) {
 		//Send a heartbeat to let the server know about the connection
-		heartbeat();
+		//The return value of this one is ignored
+		(void) heartbeat();
 	}
 
 	CHECKED bool send(const std::string &message);

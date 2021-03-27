@@ -38,9 +38,16 @@ void heartbeat(std::atomic<bool> *running, werk::IpcConsoleClient *client)
 	delay.tv_sec = 1;
 	delay.tv_nsec = 0;
 
+	uint32_t failedHeartbeats = 0;
 	while (*running) {
 		nanosleep(&delay, nullptr);
-		client->heartbeat();
+		if (!client->heartbeat()) {
+			std::cout << "Failed to send heartbeat..." << std::endl;
+			failedHeartbeats += 1;
+			if (3 <= failedHeartbeats) {
+				break;
+			}
+		}
 	}
 }
 

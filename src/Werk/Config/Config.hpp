@@ -106,7 +106,7 @@ public:
 	void execute() override;
 
 	//Run on whatever thread the configurables live on
-	void reloadConfigurables();
+	CHECKED bool reloadConfigurables();
 
 	//Basic value-as-string accessor - this is the method that every inheriting class must override (return nullptr if the key is missing)
 	CHECKED const char *getStringRaw(const std::string &key) const {

@@ -79,6 +79,7 @@ public:
 	CHECKED bool isRealTime() const { return _realTime; }
 	CHECKED bool isSimulation() const { return _simulation; }
 	CHECKED const std::string &temporaryPath() const { return _temporaryPath; }
+	CHECKED const char *profilesPath() const { return _profilesPath; }
 	CHECKED std::vector<std::string> &startupCommands() { return _startupCommands; }
 	CHECKED const std::vector<std::string> &startupCommands() const { return _startupCommands; }
 	CHECKED std::vector<std::string> &shutdownCommands() { return _shutdownCommands; }
@@ -142,6 +143,7 @@ private:
 	uint64_t _updateId = 0;
 	Random _random;
 	ProfileManager _profileManager;
+	const char *_profilesPath = nullptr;
 	ActionQueue<> _foregroundActionQueue { "ForegroundActionQueue" };
 	std::vector<Action *> _shutdownActions;
 	Profile _interUpdateProfile;

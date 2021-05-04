@@ -36,13 +36,13 @@ namespace werk
 class WriteProfilesAction : public Action
 {
 public:
-	WriteProfilesAction(const std::string &name, Log *log, const ProfileManager &profileManager, const std::string &path) :
+	WriteProfilesAction(const std::string &name, Log *log, const ProfileManager &profileManager, const char *path) :
 		Action(name), _log(log), _profileManager(profileManager), _path(path) { }
 
 	void execute() override {
-		FILE *file = std::fopen(_path.c_str(), "w");
+		FILE *file = std::fopen(_path, "w");
 		if (nullptr == file) {
-			_log->log(LogLevel::WARNING, "Failed to write profiles to %s", _path.c_str());
+			_log->log(LogLevel::WARNING, "Failed to write profiles to %s", _path);
 			return;
 		}
 
@@ -53,7 +53,7 @@ public:
 private:
 	Log *_log;
 	const ProfileManager &_profileManager;
-	const std::string _path;
+	const char *_path;
 };
 
 }

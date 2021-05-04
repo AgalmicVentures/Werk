@@ -403,7 +403,7 @@ int ApplicationContext::run(Action *mainAction)
 		"Number of times the main thread can miss the watchdog");
 	//TODO: configurable watchdog action
 	Watchdog *watchdog = new Watchdog("Watchdog", &_backgroundThread.backgroundClock(),
-		new LogAction("WatchdogWarning", new StringLoggable("Main thread missed watchdog timer! It may be hung or dead.", LogLevel::ERROR), _log),
+		new LogAction("WatchdogWarning", new StringLoggable("Main thread missed watchdog timer! It may be hung or dead.", LogLevel::CRITICAL), _log),
 		watchdogInterval, watchdogAllowedMisses);
 
 	if (0 != watchdogInterval) {

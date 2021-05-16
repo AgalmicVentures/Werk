@@ -34,7 +34,8 @@
 
 #include "Werk/Utility/Action.hpp"
 
-namespace werk {
+namespace werk
+{
 
 /**
  * A log that can do its I/O on a `BackgroundThread`.
@@ -43,8 +44,8 @@ class AsyncLog : public Log, public Action
 {
 public:
 
-	AsyncLog(const std::string &name, const werk::Clock *clock, FILE *file=stdout) :
-		Log(name, clock), Action(name + "_Writer"), _file(file) { }
+	AsyncLog(const std::string &name, const Clock *clock, FILE *file=stdout, Clock *realTimeClock=nullptr) :
+		Log(name, clock), Action(name + "_Writer"), _file(file), _realTimeClock(realTimeClock) { }
 
 	virtual void log(LogLevel level, const char *format, ...) override;
 	virtual void logRaw(LogLevel level, const char *rawMessage) override;
@@ -54,6 +55,7 @@ public:
 
 private:
 	FILE *_file;
+	Clock *_realTimeClock;
 
 	std::atomic<uint64_t> _nextSendSequenceNumber = 0;
 	boost::lockfree::queue<LogMessage, boost::lockfree::capacity<4096> > _messages;

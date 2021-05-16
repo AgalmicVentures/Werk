@@ -71,7 +71,7 @@ ApplicationContext::ApplicationContext(const std::string &configPath) :
 
 	/********** Stdout Log **********/
 
-	_stdoutLog = new AsyncLog("StdoutLog", &_backgroundThread.backgroundClock());
+	_stdoutLog = new AsyncLog("StdoutLog", &_backgroundThread.backgroundClock(), stdout, &_realTimeClock);
 	assert(_logManager.add(_stdoutLog));
 	_backgroundThread.addTask(_stdoutLog);
 
@@ -117,7 +117,9 @@ ApplicationContext::ApplicationContext(const std::string &configPath) :
 		file = stderr;
 	}
 
-	_realTimeLog = new AsyncLog("RealTimeLog", &_backgroundThread.backgroundClock(), file);
+	const bool updateClockOnLog = _config->getBool("Application.UpdateClockOnLog", true,
+		"Updates the clock one each log line");
+	_realTimeLog = new AsyncLog("RealTimeLog", &_realTimeClock, file, updateClockOnLog ? &_realTimeClock : nullptr);
 	assert(_logManager.add(_realTimeLog));
 	_backgroundThread.addTask(_realTimeLog);
 	_config->setLog(_realTimeLog);

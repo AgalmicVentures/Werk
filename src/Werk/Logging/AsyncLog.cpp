@@ -35,6 +35,11 @@ namespace werk
 //TODO: move formatting to housekeeping thread
 void AsyncLog::log(LogLevel level, const char *format, ...)
 {
+	//Update the time if there is a real time clock
+	if (nullptr != _realTimeClock) {
+		_realTimeClock->setEpochTime();
+	}
+
 	//Create the buffer
 	LogMessage message;
 	message.sequenceNumber = _nextSendSequenceNumber.fetch_add(1);
@@ -62,6 +67,12 @@ void AsyncLog::log(LogLevel level, const char *format, ...)
 
 void AsyncLog::logRaw(LogLevel level, const char *rawMessage)
 {
+	//Update the time if there is a real time clock
+	if (nullptr != _realTimeClock) {
+		_realTimeClock->setEpochTime();
+	}
+
+	//Create the buffer
 	LogMessage message;
 	message.sequenceNumber = _nextSendSequenceNumber.fetch_add(1);
 	message.time = clock()->time();

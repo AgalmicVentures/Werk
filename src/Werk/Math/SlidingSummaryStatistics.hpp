@@ -39,7 +39,7 @@ class SlidingSummaryStatistics : public BaseSlidingWindow<TIndex, TValue, size, 
 public:
 	SlidingSummaryStatistics(TIndex duration) : BaseSlidingWindow<TIndex, TValue, size, SlidingWindow<TIndex, TValue, size> >(duration) { }
 
-	CHECKED const SummaryStatistics<TValue> &statistics() const { return _statistics; }
+	CHECKED const SummaryStatistics &statistics() const { return _statistics; }
 
 	void onAddValue(TIndex index, TValue value) {
 		(void) index;
@@ -51,7 +51,7 @@ public:
 	}
 
 protected:
-	WeightedSummaryStatistics<TValue> _statistics;
+	WeightedSummaryStatistics _statistics;
 };
 
 }

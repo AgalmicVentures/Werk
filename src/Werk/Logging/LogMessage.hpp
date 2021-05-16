@@ -28,7 +28,8 @@
 
 #include "Log.hpp"
 
-namespace werk {
+namespace werk
+{
 
 /**
  * Log message container for passing between threads.

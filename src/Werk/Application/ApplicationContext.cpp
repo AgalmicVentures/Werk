@@ -208,15 +208,23 @@ ApplicationContext::ApplicationContext(const std::string &configPath) :
 	}
 
 	//Setup profiling output
-	const char *profilesPath = _config->getString("Application.ProfilesPath", nullptr, "Path to write profiling data on exit");
-	if (nullptr != profilesPath) {
-		_shutdownActions.push_back(new WriteProfilesAction("WriteProfiles", _log, _profileManager, profilesPath));
-	}
+	_profilesPath = _config->getString("Application.ProfilesPath", nullptr, "Path to write profiling data on exit");
+	//Rest moved a few lines below to allow adding a command
 
 	/********** Commands **********/
 
 	//Initialize command manager
 	_commandManager = new CommandManager(_backgroundThread.backgroundClock(), _log);
+
+	if (nullptr != _profilesPath) {
+		WriteProfilesAction *writeProfilesAction = new WriteProfilesAction("WriteProfiles", _log, _profileManager, _profilesPath);
+		_shutdownActions.push_back(writeProfilesAction);
+
+		//TODO: it would be nice if a path could be passed to this -- write a custom command?
+		_commandManager->add("writeProfiles", new ActionCommand(
+			writeProfilesAction,
+			"Writes the profiles immediately."));
+	}
 
 	_commandManager->add("app", new ActionCommand(
 		new LogAction("LogApplicationContext", this, _log),
@@ -397,7 +405,7 @@ int ApplicationContext::run(Action *mainAction)
 		"Number of times the main thread can miss the watchdog");
 	//TODO: configurable watchdog action
 	Watchdog *watchdog = new Watchdog("Watchdog", &_backgroundThread.backgroundClock(),
-		new LogAction("WatchdogWarning", new StringLoggable("Main thread missed watchdog timer! It may be hung or dead.", LogLevel::ERROR), _log),
+		new LogAction("WatchdogWarning", new StringLoggable("Main thread missed watchdog timer! It may be hung or dead.", LogLevel::CRITICAL), _log),
 		watchdogInterval, watchdogAllowedMisses);
 
 	if (0 != watchdogInterval) {

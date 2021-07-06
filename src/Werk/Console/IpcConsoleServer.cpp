@@ -118,8 +118,8 @@ void IpcConsoleServer::update()
 			_log->log(LogLevel::JSON, "{\"type\":\"ipcConsoleServer.noHeartbeats\",\"lastCommandTime\":%" PRIu64 ",\"lastHeartbeatTime\":%" PRIu64 ",\"lastCommandAgeSec\":%.1lf,\"lastHeartbeatAgeSec\":%.1lf}",
 				_lastCommandTime,
 				_lastHeartbeatTime,
-				(time - _lastCommandTime) / 1e9,
-				(time - _lastHeartbeatTime) / 1e9);
+				static_cast<double>(time - _lastCommandTime) / 1e9,
+				static_cast<double>(time - _lastHeartbeatTime) / 1e9);
 		}
 	}
 }

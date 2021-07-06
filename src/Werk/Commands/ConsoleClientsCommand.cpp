@@ -45,8 +45,8 @@ bool ConsoleClientsCommand::execute(const std::vector<std::string> &)
 	for (auto i = _ipcConsoleServer.clientStates().begin(); i != _ipcConsoleServer.clientStates().end(); ++i) {
 		_log->log(LogLevel::JSON, "{\"type\":\"ipcConsoleClient.state\",\"clientPid\":%" PRIu64 ",\"lastSequenceNumber\":%" PRIu64 ",\"lastCommandTime\":%" PRIu64 ",\"lastHeartbeatTime\":%" PRIu64 ",\"lastCommandAgeSec\":%.1lf,\"lastHeartbeatAgeSec\":%.1lf}",
 			i->first, i->second.lastSequenceNumber, i->second.lastCommandTime, i->second.lastHeartbeatTime,
-			(time - i->second.lastCommandTime) / 1e9,
-			(time - i->second.lastHeartbeatTime) / 1e9
+			static_cast<double>(time - i->second.lastCommandTime) / 1e9,
+			static_cast<double>(time - i->second.lastHeartbeatTime) / 1e9
 		);
 	}
 	return true;

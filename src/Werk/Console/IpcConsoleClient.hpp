@@ -44,7 +44,7 @@ public:
 		_pid(getpid()) {
 		//Send a heartbeat to let the server know about the connection
 		//The return value of this one is ignored (and the ! is
-        //necessary for some compilers to not warn).
+		//necessary for some compilers to not warn).
 		(void) !heartbeat();
 	}
 

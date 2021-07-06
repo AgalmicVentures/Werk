@@ -95,9 +95,9 @@ int main(int argc, char **argv)
 		connected = true;
 
 		//Run commands from arguments
-		std::atomic<bool> running = true;
+		std::atomic<bool> running(true);
 		std::vector<std::string> messages;
-		for (uint32_t i = 2; i < argc; ++i) {
+		for (int32_t i = 2; i < argc; ++i) {
 			if (!sendMessage(&running, client, argv[i])) {
 				return 0;
 			}

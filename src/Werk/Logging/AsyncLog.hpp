@@ -45,7 +45,8 @@ class AsyncLog : public Log, public Action
 public:
 
 	AsyncLog(const std::string &name, const Clock *clock, FILE *file=stdout, Clock *realTimeClock=nullptr) :
-		Log(name, clock), Action(name + "_Writer"), _file(file), _realTimeClock(realTimeClock) { }
+		Log(name, clock), Action(name + "_Writer"), _file(file), _realTimeClock(realTimeClock),
+        _nextSendSequenceNumber(0), _nextReceiveSequenceNumber(0) { }
 
 	virtual void log(LogLevel level, const char *format, ...) override;
 	virtual void logRaw(LogLevel level, const char *rawMessage) override;
@@ -57,9 +58,9 @@ private:
 	FILE *_file;
 	Clock *_realTimeClock;
 
-	std::atomic<uint64_t> _nextSendSequenceNumber = 0;
+	std::atomic<uint64_t> _nextSendSequenceNumber;
 	boost::lockfree::queue<LogMessage, boost::lockfree::capacity<4096> > _messages;
-	uint64_t _nextReceiveSequenceNumber = 0;
+	uint64_t _nextReceiveSequenceNumber;
 };
 
 }

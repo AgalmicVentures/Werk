@@ -97,6 +97,8 @@ def configure(ctx):
 	ctx.env.INCLUDES += ['.'] #, 'src']
 	ctx.env.CXXFLAGS = [
 		'-std=c++17',
+		'-march=native',
+		'-mtune=native',
 
 		'-Wall',
 		'-Wno-trigraphs',
@@ -117,7 +119,6 @@ def configure(ctx):
 			'-Wundef',
 			'-Wuseless-cast',
 		]
-
 
 	#Include symbols for debugging, or when explicitly requested
 	if ctx.options.debug or ctx.options.symbols:

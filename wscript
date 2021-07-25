@@ -76,9 +76,11 @@ def options(ctx):
 
 	_loadTools(ctx)
 
-	ctx.add_option('-d', '--debug', dest='debug', action='store_true',
+	ctx.add_option('-d', '--debug', action='store_true',
 		help='Debug mode')
-	ctx.add_option('-s', '--symbols', dest='symbols', action='store_true',
+	ctx.add_option('-l', '--lto', action='store_true',
+		help='Debug symbols (on by default in debug mode)')
+	ctx.add_option('-s', '--symbols', action='store_true',
 		help='Debug symbols (on by default in debug mode)')
 	ctx.add_option('--valgrind', action='store_true',
 		help='Enable valgrind for the action if applicable')
@@ -137,6 +139,13 @@ def configure(ctx):
 		ctx.env.CXXFLAGS.append('-O3')
 		ctx.env.DEFINES.append('NDEBUG') #Causes asserts to compile out: http://www.cplusplus.com/reference/cassert/assert/
 		ctx.env.ENVIRONMENT = 'release'
+
+		if ctx.options.lto:
+			ctx.env.AR = 'gcc-ar'
+			ctx.env.NM = 'gcc-nm'
+			ctx.env.RNALIB = 'gcc-ranlib'
+			ctx.env.CXXFLAGS.append('-flto')
+			ctx.env.CXXFLAGS.append('-Wl,-flto')
 
 	#Setup libraries
 	ctx.env.LIB = [

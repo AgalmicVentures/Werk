@@ -48,7 +48,6 @@ public:
 private:
 
 	std::mt19937_64 _generator;
-
 };
 
 }

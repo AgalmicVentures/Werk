@@ -99,7 +99,6 @@ protected:
 	std::vector<std::string> _scopes;
 
 	void findScopedKey(const std::string &key, std::string &specificKey, std::string &foundKey) const;
-
 };
 
 }

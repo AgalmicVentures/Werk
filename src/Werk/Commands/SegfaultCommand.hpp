@@ -23,7 +23,7 @@
 
 #pragma once
 
-#include <signal.h>
+#include <csignal>
 
 #include "Werk/Logging/Log.hpp"
 
@@ -46,7 +46,7 @@ public:
 	bool execute(const std::vector<std::string> &arguments) override {
 		//Join all but the first argument since the command name needn't be echoed
 		_log->logRaw(LogLevel::WARNING, "Intentionally segfaulting...");
-		raise(SIGSEGV);
+		std::raise(SIGSEGV);
 		return true;
 	}
 

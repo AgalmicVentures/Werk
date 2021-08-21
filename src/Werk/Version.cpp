@@ -26,7 +26,8 @@
 namespace werk
 {
 
-const char *getVersion() {
+const char *getVersion()
+{
 	return WERK_VERSION;
 }
 

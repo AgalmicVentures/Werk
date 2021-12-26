@@ -99,8 +99,9 @@ def configure(ctx):
 	ctx.env.INCLUDES += ['.'] #, 'src']
 	ctx.env.CXXFLAGS = [
 		'-std=c++17',
-		'-march=native',
-		'-mtune=native',
+		#TODO: make these GCC only
+		#'-march=native',
+		#'-mtune=native',
 
 		'-Wall',
 		'-Wno-trigraphs',
@@ -154,17 +155,30 @@ def configure(ctx):
 	]
 
 	if isMac:
-		#Find a version of boost installed by brew
-		boostRootPath = '/usr/local/Cellar/boost'
-		try:
-			boostVersion = sorted(os.listdir(boostRootPath))[-1]
-		except OSError:
+		#Find boost installs by
+		boostRootPath = None
+		for path in ['/usr/local/Cellar/boost', '/opt/homebrew/Cellar/boost']:
+			if os.path.exists(path):
+				boostRootPath = path
+				break
+		if boostRootPath is None:
 			Logs.error('Missing boost -- try installing with `brew install boost`')
 			raise
 
+		#Find the version of boost installed by brew
+		try:
+			boostVersion = sorted(os.listdir(boostRootPath))[-1]
+		except OSError:
+			Logs.error('No boost versions available -- try installing with `brew install boost`')
+			raise
+
 		boostPath = os.path.join(boostRootPath, boostVersion)
-		boostLibPath = os.path.join(boostPath, 'lib')
 		Logs.info('Boost path: %s' % boostPath)
+
+		boostIncludePath = os.path.join(boostPath, 'include')
+		ctx.env.INCLUDES.append(boostIncludePath)
+
+		boostLibPath = os.path.join(boostPath, 'lib')
 		ctx.env.LIBPATH.append(boostLibPath)
 	else:
 		ctx.env.LIB += [

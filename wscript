@@ -115,6 +115,7 @@ def configure(ctx):
 	if isMac:
 		ctx.env.CXXFLAGS += [
 			'-Wnull-dereference',
+			'-Wno-tautological-type-limit-compare',
 		]
 	else:
 		ctx.env.CXXFLAGS += [

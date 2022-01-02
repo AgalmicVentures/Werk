@@ -34,6 +34,7 @@ class ShutdownAction : public werk::Action
 {
 public:
 	ShutdownAction(const std::string &name, werk::Log *log) : werk::Action(name), _log(log) { }
+	virtual ~ShutdownAction() { }
 
 	void execute() override { _log->logRaw(werk::LogLevel::SUCCESS, "Shutdown action!"); }
 private:

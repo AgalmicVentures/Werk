@@ -64,6 +64,7 @@ class Scheduler : public Action
 public:
 	Scheduler(const std::string &name, const Clock *clock) :
 		Action(name), _clock(clock) { }
+	virtual ~Scheduler() { }
 
 	void schedule(Action *action, uint64_t time, uint64_t interval, int64_t repeat=-1) {
 		//TODO: check time versus now?

@@ -45,6 +45,7 @@ public:
 		Action *mainAction, Log *log=nullptr, uint64_t timeout=0) :
 		Action(name), _simulatedClock(simulatedClock), _complete(complete),
 		_mainAction(mainAction), _log(log), _timeout(timeout) { }
+	virtual ~TimeSeriesReplayer() { }
 
 	CHECKED const TimeSeries *currentDataSource() const { return _currentDataSource; }
 

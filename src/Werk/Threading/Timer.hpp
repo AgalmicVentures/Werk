@@ -43,6 +43,7 @@ public:
 		Action(name), _clock(clock), _interval(interval), _action(action), _count(count) {
 		assert(nullptr != action);
 	}
+	virtual ~Timer() { }
 
 	CHECKED uint64_t interval() const { return _interval; }
 	CHECKED int64_t count() const { return _count; }

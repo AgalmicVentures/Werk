@@ -45,6 +45,7 @@ public:
 		Action(name), _clock(clock), _interval(interval), _allowedMisses(allowedMisses), _action(action) {
 		assert(nullptr != action);
 	}
+	virtual ~Watchdog() { }
 
 	CHECKED uint64_t interval() const { return _interval; }
 	CHECKED uint64_t allowedMisses() const { return _allowedMisses; }

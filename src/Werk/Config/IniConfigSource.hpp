@@ -38,6 +38,7 @@ class IniConfigSource : public ConfigSource
 public:
 
 	IniConfigSource(const std::string &path) : _path(path) { }
+	virtual ~IniConfigSource() { }
 
 	CHECKED bool reloadConfig(std::map<std::string, std::string> &values) override;
 

@@ -39,6 +39,8 @@ class MapConfigSource : public ConfigSource
 {
 public:
 
+	virtual ~MapConfigSource() { }
+
 	CHECKED std::map<std::string, std::string> &values() { return _values; }
 	CHECKED const std::map<std::string, std::string> &values() const { return _values; }
 

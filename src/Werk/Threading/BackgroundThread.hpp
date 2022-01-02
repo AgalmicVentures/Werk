@@ -81,7 +81,7 @@ public:
 	{
 		_thread = std::thread(&BackgroundThread::backgroundThread, this);
 	}
-	~BackgroundThread() { stop(); }
+	virtual ~BackgroundThread() { stop(); }
 
 	CHECKED bool stopped() const { return _stopped; }
 

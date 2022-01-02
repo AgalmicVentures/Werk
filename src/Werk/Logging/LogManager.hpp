@@ -43,6 +43,7 @@ public:
 		_nullLog = new NullLog("Null");
 		assert(add(_nullLog));
 	}
+	virtual ~LogManager() { }
 
 	//Default logs
 	NullLog *nullLog() { return _nullLog; }

@@ -45,6 +45,7 @@ public:
 		_ipcConsoleServer(ipcConsoleServer),
 		_log(log),
 		_realTimeClock(realTimeClock) { }
+	virtual ~ConsoleClientsCommand() { }
 
 	bool execute(const std::vector<std::string> &arguments) override;
 

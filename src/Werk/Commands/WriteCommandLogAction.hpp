@@ -38,6 +38,7 @@ class WriteCommandLogAction : public Action
 public:
 	WriteCommandLogAction(const std::string &name, Log *log, const CommandManager &commandManager, const std::string &path) :
 		Action(name), _log(log), _commandManager(commandManager), _path(path) { }
+	virtual ~WriteCommandLogAction() { }
 
 	void execute() override {
 		FILE *file = std::fopen(_path.c_str(), "w");

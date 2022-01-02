@@ -82,6 +82,7 @@ class NullLog : public Log
 public:
 
 	NullLog(const std::string &name) : Log(name, nullptr) { }
+	virtual ~NullLog() { }
 
 	virtual void logRaw(LogLevel /*level*/, const char * /*message*/) override { }
 	virtual void log(LogLevel /*level*/, const char * /*format*/, ...) override { }

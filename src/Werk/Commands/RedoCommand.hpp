@@ -42,6 +42,7 @@ public:
 	RedoCommand(CommandManager &commandManager) :
 		Command("Repeats the last command."),
 		_commandManager(commandManager) { }
+	virtual ~RedoCommand() { }
 
 	bool execute(const std::vector<std::string> &arguments) override;
 

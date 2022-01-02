@@ -42,6 +42,7 @@ public:
 	SegfaultCommand(Log *log) :
 		Command("Segfaults the program (useful for testing)."),
 		_log(log) { }
+	virtual ~SegfaultCommand() { }
 
 	bool execute(const std::vector<std::string> &arguments) override {
 		//Join all but the first argument since the command name needn't be echoed

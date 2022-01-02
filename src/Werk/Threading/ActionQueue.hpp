@@ -40,6 +40,7 @@ class ActionQueue : public Action
 {
 public:
 	ActionQueue(const std::string &name) : Action(name) { }
+	virtual ~ActionQueue() { }
 
 	void push(Action *action) { _queue.push(action); }
 

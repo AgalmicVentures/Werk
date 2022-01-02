@@ -47,6 +47,7 @@ public:
 		std::string trimmedCommand = boost::trim_copy(command);
 		boost::split(_command, trimmedCommand, boost::is_any_of(" \t"), boost::token_compress_on);
 	}
+	virtual ~CommandAlias() { }
 
 	virtual bool execute(const std::vector<std::string> &arguments) override;
 

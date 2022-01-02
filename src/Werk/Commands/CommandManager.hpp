@@ -91,6 +91,7 @@ public:
 				"Logs the version of Werk underlying the application.");
 		}
 	}
+	virtual ~CommandManager() { }
 
 	const std::map<std::string, Command *> &commands() const { return _commands; }
 	const std::vector<CommandHistory> &commandHistory() const { return _commandHistory; }

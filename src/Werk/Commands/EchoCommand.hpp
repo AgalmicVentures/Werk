@@ -42,6 +42,7 @@ public:
 	EchoCommand(Log *log, LogLevel level=LogLevel::INFO) :
 		Command("Echoes the arguments to the log."),
 		_log(log), _level(level) { }
+	virtual ~EchoCommand() { }
 
 	bool execute(const std::vector<std::string> &arguments) override {
 		//Join all but the first argument since the command name needn't be echoed

@@ -58,7 +58,7 @@ class ApplicationContext : public Loggable
 public:
 
 	ApplicationContext(const std::string &logFilePath);
-	~ApplicationContext();
+	virtual ~ApplicationContext();
 
 	CHECKED int exitCode() { return _exitCode.load(); }
 	void setExitCode(int code) { _exitCode.store(code); }

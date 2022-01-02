@@ -45,6 +45,7 @@ public:
 		TimeSeries(name), _parser(parser), _timeColumn(timeColumn), _scale(scale), _offset(offset) {
 		assert(scale > 0);
 	}
+	virtual ~CsvTimeSeries() { }
 
 	CHECKED virtual uint64_t time() const override { return _time; }
 	CHECKED virtual bool moveNext() override {

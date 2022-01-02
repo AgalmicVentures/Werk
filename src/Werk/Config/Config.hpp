@@ -49,6 +49,9 @@ typedef std::map<std::string, std::string> ConfigValuesT;
 class Configurable
 {
 public:
+
+	virtual ~Configurable() { }
+
 	//Pass the Config object so
 	CHECKED virtual bool reloadConfig(const Config &config) = 0;
 };
@@ -60,6 +63,9 @@ public:
 class ConfigSource
 {
 public:
+
+	virtual ~ConfigSource() { }
+
 	CHECKED virtual bool reloadConfig(std::map<std::string, std::string> &values) = 0;
 };
 
@@ -76,6 +82,7 @@ public:
 	{
 		_values.store(&_values1);
 	}
+	virtual ~Config() { }
 
 	void addConfigSource(ConfigSource *configSource) {
 		if (nullptr == configSource) {

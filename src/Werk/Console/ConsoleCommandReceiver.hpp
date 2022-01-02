@@ -41,6 +41,7 @@ public:
 
 	ConsoleCommandReceiver(const std::string &name, IpcConsoleServer &server, CommandManager &commandManager) :
 		Action(name), _server(server), _commandManager(commandManager) { }
+	virtual ~ConsoleCommandReceiver() { }
 
 	void execute() override {
 		//Run all of the commands in the buffer

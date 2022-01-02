@@ -53,6 +53,7 @@ class NullAction : public Action
 {
 public:
 	NullAction(const std::string &name) : Action(name) { }
+	virtual ~NullAction() { }
 
 	void execute() override { }
 };
@@ -69,6 +70,7 @@ class CounterAction : public Action
 {
 public:
 	CounterAction(const std::string &name) : Action(name) { }
+	virtual ~CounterAction() { }
 
 	T count() const { return _count; }
 	void reset() const { _count = 0; }
@@ -86,6 +88,7 @@ class CompoundAction : public Action
 {
 public:
 	CompoundAction(const std::string &name) : Action(name) { }
+	virtual ~CompoundAction() { }
 
 	std::vector<Action *> &actions() { return _actions; }
 	const std::vector<Action *> &actions() const { return _actions; }

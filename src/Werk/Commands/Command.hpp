@@ -57,6 +57,7 @@ class NullCommand : public Command
 public:
 
 	NullCommand() : Command("Null command -- does nothing.") { }
+	virtual ~NullCommand() { }
 
 	virtual bool execute(const std::vector<std::string> &/*arguments*/) override {
 		return true;
@@ -71,6 +72,7 @@ class ActionCommand : public Command
 public:
 	ActionCommand(Action *action, const std::string &help) :
 		Command(help), _action(action) { }
+	virtual ~ActionCommand() { }
 
 	virtual bool execute(const std::vector<std::string> &/*arguments*/) override {
 		_action->execute();
@@ -88,6 +90,7 @@ class CommandAction : public Action
 {
 public:
 	CommandAction(const std::string &name, Command *command) : Action(name), _command(command) { }
+	virtual ~CommandAction() { }
 
 	std::vector<std::string> &arguments() { return _arguments; }
 	const std::vector<std::string> &arguments() const { return _arguments; }

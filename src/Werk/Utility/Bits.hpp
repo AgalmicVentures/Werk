@@ -25,6 +25,9 @@
 
 #include "Attributes.hpp"
 
+namespace werk
+{
+
 /**
  * Generates a bit mask with the first n bits set.
  */
@@ -65,4 +68,6 @@ ALWAYS_INLINE T roundUpPow2(T value)
 	}
 	++v;
 	return v;
+}
+
 }

@@ -29,12 +29,12 @@ BOOST_AUTO_TEST_SUITE(BitsTest)
 
 BOOST_AUTO_TEST_CASE(TestBitmask)
 {
-	BOOST_CHECK_EQUAL(bitmask<uint64_t>(0), 0x00);
-	BOOST_CHECK_EQUAL(bitmask<uint64_t>(1), 0x01);
-	BOOST_CHECK_EQUAL(bitmask<uint64_t>(2), 0x03);
-	BOOST_CHECK_EQUAL(bitmask<uint64_t>(3), 0x07);
-	BOOST_CHECK_EQUAL(bitmask<uint64_t>(4), 0x0F);
-	BOOST_CHECK_EQUAL(bitmask<uint64_t>(5), 0x1F);
+	BOOST_CHECK_EQUAL(werk::bitmask<uint64_t>(0), 0x00);
+	BOOST_CHECK_EQUAL(werk::bitmask<uint64_t>(1), 0x01);
+	BOOST_CHECK_EQUAL(werk::bitmask<uint64_t>(2), 0x03);
+	BOOST_CHECK_EQUAL(werk::bitmask<uint64_t>(3), 0x07);
+	BOOST_CHECK_EQUAL(werk::bitmask<uint64_t>(4), 0x0F);
+	BOOST_CHECK_EQUAL(werk::bitmask<uint64_t>(5), 0x1F);
 }
 
 BOOST_AUTO_TEST_CASE(TestRoundUpPow2)
@@ -43,22 +43,22 @@ BOOST_AUTO_TEST_CASE(TestRoundUpPow2)
 	uint64_t x = 0x0E;
 	uint64_t y = 0x10;
 	for (size_t i = 0; i < 32; ++i) {
-		BOOST_CHECK_EQUAL(roundUpPow2(x), y);
+		BOOST_CHECK_EQUAL(werk::roundUpPow2(x), y);
 		x *= 0x10;
 		y *= 0x10;
 	}
 
 	//Types matter
-	BOOST_CHECK_EQUAL(roundUpPow2(0xDEADBEEF), 0);
-	BOOST_CHECK_EQUAL(roundUpPow2<uint32_t>(0xDEADBEEF), 0);
-	BOOST_CHECK_EQUAL(roundUpPow2<uint64_t>(0xDEADBEEF), 0x100000000);
+	BOOST_CHECK_EQUAL(werk::roundUpPow2(0xDEADBEEF), 0);
+	BOOST_CHECK_EQUAL(werk::roundUpPow2<uint32_t>(0xDEADBEEF), 0);
+	BOOST_CHECK_EQUAL(werk::roundUpPow2<uint64_t>(0xDEADBEEF), 0x100000000);
 }
 
 BOOST_AUTO_TEST_CASE(TestPopCount64)
 {
 	for (size_t i = 0; i < 64; ++i) {
-		uint64_t value = bitmask<uint64_t>(i);
-		BOOST_CHECK_EQUAL(popCount64(value), i);
+		uint64_t value = werk::bitmask<uint64_t>(i);
+		BOOST_CHECK_EQUAL(werk::popCount64(value), i);
 	}
 }
 

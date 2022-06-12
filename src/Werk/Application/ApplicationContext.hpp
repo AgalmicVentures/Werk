@@ -53,12 +53,14 @@ class IpcConsoleServer;
  *
  * NOTE: It is not necessary to use this; components may be used a-la-carte.
  */
-class ApplicationContext : public Loggable
+class ApplicationContext : public Configurable, public Loggable
 {
 public:
 
 	ApplicationContext(const std::string &logFilePath);
 	virtual ~ApplicationContext();
+
+	virtual bool reloadConfig(const Config &config) override;
 
 	CHECKED int exitCode() { return _exitCode.load(); }
 	void setExitCode(int code) { _exitCode.store(code); }
@@ -135,6 +137,11 @@ private:
 	std::vector<std::string> _startupCommands;
 	std::vector<std::string> _shutdownCommands;
 	DynamicLibraryManager _dynamicLibraryManager;
+	//Dyanimc configuration
+	uint64_t _longUpdateAlertThreshold = 500'000;
+	uint64_t _longUpdateWarningThreshold = 1'000'000;
+	uint64_t _longUpdateErrorThreshold = 2'000'000;
+	uint64_t _longUpdateCriticalThreshold = 5'000'000;
 
 	//Foreground thread state
 	Clock _realTimeClock;

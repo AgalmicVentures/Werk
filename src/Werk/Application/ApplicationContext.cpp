@@ -78,6 +78,7 @@ ApplicationContext::ApplicationContext(const std::string &configPath) :
 	/********** Config **********/
 
 	_config = new Config("Config", _stdoutLog);
+	_config->addConfigurable(this);
 
 	//Synchronously execute the reload since the values are needed for the next step
 	_config->addConfigSource(new IniConfigSource(configPath));
@@ -352,6 +353,20 @@ ApplicationContext::~ApplicationContext()
 	}
 }
 
+bool ApplicationContext::reloadConfig(const Config &config)
+{
+	_longUpdateAlertThreshold = config.getTimeAmount("Application.LongUpdateAlertThreshold", 250'000,
+		"Threshold to log an alert about the duration of an update cycle");
+	_longUpdateWarningThreshold = config.getTimeAmount("Application.LongUpdateWarningThreshold", 1'000'000,
+		"Threshold to log a warning about the duration of an update cycle");
+	_longUpdateErrorThreshold = config.getTimeAmount("Application.LongUpdateErrorThreshold", 2'000'000,
+		"Threshold to log an error about the duration of an update cycle");
+	_longUpdateCriticalThreshold = config.getTimeAmount("Application.LongUpdateCriticalThreshold", 5'000'000,
+		"Threshold to log a critical about the duration of an update cycle");
+
+	return true;
+}
+
 void ApplicationContext::logTo(Log *log) const
 {
 	log->log(LogLevel::INFO, "<Context>      Debug: %s", _debug ? "Yes" : "No");
@@ -501,7 +516,8 @@ int ApplicationContext::run(Action *mainAction)
 
 		//Update stats
 		_interUpdateProfile.restart(_clock->time());
-		_updateProfile.restart(_realTimeClock.time());
+
+		_updateProfile.start(_realTimeClock.time());
 
 		//Receive commands and update
 		//TODO: Move to the background thread
@@ -513,6 +529,19 @@ int ApplicationContext::run(Action *mainAction)
 		//Made it through another loop, update background objects -- update clock, reset the watchdog
 		_backgroundThread.setMainClockTime(_realTimeClock.time());
 		watchdog->reset();
+
+		//Check the update time
+		_realTimeClock.setEpochTime();
+		const int64_t updateTime = _updateProfile.stop(_realTimeClock.time());
+		if (_longUpdateAlertThreshold <= updateTime) {
+			const LogLevel logLevel =
+				_longUpdateCriticalThreshold <= updateTime ? LogLevel::CRITICAL :
+				_longUpdateErrorThreshold <= updateTime ? LogLevel::ERROR :
+				_longUpdateWarningThreshold <= updateTime ? LogLevel::WARNING :
+				LogLevel::ALERT;
+			_log->log(logLevel, "<ApplicationContext> Update cycle took a long time: %" PRIi64 "ns",
+				updateTime);
+		}
 	}
 	_log->log(LogLevel::JSON, "{\"type\":\"mainLoop.exit\",\"updates\":%" PRIu64 "}", _updateId);
 

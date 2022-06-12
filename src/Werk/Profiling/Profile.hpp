@@ -48,6 +48,7 @@ public:
 
 	CHECKED uint64_t sampleSize() const { return _sampleSize; }
 	CHECKED uint64_t count() const { return _count; }
+	CHECKED int64_t lastDelta() const { return _lastDelta; }
 	CHECKED const RangedSummaryStatistics<uint64_t> &warmupStatistics() const { return _warmupStatistics; }
 	CHECKED const OrderStatistics<uint64_t> &orderStatistics() const { return _orderStatistics; }
 	CHECKED const RangedSummaryStatistics<uint64_t> &minStatistics() const { return _minStatistics; }
@@ -60,32 +61,36 @@ public:
 	CHECKED const RangedSummaryStatistics<uint64_t> &maxStatistics() const { return _maxStatistics; }
 
 	void start(uint64_t time) { _startTime = time; }
-	void stop(uint64_t time) {
+	int64_t stop(uint64_t time) {
 		//Started?
 		if (_startTime == 0) {
-			return;
+			return 0;
 		}
 
 		//Warmup?
-		const uint64_t delta = time - _startTime;
+		_lastDelta = time > _startTime ?
+			static_cast<int64_t>(time - _startTime) :
+			-static_cast<int64_t>(_startTime - time);
 		_count += 1;
 		if (_count <= _warmupSize) {
-			_warmupStatistics.sample(delta);
-			return;
+			_warmupStatistics.sample(_lastDelta);
+			return _lastDelta;
 		}
 
 		//Sample
-		_orderStatistics.sample(delta);
+		_orderStatistics.sample(_lastDelta);
 		_startTime = 0;
 
 		//Bin done?
 		if (_orderStatistics.count() >= _sampleSize) {
 			sampleFractiles();
 		}
+		return _lastDelta;
 	}
-	void restart(uint64_t time) {
-		stop(time);
+	int64_t restart(uint64_t time) {
+		const int64_t delta = stop(time);
 		start(time);
+		return delta;
 	}
 
 	void sampleFractiles() {
@@ -145,6 +150,7 @@ private:
 	//Current state
 	uint64_t _count = 0;
 	uint64_t _startTime = 0;
+	int64_t _lastDelta = 0;
 
 	//Samples used for approximating fractiles efficiently
 	OrderStatistics<uint64_t> _orderStatistics;

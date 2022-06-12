@@ -398,6 +398,12 @@ void ApplicationContext::shutdown()
 
 int ApplicationContext::run(Action *mainAction)
 {
+	//Reload the configuration once before starting
+	if (!_config->reloadConfigurables()) {
+		_log->log(LogLevel::CRITICAL, "<ApplicationContext> Failed initial config reload. Quitting...");
+		return 1;
+	}
+
 	//Setup the background watchdog timer
 	const uint64_t watchdogInterval = _config->getTimeAmount("Application.WatchdogInterval", 0,
 		"Interval of the main thread watchdog (ns)");

@@ -58,7 +58,7 @@ class Counter
 {
 public:
 
-	CHECKED T value() const { return _value; }
+	CHECKED const T &value() const { return _value; }
 
 	void reset() { _value = initialValue; }
 	void increment() {

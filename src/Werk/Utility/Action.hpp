@@ -72,7 +72,7 @@ public:
 	CounterAction(const std::string &name) : Action(name) { }
 	virtual ~CounterAction() { }
 
-	T count() const { return _count; }
+	const T &count() const { return _count; }
 	void reset() const { _count = 0; }
 
 	void execute() override { _count += 1; }

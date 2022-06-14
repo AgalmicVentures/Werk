@@ -81,7 +81,9 @@ ApplicationContext::ApplicationContext(const std::string &configPath) :
 	_config->addConfigurable(this);
 
 	//Synchronously execute the reload since the values are needed for the next step
-	_config->addConfigSource(new IniConfigSource(configPath));
+	std::vector<IniConfigSource *> iniConfigSources;
+	iniConfigSources.push_back(new IniConfigSource(configPath, _stdoutLog));
+	_config->addConfigSource(iniConfigSources[iniConfigSources.size() - 1]);
 	_config->reloadConfig();
 	_config->execute();
 
@@ -90,11 +92,14 @@ ApplicationContext::ApplicationContext(const std::string &configPath) :
 	_config->getStrings("Application.ConfigPaths", configPaths, nullptr,
 		"Paths to config files, with the final one having highest priority");
 	for (const auto &path : configPaths) {
-		_config->addConfigSource(new IniConfigSource(path));
+		iniConfigSources.push_back(new IniConfigSource(path, _stdoutLog));
+		_config->addConfigSource(iniConfigSources[iniConfigSources.size() - 1]);
 	}
 
 	//Synchronously reload with everything
-	_config->addConfigSource(new IniConfigSource(configPath));
+	//TODO: do something about this weird duplication
+	iniConfigSources.push_back(new IniConfigSource(configPath, _stdoutLog));
+	_config->addConfigSource(iniConfigSources[iniConfigSources.size() - 1]);
 	_config->reloadConfig();
 	_config->execute();
 
@@ -152,6 +157,10 @@ ApplicationContext::ApplicationContext(const std::string &configPath) :
 		_backgroundThread.addTask(_log);
 		_config->setLog(_log);
 		_log->logRaw(LogLevel::SUCCESS, "<HistoricalLog> Initialized.");
+	}
+
+	for (IniConfigSource *iniConfigSource : iniConfigSources) {
+		iniConfigSource->setLog(_log);
 	}
 
 	/********** Detect System State Now That Log Is Setup **********/

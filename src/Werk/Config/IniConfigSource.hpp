@@ -37,13 +37,16 @@ class IniConfigSource : public ConfigSource
 {
 public:
 
-	IniConfigSource(const std::string &path) : _path(path) { }
+	IniConfigSource(const std::string &path, Log *log=nullptr) : _path(path), _log(log) { }
 	virtual ~IniConfigSource() { }
 
 	CHECKED bool reloadConfig(std::map<std::string, std::string> &values) override;
 
+    void setLog(Log *log) { _log = log; }
+
 private:
 	const std::string _path;
+    Log *_log;
 };
 
 }

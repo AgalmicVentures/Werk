@@ -40,7 +40,10 @@ bool IniConfigSource::reloadConfig(std::map<std::string, std::string> &values) {
 	//Walk the lines
 	std::string line;
 	std::string prefix = "";
+	size_t lineNumber = 0;
 	while (std::getline(infile, line)) {
+		++lineNumber;
+
 		//Trim beginning of line whitespace
 		const std::size_t firstNonWhitespacePos = line.find_first_not_of(' ');
 		const std::size_t firstNonWhitespace = firstNonWhitespacePos == std::string::npos ? line.length() : firstNonWhitespacePos;
@@ -55,6 +58,10 @@ bool IniConfigSource::reloadConfig(std::map<std::string, std::string> &values) {
 		if (line[0] == '[') {
 			if (line[line.length() - 1] != ']') {
 				//No closing bracket, error
+				if (nullptr != _log) {
+					_log->log(LogLevel::ERROR, "<IniConfigSource> Missing closing ] for scope at %s:%zu",
+						_path.c_str(), lineNumber);
+				}
 				return false;
 			}
 
@@ -69,6 +76,10 @@ bool IniConfigSource::reloadConfig(std::map<std::string, std::string> &values) {
 		const std::size_t equalPos = line.find('=');
 		if (equalPos == std::string::npos) {
 			//No value found, error
+			if (nullptr != _log) {
+				_log->log(LogLevel::ERROR, "<IniConfigSource> Missing = after key at %s:%zu",
+					_path.c_str(), lineNumber);
+			}
 			return false;
 		}
 

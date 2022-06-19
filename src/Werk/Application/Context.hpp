@@ -53,12 +53,12 @@ class IpcConsoleServer;
  *
  * NOTE: It is not necessary to use this; components may be used a-la-carte.
  */
-class ApplicationContext : public Configurable, public Loggable
+class Context : public Configurable, public Loggable
 {
 public:
 
-	ApplicationContext(const std::string &logFilePath);
-	virtual ~ApplicationContext();
+	Context(const std::string &logFilePath);
+	virtual ~Context();
 
 	virtual bool reloadConfig(const Config &config) override;
 

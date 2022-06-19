@@ -22,7 +22,7 @@
  * IN THE SOFTWARE.
  */
 
-#include "ApplicationContext.hpp"
+#include "Context.hpp"
 
 #include <boost/algorithm/string.hpp>
 #include <cassert>
@@ -50,7 +50,7 @@
 namespace werk
 {
 
-ApplicationContext::ApplicationContext(const std::string &configPath) :
+Context::Context(const std::string &configPath) :
 	_interUpdateProfile("InterUpdate", 1000, 1000000),
 	_updateProfile("Update", 1000, 1000000)
 {
@@ -237,7 +237,7 @@ ApplicationContext::ApplicationContext(const std::string &configPath) :
 	}
 
 	_commandManager->add("app", new ActionCommand(
-		new LogAction("LogApplicationContext", this, _log),
+		new LogAction("LogContext", this, _log),
 		"Logs information about the application."));
 	_commandManager->add("bg", new ActionCommand(
 		new LogAction("LogBackgroundTasks", &_backgroundThread, _log),
@@ -354,7 +354,7 @@ ApplicationContext::ApplicationContext(const std::string &configPath) :
 	_log->logRaw(LogLevel::JSON, "{\"type\":\"startup.initialized\"}");
 }
 
-ApplicationContext::~ApplicationContext()
+Context::~Context()
 {
 	//Shut down, if not already done
 	if (!isShutdown()) {
@@ -362,7 +362,7 @@ ApplicationContext::~ApplicationContext()
 	}
 }
 
-bool ApplicationContext::reloadConfig(const Config &config)
+bool Context::reloadConfig(const Config &config)
 {
 	_longUpdateAlertThreshold = config.getTimeAmount("Application.LongUpdateAlertThreshold", 250'000,
 		"Threshold to log an alert about the duration of an update cycle");
@@ -376,23 +376,23 @@ bool ApplicationContext::reloadConfig(const Config &config)
 	return true;
 }
 
-void ApplicationContext::logTo(Log *log) const
+void Context::logTo(Log *log) const
 {
 	log->log(LogLevel::INFO, "<Context>      Debug: %s", _debug ? "Yes" : "No");
 	log->log(LogLevel::INFO, "<Context>  Real Time: %s", _realTime ? "Yes" : "No");
 	log->log(LogLevel::INFO, "<Context> Simulation: %s", _simulation ? "Yes" : "No");
 }
 
-bool ApplicationContext::isShutdown()
+bool Context::isShutdown()
 {
 	return _backgroundThread.stopped();
 }
 
-void ApplicationContext::shutdown()
+void Context::shutdown()
 {
 	//Don't shut down twice
 	if (isShutdown()) {
-		std::fprintf(stderr, "ApplicationContext::shutdown - Already shut down.\n");
+		std::fprintf(stderr, "Context::shutdown - Already shut down.\n");
 		return;
 	}
 
@@ -420,11 +420,11 @@ void ApplicationContext::shutdown()
 	_consoleServer.reset();
 }
 
-int ApplicationContext::run(Action *mainAction)
+int Context::run(Action *mainAction)
 {
 	//Reload the configuration once before starting
 	if (!_config->reloadConfigurables()) {
-		_log->log(LogLevel::CRITICAL, "<ApplicationContext> Failed initial config reload. Quitting...");
+		_log->log(LogLevel::CRITICAL, "<Context> Failed initial config reload. Quitting...");
 		return 1;
 	}
 
@@ -548,7 +548,7 @@ int ApplicationContext::run(Action *mainAction)
 				_longUpdateErrorThreshold <= updateTime ? LogLevel::ERROR :
 				_longUpdateWarningThreshold <= updateTime ? LogLevel::WARNING :
 				LogLevel::ALERT;
-			_log->log(logLevel, "<ApplicationContext> Update cycle took a long time: %" PRIi64 "ns",
+			_log->log(logLevel, "<Context> Update cycle took a long time: %" PRIi64 "ns",
 				updateTime);
 		}
 	}

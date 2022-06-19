@@ -25,7 +25,7 @@
 #include <cstdio>
 #include <unistd.h>
 
-#include "Werk/Application/ApplicationContext.hpp"
+#include "Werk/Application/Context.hpp"
 #include "Werk/Logging/Loggable.hpp"
 #include "Werk/Math/SummaryStatistics.hpp"
 #include "Werk/Threading/Timer.hpp"
@@ -44,7 +44,7 @@ private:
 int main(int argc, char **argv)
 {
 	//Create the application context with a blank path to redirect to stdout
-	werk::ApplicationContext context(argc > 1 ? argv[1] : "src/HelloWorld/TestRealTime.ini");
+	werk::Context context(argc > 1 ? argv[1] : "src/HelloWorld/TestRealTime.ini");
 
 	werk::StringLoggable sl("Checking in...");
 	werk::Timer timer("Timer", &context.backgroundThread().backgroundClock(),

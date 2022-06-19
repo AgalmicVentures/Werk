@@ -34,12 +34,12 @@ namespace werk
  * A sliding window that calculates summary statistics.
  */
 template <typename TIndex, typename TValue, size_t size>
-class SlidingSummaryStatistics : public BaseSlidingWindow<TIndex, TValue, size, SlidingWindow<TIndex, TValue, size> >
+class SlidingSummaryStatistics : public BaseSlidingWindow<TIndex, TValue, size, SlidingSummaryStatistics<TIndex, TValue, size> >
 {
 public:
-	SlidingSummaryStatistics(TIndex duration) : BaseSlidingWindow<TIndex, TValue, size, SlidingWindow<TIndex, TValue, size> >(duration) { }
+	SlidingSummaryStatistics(TIndex duration) : BaseSlidingWindow<TIndex, TValue, size, SlidingSummaryStatistics<TIndex, TValue, size> >(duration) { }
 
-	CHECKED const SummaryStatistics &statistics() const { return _statistics; }
+	CHECKED const WeightedSummaryStatistics &statistics() const { return _statistics; }
 
 	void onAddValue(TIndex index, TValue value) {
 		(void) index;
@@ -47,7 +47,18 @@ public:
 	}
 	void onRemoveValue(TIndex index, TValue value) {
 		(void) index;
-		_statistics.sample(value, -1.0);
+
+		//Remove the value, resetting if it's the last value
+		if (1 == BaseSlidingWindow<TIndex, TValue, size, SlidingSummaryStatistics<TIndex, TValue, size> >::count()) {
+			_statistics.reset();
+		} else {
+			_statistics.sample(value, -1.0);
+		}
+	}
+
+	void reset() {
+		BaseSlidingWindow<TIndex, TValue, size, SlidingSummaryStatistics<TIndex, TValue, size> >::reset();
+		_statistics.reset();
 	}
 
 protected:

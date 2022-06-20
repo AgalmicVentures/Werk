@@ -91,6 +91,10 @@ public:
 		}
 		_configSources.push_back(configSource);
 	}
+	void clearConfigSources() {
+		_configSources.clear();
+	}
+
 	void addConfigurable(Configurable *configurable) {
 		if (nullptr == configurable) {
 			_log->log(LogLevel::ERROR, "<Config> Tried to add null configurable");

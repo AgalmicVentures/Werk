@@ -81,25 +81,29 @@ Context::Context(const std::string &configPath) :
 	_config->addConfigurable(this);
 
 	//Synchronously execute the reload since the values are needed for the next step
-	std::vector<IniConfigSource *> iniConfigSources;
-	iniConfigSources.push_back(new IniConfigSource(configPath, _stdoutLog));
-	_config->addConfigSource(iniConfigSources[iniConfigSources.size() - 1]);
+	IniConfigSource *primaryConfigSource = new IniConfigSource(configPath, _stdoutLog);
+	_config->addConfigSource(primaryConfigSource);
 	_config->reloadConfig();
 	_config->execute();
 
 	//Register other config files
+	std::vector<IniConfigSource *> iniConfigSources;
 	std::vector<std::string> configPaths;
 	_config->getStrings("Application.ConfigPaths", configPaths, nullptr,
-		"Paths to config files, with the final one having highest priority");
+		"Paths to config files, with the final one having highest priority (primary config still overrides all)");
 	for (const auto &path : configPaths) {
 		iniConfigSources.push_back(new IniConfigSource(path, _stdoutLog));
 		_config->addConfigSource(iniConfigSources[iniConfigSources.size() - 1]);
 	}
 
+	//Put the primary config as the highest priority
+	iniConfigSources.push_back(primaryConfigSource);
+
 	//Synchronously reload with everything
-	//TODO: do something about this weird duplication
-	iniConfigSources.push_back(new IniConfigSource(configPath, _stdoutLog));
-	_config->addConfigSource(iniConfigSources[iniConfigSources.size() - 1]);
+	_config->clearConfigSources();
+	for (IniConfigSource *iniConfigSource : iniConfigSources) {
+		_config->addConfigSource(iniConfigSource);
+	}
 	_config->reloadConfig();
 	_config->execute();
 

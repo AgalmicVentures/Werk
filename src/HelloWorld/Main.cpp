@@ -44,7 +44,9 @@ private:
 int main(int argc, char **argv)
 {
 	//Create the application context with a blank path to redirect to stdout
-	werk::Context context(argc > 1 ? argv[1] : "src/HelloWorld/TestRealTime.ini");
+	werk::Context context(
+		argc > 1 ? argv[1] : "src/HelloWorld/TestRealTime.ini",
+		argc > 2 ? argv[2] : nullptr);
 
 	werk::StringLoggable sl("Checking in...");
 	werk::Timer timer("Timer", &context.backgroundThread().backgroundClock(),

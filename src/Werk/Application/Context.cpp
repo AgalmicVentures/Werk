@@ -50,7 +50,7 @@
 namespace werk
 {
 
-Context::Context(const std::string &configPath) :
+Context::Context(const std::string &configPath, const char *secondaryConfigPath) :
 	_interUpdateProfile("InterUpdate", 1000, 1000000),
 	_updateProfile("Update", 1000, 1000000)
 {
@@ -80,9 +80,19 @@ Context::Context(const std::string &configPath) :
 	_config = new Config("Config", _stdoutLog);
 	_config->addConfigurable(this);
 
-	//Synchronously execute the reload since the values are needed for the next step
+	//Load the primary config
+	_stdoutLog->log(LogLevel::INFO, "<Config> Loading %s...", configPath.c_str());
 	IniConfigSource *primaryConfigSource = new IniConfigSource(configPath, _stdoutLog);
 	_config->addConfigSource(primaryConfigSource);
+
+	IniConfigSource *secondaryConfigSource = nullptr;
+	if (nullptr != secondaryConfigPath) {
+		_stdoutLog->log(LogLevel::INFO, "<Config> Loading %s...", secondaryConfigPath);
+		secondaryConfigSource = new IniConfigSource(secondaryConfigPath, _stdoutLog);
+		_config->addConfigSource(secondaryConfigSource);
+	}
+
+	//Synchronously execute the reload since the values are needed for the next step
 	_config->reloadConfig();
 	_config->execute();
 
@@ -98,6 +108,9 @@ Context::Context(const std::string &configPath) :
 
 	//Put the primary config as the highest priority
 	iniConfigSources.push_back(primaryConfigSource);
+	if (nullptr != secondaryConfigSource) {
+		iniConfigSources.push_back(secondaryConfigSource);
+	}
 
 	//Synchronously reload with everything
 	_config->clearConfigSources();

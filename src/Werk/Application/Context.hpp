@@ -57,7 +57,8 @@ class Context : public Configurable, public Loggable
 {
 public:
 
-	Context(const std::string &logFilePath);
+	//The first config path is mandatory; the secondary is optional
+	Context(const std::string &configPath, const char *secondaryConfigPath=nullptr);
 	virtual ~Context();
 
 	virtual bool reloadConfig(const Config &config) override;

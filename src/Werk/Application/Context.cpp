@@ -50,7 +50,8 @@
 namespace werk
 {
 
-Context::Context(const std::string &configPath, const char *secondaryConfigPath) :
+Context::Context(const std::string &configPath, const char *secondaryConfigPath, bool dryRun) :
+	_dryRun(dryRun),
 	_interUpdateProfile("InterUpdate", 1000, 1000000),
 	_updateProfile("Update", 1000, 1000000)
 {
@@ -223,6 +224,14 @@ Context::Context(const std::string &configPath, const char *secondaryConfigPath)
 
 	_debug = _config->getBool("Application.Debug", false,
 		"Indicates whether the application should output additional debug information (even in release builds)");
+
+	const bool configDryRun = _config->getBool("Application.DryRun", false,
+		"Indicates whether the application should do a dry run (no update cycles; immediate shutdown)");
+	_dryRun = _dryRun || configDryRun;
+	if (_dryRun) {
+		_log->log(LogLevel::INFO, "<Context> Executing dry run (no update cycles)");
+		quit(); //Deferred -- sets the quit flag so the update loop is not run -- everything else runs as normal
+	}
 
 	_simulation = _config->getBool("Application.Simulation", false,
 		"Indicates whether the application is running a simulation or not");

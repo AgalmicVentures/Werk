@@ -58,7 +58,7 @@ class Context : public Configurable, public Loggable
 public:
 
 	//The first config path is mandatory; the secondary is optional
-	Context(const std::string &configPath, const char *secondaryConfigPath=nullptr);
+	Context(const std::string &configPath, const char *secondaryConfigPath=nullptr, bool dryRun=false);
 	virtual ~Context();
 
 	virtual bool reloadConfig(const Config &config) override;
@@ -79,6 +79,7 @@ public:
 	CHECKED size_t processorCount() const { return _processorCount; }
 	CHECKED const std::string &instanceId() { return _instanceId; }
 	CHECKED bool isDebug() const { return _debug; }
+	CHECKED bool isDryRun() const { return _dryRun; }
 	CHECKED bool isRealTime() const { return _realTime; }
 	CHECKED bool isSimulation() const { return _simulation; }
 	CHECKED const std::string &temporaryPath() const { return _temporaryPath; }
@@ -132,6 +133,7 @@ private:
 	uint64_t _pageSize;
 	std::string _instanceId;
 	bool _debug;
+	bool _dryRun;
 	bool _realTime;
 	bool _simulation;
 	std::string _temporaryPath;

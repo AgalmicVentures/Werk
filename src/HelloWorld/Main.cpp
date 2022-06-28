@@ -43,10 +43,27 @@ private:
 
 int main(int argc, char **argv)
 {
+	//Check for dry run flag
+	const char *primaryConfig = nullptr;
+	const char *secondaryConfig = nullptr;
+	bool dryRun = false;
+	for (int i = 1; i < argc; ++i) {
+		if (std::strcmp(argv[i], "-d") == 0) {
+			dryRun = true;
+		} else if (nullptr == primaryConfig) {
+			primaryConfig = argv[i];
+		} else if (nullptr == secondaryConfig) {
+			secondaryConfig = argv[i];
+		} else {
+			std::fprintf(stderr, "Extraneous argument: %s\n", argv[i]);
+		}
+	}
+	if (nullptr == primaryConfig) {
+		primaryConfig = "src/HelloWorld/TestRealTime.ini";
+	}
+
 	//Create the application context with a blank path to redirect to stdout
-	werk::Context context(
-		argc > 1 ? argv[1] : "src/HelloWorld/TestRealTime.ini",
-		argc > 2 ? argv[2] : nullptr);
+	werk::Context context(primaryConfig, secondaryConfig, dryRun);
 
 	werk::StringLoggable sl("Checking in...");
 	werk::Timer timer("Timer", &context.backgroundThread().backgroundClock(),

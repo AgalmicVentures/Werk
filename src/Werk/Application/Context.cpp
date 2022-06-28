@@ -552,7 +552,7 @@ int Context::run(Action *mainAction)
 		//Update stats
 		_interUpdateProfile.restart(_clock->time());
 
-		_updateProfile.start(_realTimeClock.time());
+		PROFILE_START(_updateProfile);
 
 		//Receive commands and update
 		//TODO: Move to the background thread
@@ -566,8 +566,7 @@ int Context::run(Action *mainAction)
 		watchdog->reset();
 
 		//Check the update time
-		_realTimeClock.setEpochTime();
-		const int64_t updateTime = _updateProfile.stop(_realTimeClock.time());
+		const int64_t updateTime = PROFILE_STOP(_updateProfile);
 		if (_longUpdateAlertThreshold <= updateTime) {
 			const LogLevel logLevel =
 				_longUpdateCriticalThreshold <= updateTime ? LogLevel::CRITICAL :

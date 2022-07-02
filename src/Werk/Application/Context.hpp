@@ -160,7 +160,7 @@ private:
 	Profile _updateProfile;
 
 	//Shared state
-	std::atomic<int> _exitCode;
+	std::atomic<int> _exitCode = 0;
 	Latch<std::atomic<bool> > _quitting;
 
 	//Background thread state

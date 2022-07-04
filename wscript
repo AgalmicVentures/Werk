@@ -240,3 +240,12 @@ def profile(ctx):
 	exitCode = os.system(binary)
 	if exitCode != 0:
 		raise RuntimeError('Non-zero return: %s -> %d' % (binary, exitCode))
+
+def functional(ctx):
+	stars = '*' * 30
+	Logs.info('%s Running Functional Tests %s' % (stars, stars))
+
+	binary = 'python3 -m unittest discover functional'
+	exitCode = os.system(binary)
+	if exitCode != 0:
+		raise RuntimeError('Non-zero return: %s -> %d' % (binary, exitCode))

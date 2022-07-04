@@ -28,6 +28,10 @@ Unit tests may be run after building by running `./waf test`. Because `waf` can
 accept more than one action, you can build and test in one command:
 `./waf build test`.
 
+Functional tests, which run the application to exercise the framework, can be
+run with: `./waf functional`. Or more commonly, `./waf build test functional`
+for a complete build / test.
+
 ## Profiling
 Profiling code is included for critical components to help identify performance
 regressions. Run `./waf profile` to profile.

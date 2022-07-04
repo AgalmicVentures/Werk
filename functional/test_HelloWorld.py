@@ -41,4 +41,16 @@ class HelloWorldTest(unittest.TestCase):
 
 		#TODO: what to assert?
 
+	def test_segfault(self):
+		try:
+			run(['functional/Segfault.ini'])
+			self.assertFalse('Should not reach here; must throw the exception after segfaulting')
+		except subprocess.CalledProcessError as e:
+			self.assertEqual(e.returncode, -6) #-6 for segfaults
+			self.assertIn('Intentionally segfaulting...', e.output.decode('utf8'))
+
+	def test_segfaultNoSimulation(self):
+		output = run(['-d', 'functional/SegfaultNoSimulation.ini'])
+		self.assertIn('Command not found: segfault', output)
+
 	#TODO: what other tests to add?

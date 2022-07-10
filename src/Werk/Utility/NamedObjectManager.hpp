@@ -23,49 +23,42 @@
 
 #pragma once
 
-#include <cstdio>
 #include <map>
 #include <string>
+#include <vector>
 
-#include "Werk/OS/Time.hpp"
-#include "Werk/Profiling/Profile.hpp"
-#include "Werk/Utility/Attributes.hpp"
-#include "Werk/Utility/NamedObjectManager.hpp"
+#include "Attributes.hpp"
 
 namespace werk
 {
 
 /**
- * Manages a set of named `Profile`s, including a default baseline profile.
- *
- * Does not, however, manage memory, so that `Profile`s may be embedded in
- * the objects they are timing. Since `Profile`s may not be removed, and thus
- * live or the lifetime of the application, this is not much of a limitation
+ * Base class for any object that has a name. Since many objects have names for
+ * debugging, this saves a lot of boilerplate.
  */
-class ProfileManager : public NamedObjectManager<Profile>
+template <typename T>
+class NamedObjectManager
 {
 public:
+	CHECKED const std::vector<T *> objects() const { return _objects; }
+	CHECKED const std::map<std::string, T *> objectsByName() const { return _objectsByName; }
 
-	ProfileManager() {
-		//Check the time it takes to call the timing functions
-		add(&_baseProfile);
-		for (uint64_t i = 0; i < 101'000; ++i) {
-			PROFILE_START(_baseProfile);
-			PROFILE_STOP(_baseProfile);
-		}
-	}
-	virtual ~ProfileManager() { }
-
-	void writeJson(FILE *file) const {
-		for (const auto &i : _objectsByName) {
-			i.second->sampleFractiles(); //Leave no data out
-			i.second->writeJson(file);
-		}
+	CHECKED T *get(const std::string &name) const {
+		auto i = _objectsByName.find(name);
+		return i == _objectsByName.end() ? nullptr : i->second;
 	}
 
-private:
-	//A profile that times the basic timer function, so that can be subtracted out
-	Profile _baseProfile { "Base", 1000, 1000 } ;
+	bool add(T *object) {
+		auto result = _objectsByName.insert(std::make_pair(object->name(), object));
+		if (result.second) {
+			_objects.push_back(object);
+		}
+		return result.second;
+	}
+
+protected:
+	std::vector<T *> _objects;
+	std::map<std::string, T *> _objectsByName;
 };
 
 }

@@ -28,9 +28,9 @@ namespace werk
 
 void LogManager::logTo(Log *log) const
 {
-	log->log(LogLevel::INFO, "<LogManager> Logs (%zu):", _logs.size());
-	for (const auto &i : _logs) {
-		log->log(LogLevel::INFO, "  %24s", i.first.c_str());
+	log->log(LogLevel::INFO, "<LogManager> Logs (%zu):", _objects.size());
+	for (const auto &i : _objects) {
+		log->log(LogLevel::INFO, "  %24s", i->name().c_str());
 	}
 }
 

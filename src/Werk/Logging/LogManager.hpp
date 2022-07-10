@@ -28,6 +28,7 @@
 #include <string>
 
 #include "Werk/Utility/Attributes.hpp"
+#include "Werk/Utility/NamedObjectManager.hpp"
 
 #include "Log.hpp"
 #include "Loggable.hpp"
@@ -35,7 +36,7 @@
 namespace werk
 {
 
-class LogManager : public Loggable
+class LogManager : public NamedObjectManager<Log>, public Loggable
 {
 public:
 	LogManager() {
@@ -45,25 +46,11 @@ public:
 	}
 	virtual ~LogManager() { }
 
-	//Default logs
 	NullLog *nullLog() { return _nullLog; }
-
-	//Accessors
-	CHECKED Log *getLog(const std::string &name) {
-		auto i = _logs.find(name);
-		return i == _logs.end() ? nullptr : i->second;
-	}
-	CHECKED bool add(Log *log) {
-		assert(nullptr != log);
-		auto result = _logs.insert(std::make_pair(log->name(), log));
-		return result.second;
-	}
 
 	void logTo(Log *log) const override;
 
 private:
-	//Map of all logs and some default logs
-	std::map<std::string, Log *> _logs;
 	NullLog *_nullLog;
 };
 

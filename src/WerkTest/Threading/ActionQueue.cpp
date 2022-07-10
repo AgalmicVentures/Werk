@@ -33,7 +33,7 @@ BOOST_AUTO_TEST_SUITE(ActionQueueTest)
 BOOST_AUTO_TEST_CASE(TestBasic)
 {
 	werk::CounterAction<std::atomic<uint64_t> > counterAction("Counter");
-	werk::BackgroundThread backgroundThread(nullptr, 1l * 1000 * 1000);
+	werk::BackgroundThread backgroundThread("Background", nullptr, 1l * 1000 * 1000);
 
 	werk::ActionQueue<> actionQueue("ActionQueue");
 

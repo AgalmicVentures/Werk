@@ -66,6 +66,7 @@ Context::Context(const std::string &configPath, const char *secondaryConfigPath,
 
 	_realTimeClock.setEpochTime();
 	_startupTime = _realTimeClock.time();
+	_threadManager.add(&_backgroundThread);
 	_backgroundThread.addTask(&_backgroundActionQueue);
 	_profileManager.add(&_interUpdateProfile);
 	_profileManager.add(&_updateProfile);

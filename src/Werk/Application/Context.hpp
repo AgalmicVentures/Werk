@@ -40,6 +40,7 @@
 #include "Werk/Threading/ActionQueue.hpp"
 #include "Werk/Threading/BackgroundThread.hpp"
 #include "Werk/Threading/Scheduler.hpp"
+#include "Werk/Threading/ThreadManager.hpp"
 #include "Werk/Utility/Attributes.hpp"
 #include "Werk/Utility/Latch.hpp"
 
@@ -90,6 +91,8 @@ public:
 	CHECKED const std::vector<std::string> &shutdownCommands() const { return _shutdownCommands; }
 	CHECKED DynamicLibraryManager &dynamicLibraryManager() { return _dynamicLibraryManager; }
 	CHECKED const DynamicLibraryManager &dynamicLibraryManager() const { return _dynamicLibraryManager; }
+	CHECKED ThreadManager &threadManager() { return _threadManager; }
+	CHECKED const ThreadManager &threadManager() const { return _threadManager; }
 
 	//Main thread
 	CHECKED const Clock &realTimeClock() const { return _realTimeClock; }
@@ -139,12 +142,15 @@ private:
 	std::string _temporaryPath;
 	std::vector<std::string> _startupCommands;
 	std::vector<std::string> _shutdownCommands;
-	DynamicLibraryManager _dynamicLibraryManager;
 	//Dyanimc configuration
 	uint64_t _longUpdateAlertThreshold = 500'000;
 	uint64_t _longUpdateWarningThreshold = 1'000'000;
 	uint64_t _longUpdateErrorThreshold = 2'000'000;
 	uint64_t _longUpdateCriticalThreshold = 5'000'000;
+
+	//Shared state
+	DynamicLibraryManager _dynamicLibraryManager;
+	ThreadManager _threadManager;
 
 	//Foreground thread state
 	Clock _realTimeClock;
@@ -164,7 +170,7 @@ private:
 	Latch<std::atomic<bool> > _quitting;
 
 	//Background thread state
-	BackgroundThread _backgroundThread { &_profileManager };
+	BackgroundThread _backgroundThread { "Background", &_profileManager };
 	ActionQueue<> _backgroundActionQueue { "BackgroundActionQueue" };
 	LogManager _logManager;
 	AsyncLog *_stdoutLog;

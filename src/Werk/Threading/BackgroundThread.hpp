@@ -28,6 +28,8 @@
 #include <time.h>
 #include <vector>
 
+#include "ManagedThread.hpp"
+
 #include "Werk/Logging/Loggable.hpp"
 #include "Werk/OS/Time.hpp"
 #include "Werk/Profiling/ProfileManager.hpp"
@@ -71,11 +73,12 @@ private:
  * This is very useful e.g. for defering IO to another thread to keep latency low on
  * a main thread.
  */
-class BackgroundThread : public Loggable
+class BackgroundThread : public ManagedThread, public Loggable
 {
 public:
 
-	BackgroundThread(ProfileManager *profileManager, uint64_t intervalNs=10ul * 1000 * 1000) :
+	BackgroundThread(const std::string &name, ProfileManager *profileManager, uint64_t intervalNs=10'000'000) :
+		ManagedThread(name),
 		_profileManager(profileManager), _intervalNs(intervalNs),
 		_running(true), _mainClockTime(0)
 	{

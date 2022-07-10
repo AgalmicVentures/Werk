@@ -37,7 +37,7 @@ BOOST_AUTO_TEST_CASE(TestAsyncLog)
 {
 	const int iterations = 200000;
 
-	werk::BackgroundThread backgroundThread(nullptr, 1l * 1000 * 1000);
+	werk::BackgroundThread backgroundThread("Background", nullptr, 1l * 1000 * 1000);
 	FILE *file = std::fopen("/dev/null", "a");
 	werk::AsyncLog *log = new werk::AsyncLog("Log", &backgroundThread.backgroundClock(), file);
 	backgroundThread.addTask(log);

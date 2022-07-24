@@ -38,7 +38,6 @@ namespace werk
 class SegfaultCommand : public Command
 {
 public:
-
 	SegfaultCommand(Log *log) :
 		Command("Segfaults the program (useful for testing)."),
 		_log(log) { }

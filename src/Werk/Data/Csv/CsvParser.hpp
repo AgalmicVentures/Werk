@@ -35,7 +35,6 @@ namespace werk
 class CsvParser
 {
 public:
-
 	CHECKED bool isOpen() const { return _file.is_open(); }
 	CHECKED const std::string &line() const { return _line; }
 	CHECKED const std::vector<std::string> &headers() const { return _headers; }

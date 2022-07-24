@@ -38,7 +38,6 @@ namespace werk
 class MapConfigSource : public ConfigSource
 {
 public:
-
 	virtual ~MapConfigSource() { }
 
 	CHECKED std::map<std::string, std::string> &values() { return _values; }

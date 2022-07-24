@@ -47,7 +47,6 @@ namespace werk
 class CommandHistory
 {
 public:
-
 	CommandHistory(uint64_t time, const std::string &commandLine) :
 		_time(time), _commandLine(commandLine) { }
 
@@ -69,7 +68,6 @@ private:
 class CommandManager : public Loggable
 {
 public:
-
 	CommandManager(const Clock &clock, Log *log, bool defaultCommands=true) :
 		_clock(clock), _log(log)
 	{

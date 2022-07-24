@@ -37,7 +37,6 @@ namespace werk
 class DiscreteEma
 {
 public:
-
 	DiscreteEma(double alpha) : _alpha(alpha) { }
 
 	CHECKED double alpha() const { return _alpha; }

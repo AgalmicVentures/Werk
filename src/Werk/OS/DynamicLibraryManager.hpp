@@ -56,7 +56,6 @@ protected:
 class DynamicLibraryManager
 {
 public:
-
 	~DynamicLibraryManager();
 
 	CHECKED DynamicLibrary *load(const std::string &path);

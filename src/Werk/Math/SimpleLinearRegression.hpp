@@ -40,7 +40,6 @@ namespace werk
 class SimpleLinearRegression
 {
 public:
-
 	CHECKED uint64_t count() const { return _x.count(); }
 
 	CHECKED double covariance() const { return _xy.average() - _x.average() * _y.average(); }

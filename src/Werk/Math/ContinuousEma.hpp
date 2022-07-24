@@ -37,7 +37,6 @@ namespace werk
 class ContinuousEma
 {
 public:
-
 	ContinuousEma(double halfLife) {
 		setHalfLife(halfLife);
 		reset();

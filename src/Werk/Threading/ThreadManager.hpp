@@ -37,7 +37,6 @@ public:
     virtual ~ThreadManager() { }
 
 protected:
-
 };
 
 }

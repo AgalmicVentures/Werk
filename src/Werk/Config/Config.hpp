@@ -49,7 +49,6 @@ typedef std::map<std::string, std::string> ConfigValuesT;
 class Configurable
 {
 public:
-
 	virtual ~Configurable() { }
 
 	//Pass the Config object so
@@ -63,7 +62,6 @@ public:
 class ConfigSource
 {
 public:
-
 	virtual ~ConfigSource() { }
 
 	CHECKED virtual bool reloadConfig(std::map<std::string, std::string> &values) = 0;
@@ -76,7 +74,6 @@ public:
 class Config : public Action
 {
 public:
-
 	Config(const std::string &name, Log *log) :
 		Action(name + "_Reloader"), _log(log), _reloadConfigAction(name + "_ReloadAction", _reloadConfig)
 	{

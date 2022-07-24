@@ -41,7 +41,6 @@ template <typename T, bool handleNaN=false>
 class OrderStatistics
 {
 public:
-
 	CHECKED uint64_t count() const { return _samples.size(); }
 
 	CHECKED T min() const {
@@ -88,7 +87,6 @@ public:
 	}
 
 private:
-
 	inline void update() const {
 		if (_dirty) {
 			std::sort(_samples.begin(), _samples.end());

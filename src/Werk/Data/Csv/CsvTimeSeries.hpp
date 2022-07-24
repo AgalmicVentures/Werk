@@ -40,7 +40,6 @@ class CsvParser;
 class CsvTimeSeries : public TimeSeries
 {
 public:
-
 	CsvTimeSeries(const std::string &name, CsvParser &parser, size_t timeColumn=0, int64_t scale=1, int64_t offset=0) :
 		TimeSeries(name), _parser(parser), _timeColumn(timeColumn), _scale(scale), _offset(offset) {
 		assert(scale > 0);

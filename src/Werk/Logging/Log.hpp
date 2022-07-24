@@ -60,7 +60,6 @@ extern const char *logLevels[];
 class Log : public NamedObject
 {
 public:
-
 	//Clock used for timestamping messages (may not be real time, e.g. in a simulation)
 	Log(const std::string &name, const werk::Clock *clock) : NamedObject(name), _clock(clock) { }
 	virtual ~Log() { }
@@ -80,7 +79,6 @@ private:
 class NullLog : public Log
 {
 public:
-
 	NullLog(const std::string &name) : Log(name, nullptr) { }
 	virtual ~NullLog() { }
 
@@ -95,7 +93,6 @@ public:
 class SyncLog : public Log
 {
 public:
-
 	SyncLog(const std::string &name, werk::Clock *clock, FILE *file=stdout) :
 		Log(name, clock), _file(file) { }
 	virtual ~SyncLog() { }

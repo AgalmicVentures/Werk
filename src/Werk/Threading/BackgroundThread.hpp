@@ -48,7 +48,6 @@ class BackgroundThread;
 class BackgroundTask
 {
 public:
-
 	BackgroundTask(Action *action) :
 		_action(action), _profile(std::string("Background_") + action->name()) { }
 
@@ -76,7 +75,6 @@ private:
 class BackgroundThread : public ManagedThread, public Loggable
 {
 public:
-
 	BackgroundThread(const std::string &name, ProfileManager *profileManager, uint64_t intervalNs=10'000'000) :
 		ManagedThread(name),
 		_profileManager(profileManager), _intervalNs(intervalNs),

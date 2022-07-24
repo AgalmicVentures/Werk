@@ -37,7 +37,6 @@ namespace werk
 class Command
 {
 public:
-
 	Command(const std::string &help) : _help(help) { }
 	virtual ~Command() { }
 
@@ -55,7 +54,6 @@ private:
 class NullCommand : public Command
 {
 public:
-
 	NullCommand() : Command("Null command -- does nothing.") { }
 	virtual ~NullCommand() { }
 

@@ -42,7 +42,6 @@ namespace werk
 class Profile : public NamedObject
 {
 public:
-
 	Profile(const std::string &name, uint64_t sampleSize = 100, uint64_t warmupSize = 0)
 		: NamedObject(name), _sampleSize(sampleSize), _warmupSize(warmupSize) { }
 
@@ -140,7 +139,6 @@ public:
 	}
 
 private:
-
 	//Configuration
 	uint64_t _sampleSize;
 	uint64_t _warmupSize;

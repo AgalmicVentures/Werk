@@ -41,7 +41,6 @@ namespace werk
 class CpuMask
 {
 public:
-
 	CpuMask(size_t processorCount);
 	~CpuMask();
 

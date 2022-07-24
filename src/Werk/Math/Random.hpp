@@ -37,7 +37,6 @@ namespace werk
 class Random
 {
 public:
-
 	//TODO: flesh this out as use cases arise
 
 	CHECKED uint64_t getUint64(uint64_t min, uint64_t max) {
@@ -46,7 +45,6 @@ public:
 	}
 
 private:
-
 	std::mt19937_64 _generator;
 };
 

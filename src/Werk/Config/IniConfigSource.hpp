@@ -36,7 +36,6 @@ namespace werk
 class IniConfigSource : public ConfigSource
 {
 public:
-
 	IniConfigSource(const std::string &path, Log *log=nullptr) : _path(path), _log(log) { }
 	virtual ~IniConfigSource() { }
 

@@ -65,7 +65,6 @@ struct PcapRecordHeader
 class PcapParser : public TimeSeries
 {
 public:
-
 	PcapParser(const std::string &name) : TimeSeries(name) { }
 	virtual ~PcapParser() { close(); }
 

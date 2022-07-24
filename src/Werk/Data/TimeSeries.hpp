@@ -37,7 +37,6 @@ namespace werk
 class TimeSeries : public NamedObject
 {
 public:
-
 	TimeSeries(const std::string &name) : NamedObject(name) { }
 	virtual ~TimeSeries() { }
 

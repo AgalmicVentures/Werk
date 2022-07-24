@@ -39,7 +39,6 @@ class Log;
 class ConsoleClientsCommand : public Command
 {
 public:
-
 	ConsoleClientsCommand(IpcConsoleServer &ipcConsoleServer, Log *log, Clock *realTimeClock) :
 		Command("Shows console clients and their states."),
 		_ipcConsoleServer(ipcConsoleServer),

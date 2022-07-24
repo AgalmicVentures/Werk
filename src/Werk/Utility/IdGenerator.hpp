@@ -36,7 +36,6 @@ template <typename T=uint64_t>
 class IdGenerator
 {
 public:
-
 	IdGenerator(T start=0, T step=1) : _step(step), _nextId(start) { }
 
 	CHECKED T step() const { return _step; }

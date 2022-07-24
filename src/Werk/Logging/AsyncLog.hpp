@@ -43,7 +43,6 @@ namespace werk
 class AsyncLog : public Log, public Action
 {
 public:
-
 	AsyncLog(const std::string &name, const Clock *clock, FILE *file=stdout, Clock *realTimeClock=nullptr) :
 		Log(name, clock), Action(name + "_Writer"), _file(file), _realTimeClock(realTimeClock),
 		_nextSendSequenceNumber(0), _nextReceiveSequenceNumber(0) { }

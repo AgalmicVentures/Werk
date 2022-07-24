@@ -57,7 +57,6 @@ class IpcConsoleServer;
 class Context : public Configurable, public Loggable
 {
 public:
-
 	//The first config path is mandatory; the secondary is optional
 	Context(const std::string &configPath, const char *secondaryConfigPath=nullptr, bool dryRun=false);
 	virtual ~Context();

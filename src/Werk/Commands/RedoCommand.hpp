@@ -38,7 +38,6 @@ class CommandManager;
 class RedoCommand : public Command
 {
 public:
-
 	RedoCommand(CommandManager &commandManager) :
 		Command("Repeats the last command."),
 		_commandManager(commandManager) { }

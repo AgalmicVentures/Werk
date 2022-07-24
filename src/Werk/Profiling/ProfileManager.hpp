@@ -45,7 +45,6 @@ namespace werk
 class ProfileManager : public NamedObjectManager<Profile>
 {
 public:
-
 	ProfileManager() {
 		//Check the time it takes to call the timing functions
 		add(&_baseProfile);

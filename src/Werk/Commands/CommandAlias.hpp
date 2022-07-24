@@ -40,7 +40,6 @@ class CommandManager;
 class CommandAlias : public Command
 {
 public:
-
 	CommandAlias(CommandManager &commandManager, const std::string &command) :
 		Command("Alias for " + command), _commandManager(commandManager)
 	{

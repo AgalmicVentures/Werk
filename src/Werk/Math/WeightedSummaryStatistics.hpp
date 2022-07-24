@@ -40,7 +40,6 @@ namespace werk
 class WeightedSummaryStatistics
 {
 public:
-
 	CHECKED uint64_t count() const { return _count; }
 	CHECKED double weightSum() const { return _weightSum; }
 	CHECKED double sum() const { return _sum; }

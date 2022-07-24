@@ -49,7 +49,6 @@ class Config;
 class ScopedConfig
 {
 public:
-
 	ScopedConfig(Config &config) : _config(config) { }
 	ScopedConfig(Config &config, const std::string &scope) : ScopedConfig(config)
 	{

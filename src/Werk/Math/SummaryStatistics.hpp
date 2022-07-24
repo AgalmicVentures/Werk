@@ -42,7 +42,6 @@ template <typename T>
 class SummaryStatistics
 {
 public:
-
 	CHECKED uint64_t count() const { return _count; }
 	CHECKED T sum() const { return _sum; }
 	CHECKED double average() const { return _average; }
@@ -89,7 +88,6 @@ template <typename T>
 class RangedSummaryStatistics : public SummaryStatistics<T>
 {
 public:
-
 	T min() const { return _min; }
 	T max() const { return _max; }
 	T range() const { return _max - _min; }

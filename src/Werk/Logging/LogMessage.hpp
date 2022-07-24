@@ -42,7 +42,6 @@ private:
 	static const size_t headerSize = 32; //Not actually the size of the header, just has to be at least as big
 
 public:
-
 	static const size_t maxLineLength = totalMessageSize - headerSize;
 
 	//Header

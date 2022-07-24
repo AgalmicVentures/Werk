@@ -57,7 +57,6 @@ template <
 class Counter
 {
 public:
-
 	CHECKED const T &value() const { return _value; }
 
 	void reset() { _value = initialValue; }

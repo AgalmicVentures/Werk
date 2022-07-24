@@ -37,7 +37,6 @@ namespace werk
 class Loggable
 {
 public:
-
 	virtual ~Loggable() { }
 
 	virtual void logTo(Log *log) const = 0;
@@ -49,7 +48,6 @@ public:
 class StringLoggable : public Loggable
 {
 public:
-
 	StringLoggable(const std::string value, LogLevel level=LogLevel::INFO) :
 		_value(value), _level(level) { }
 	virtual ~StringLoggable() { }
@@ -69,7 +67,6 @@ private:
 class LogAction : public Action
 {
 public:
-
 	LogAction(const std::string &name, const Loggable *loggable, Log *log) :
 		Action(name), _loggable(loggable), _log(log) { }
 	virtual ~LogAction() { }

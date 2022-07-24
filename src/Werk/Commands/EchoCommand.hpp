@@ -38,7 +38,6 @@ namespace werk
 class EchoCommand : public Command
 {
 public:
-
 	EchoCommand(Log *log, LogLevel level=LogLevel::INFO) :
 		Command("Echoes the arguments to the log."),
 		_log(log), _level(level) { }

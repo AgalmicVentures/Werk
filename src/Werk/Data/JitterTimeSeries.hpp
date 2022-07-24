@@ -40,7 +40,6 @@ namespace werk
 class JitterTimeSeries : public TimeSeries
 {
 public:
-
 	JitterTimeSeries(Random &random, TimeSeries *underlying, uint64_t min, uint64_t max) :
 		TimeSeries(underlying->name() + "_Jitter"), _random(random), _underlying(underlying), _min(min), _max(max) { }
 	virtual ~JitterTimeSeries() { }

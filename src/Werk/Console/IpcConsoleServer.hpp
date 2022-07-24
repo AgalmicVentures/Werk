@@ -50,7 +50,6 @@ struct IpcConsoleClientState
 class IpcConsoleServer : public NamedObject
 {
 public:
-
 	//In some situations, a queue may be left behind
 	static void remove(const std::string &name) {
 		boost::interprocess::message_queue::remove(name.c_str());

@@ -38,7 +38,6 @@ namespace werk
 class ConsoleCommandReceiver : public Action
 {
 public:
-
 	ConsoleCommandReceiver(const std::string &name, IpcConsoleServer &server, CommandManager &commandManager) :
 		Action(name), _server(server), _commandManager(commandManager) { }
 	virtual ~ConsoleCommandReceiver() { }

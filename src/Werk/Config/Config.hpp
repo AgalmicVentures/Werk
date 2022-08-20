@@ -32,6 +32,8 @@
 #include <string>
 #include <vector>
 
+#include "Configurable.hpp"
+
 #include "Werk/Logging/Log.hpp"
 #include "Werk/Utility/Action.hpp"
 #include "Werk/Utility/Attributes.hpp"
@@ -44,18 +46,6 @@ class Config;
 typedef std::map<std::string, std::string> ConfigValuesT;
 
 /**
- * Abstract class representing any object that consumes configuration information.
- */
-class Configurable
-{
-public:
-	virtual ~Configurable() { }
-
-	//Pass the Config object so
-	CHECKED virtual bool reloadConfig(const Config &config) = 0;
-};
-
-/**
  * Abstract class that represents any object that provides configuration information --
  * for example, an ini file or a database connection.
  */
@@ -64,7 +54,7 @@ class ConfigSource
 public:
 	virtual ~ConfigSource() { }
 
-	CHECKED virtual bool reloadConfig(std::map<std::string, std::string> &values) = 0;
+	CHECKED virtual bool reloadConfig(ConfigValuesT &values) = 0;
 };
 
 /**

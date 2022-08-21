@@ -41,6 +41,7 @@ namespace werk
 {
 
 class Config;
+class Configurable;
 
 /**
  * Adapter for the Config class that allows keys to be read from a number of scopes,

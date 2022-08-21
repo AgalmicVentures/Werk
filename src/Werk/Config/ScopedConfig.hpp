@@ -76,8 +76,12 @@ public:
 		_scopes.push_back(scope4);
 	}
 
+	//Accessors
 	CHECKED std::vector<std::string> &scopes() { return _scopes; }
 	CHECKED const std::vector<std::string> &scopes() const { return _scopes; }
+
+	//Base config accessors
+	void addConfigurable(Configurable *configurable);
 
 	//Basic types
 	CHECKED const char *getString(const std::string &key, const char *defaultValue=nullptr, const char *help=nullptr) const;

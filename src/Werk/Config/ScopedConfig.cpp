@@ -28,6 +28,11 @@
 namespace werk
 {
 
+void ScopedConfig::addConfigurable(Configurable *configurable)
+{
+	_config.addConfigurable(configurable);
+}
+
 void ScopedConfig::findScopedKey(const std::string &key, std::string &specificKey, std::string &foundKey) const
 {
 	bool first = true;

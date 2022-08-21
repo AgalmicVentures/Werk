@@ -57,13 +57,13 @@ ALWAYS_INLINE T roundUpPow2(T value)
 	v |= v >> 1;
 	v |= v >> 2;
 	v |= v >> 4;
-	if (sizeof(T) > 1) {
+	if constexpr (sizeof(T) > 1) {
 		v |= v >> 8;
 	}
-	if (sizeof(T) > 2) {
+	if constexpr (sizeof(T) > 2) {
 		v |= v >> 16;
 	}
-	if (sizeof(T) > 4) {
+	if constexpr (sizeof(T) > 4) {
 		v |= v >> 32;
 	}
 	++v;
